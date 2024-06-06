@@ -16,7 +16,18 @@ const DenunciasList = ({ navigation, denuncias }) => {
             <FlatList
               data={denuncias}
               ItemSeparatorComponent={() => <View style={{ height: 15 }} />}
-              renderItem={({ item }) => <DenunciaCard denuncia={item} navigation={navigation} onPress={() => navigation.navigate('Detalle', { denuncia: item })} />}
+              renderItem={({ item }) => (
+                <DenunciaCard
+                  denuncia={item}
+                  navigation={navigation}
+                  onPress={() => navigation.navigate('Denuncias', {
+                    screen: "Detalle",
+                    params: {
+                      denuncia: item
+                    }
+                  })}
+                />
+              )}
               // sin el index tira error por key, debe ser la forma de generar el id en la data de prueba
               // no deberia tener problemas cuando se obtenga la data de la api
               keyExtractor={(item, i) => String("denuncia:" + i + item.iddenuncias)}
