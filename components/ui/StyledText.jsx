@@ -5,9 +5,9 @@ import theme from "../../styles/theme"
 const StyledText = ({ variant, fontSize, textTransform, bold, disabled, color, style, ...props }) => {
   const appliedStyles = [
     styles.text,
-    ["primary", "secondary", "success", "alert", "warning"].includes(variant) && styles[variant],
-    ["brand", "heading", "subheading", "title", "subtitle"].includes(fontSize) && styles[fontSize],
-    [true, "medium", "bold", "bolder"].includes(bold) && bold === true ? styles.bold : styles[bold],
+    variant && ["primary", "secondary", "success", "alert", "warning"].includes(variant) && styles[variant],
+    fontSize && ["brand", "heading", "subheading", "title", "subtitle"].includes(fontSize) && styles[fontSize],
+    bold && [true, "medium", "bold", "bolder"].includes(bold) && bold === true ? styles.bold : styles[bold],
     disabled && styles.disabled,
     textTransform && styles[textTransform],
     color && { color },

@@ -10,16 +10,18 @@ export const StyledButton = ({
 
     const appliedButtonStyles = [
         styles.button,
-        ["primary", "secondary", "success", "alert", "warning"].includes(variant) && styles[variant],
+        variant && ["primary", "secondary", "success", "alert", "warning"].includes(variant) && styles[variant],
         disabled && styles.disabled,
         style
     ]
 
     const appliedTextStyles = [
         styles.text,
-        ["primary", "secondary", "success", "alert", "warning"].includes(variant) && styles[`text-${variant}`],
-        ["brand", "heading", "subheading", "title", "subtitle"].includes(fontSize) && styles[fontSize],
-        [true, "medium", "bold", "bolder"].includes(bold) && bold === true ? styles.bold : styles[bold],
+        styles.medium,
+        styles.title,
+        variant && ["primary", "secondary", "success", "alert", "warning"].includes(variant) && styles[`text-${variant}`],
+        fontSize && ["brand", "heading", "subheading", "title", "subtitle"].includes(fontSize) && styles[fontSize],
+        bold && [true, "medium", "bold", "bolder"].includes(bold) && bold === true ? styles.bold : styles[bold],
         textTransform && styles[textTransform],
         color && { color },
         textStyle
@@ -82,7 +84,7 @@ const styles = StyleSheet.create({
         backgroundColor: theme.colors.success
     },
     ["text-success"]: {
-        color: theme.colors.text,
+        color: theme.colors.white,
     },
     alert: {
         backgroundColor: theme.colors.alert
