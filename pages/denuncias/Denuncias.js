@@ -4,6 +4,7 @@ import { View, FlatList, SafeAreaView, StyleSheet } from 'react-native'
 import StyledText from '../../components/StyledText';
 import { DenunciaCard } from '../../components/DenunciasCard';
 import denunciasServices from '../../services/denuncias.services'
+import theme from '../../styles/theme';
 
 const DenunciasList = ({ navigation, denuncias }) => {
   return (
@@ -52,13 +53,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: "100%",
     height: "100%",
+    backgroundColor: theme.colors.white,
+    padding: theme.global.screenInnerPadding,
   },
   listContainer: {
     flex: 1,
     direction: 'column',
     marginVertical: 2,
     width: "100%",
-    padding: 20
   }
 });
 export default DenunciasScreen;

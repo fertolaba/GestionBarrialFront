@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Image, TouchableOpacity } from 'react-native';
 import React from 'react'; // Solo una vez aquí
 import 'react-native-gesture-handler';
 import { DrawerItemList, createDrawerNavigator } from '@react-navigation/drawer';
@@ -10,11 +10,13 @@ import Servicios from './pages/Servicios';
 import CustomDrawer from './components/CustomDrawer';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Foto from "./assets/foto1.png";
-import Reclamos from './pages/Reclamos';
-import GenerarReclamos from './pages/screens/GenerarReclamos';
+import Reclamos from './pages/reclamos/Reclamos';
+import GenerarReclamos from './pages/reclamos/GenerarReclamos';
 import { createStackNavigator } from '@react-navigation/stack';
-import Login from './pages/Login';
+import Login from './pages/login/Login';
 import { DenunciaDetalle } from './pages/denuncias/DenunciaDetalle';
+import StyledText from './components/StyledText';
+import theme from './styles/theme';
 
 
 const Drawer = createDrawerNavigator();
@@ -75,7 +77,7 @@ function DrawerNavigator(props) {
   return (
     <Drawer.Navigator
       drawerContent={(drawerProps) => (
-        <SafeAreaView style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.white }}>
           <View
             style={{
               height: 200,
@@ -91,13 +93,13 @@ function DrawerNavigator(props) {
                 width: 130,
               }}
             />
-            <Text>Bienvenido!</Text>
-            <Text>Invitado</Text>
+            <StyledText>Bienvenido!</StyledText>
+            <StyledText>Invitado</StyledText>
           </View>
           <DrawerItemList {...drawerProps} />
           <View style={{ marginTop: 'auto', padding: 20, alignItems: 'center' }}>
             <TouchableOpacity onPress={() => props.navigation.navigate('Login')}>
-              <Text style={{ color: 'blue' }}>Iniciar Sesión</Text>
+              <StyledText style={{ color: 'blue' }}>Iniciar Sesión</StyledText>
             </TouchableOpacity>
           </View>
         </SafeAreaView>

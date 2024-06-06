@@ -1,6 +1,7 @@
 import { Button, SafeAreaView, StyleSheet } from "react-native";
 import { DenunciaCard } from "../../components/DenunciasCard";
 import StyledText from "../../components/StyledText";
+import theme from "../../styles/theme";
 
 function getVariantColorByState(state) {
   switch (state) {
@@ -30,7 +31,7 @@ export function DenunciaDetalle({ route, navigation }) {
           : <StyledText>Denuncia no encontrada</StyledText>
       }
 
-      <StyledText fontSize={"heading"} textTransform={"capitalize"} variant={getVariantColorByState(denuncia.estado)}>{denuncia.estado}</StyledText>
+      <StyledText fontSize={"heading"} bold textTransform={"capitalize"} variant={getVariantColorByState(denuncia.estado)}>{denuncia.estado}</StyledText>
 
       <VolverDenunciaScreenBtn />
 
@@ -45,8 +46,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: "100%",
     height: "100%",
-    padding: 20,
-    gap: 20
+    padding: theme.global.screenInnerPadding,
+    gap: 20,
+    backgroundColor: theme.colors.white,
   },
   stateText: {
     fontSize: null,

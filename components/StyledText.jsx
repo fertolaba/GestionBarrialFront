@@ -1,21 +1,17 @@
 import { StyleSheet, Text } from "react-native"
-import theme from "../utils/theme"
+import theme from "../styles/theme"
 
 
-const StyledText = ({ variant, fontSize, textTransform, bold, disabled, ...props }) => {
+const StyledText = ({ variant, fontSize, textTransform, bold, disabled, color, style, ...props }) => {
   const appliedStyles = [
     styles.text,
-    fontSize === "brand" && styles.brand,
-    fontSize === "subheading" && styles.subheading,
-    fontSize === "heading" && styles.heading,
-    variant === "primary" && styles.colorPrimary,
-    variant === "secondary" && styles.colorSecondary,
-    variant === "success" && styles.success,
-    variant === "alert" && styles.alert,
-    variant === "warning" && styles.warning,
-    bold === "bolder" ? styles.bolder : bold && styles.bold,
+    ["primary", "secondary", "success", "alert", "warning"].includes(variant) && styles[variant],
+    ["brand", "heading", "subheading", "title", "subtitle"].includes(fontSize) && styles[fontSize],
+    [true, "medium", "bold", "bolder"].includes(bold) && bold === true ? styles.bold : styles[bold],
     disabled && styles.disabled,
-    textTransform && styles[textTransform]
+    textTransform && styles[textTransform],
+    color && { color },
+    style, // por si igual faltan styles personalizados
   ]
 
   return <Text style={appliedStyles} {...props} />
@@ -42,6 +38,15 @@ const styles = StyleSheet.create({
   subheading: {
     fontSize: theme.fontSizes.subheading
   },
+  title: {
+    fontSize: theme.fontSizes.title
+  },
+  subtitle: {
+    fontSize: theme.fontSizes.subtitle
+  },
+  medium: {
+    fontWeight: theme.fontWeights.medium
+  },
   bold: {
     fontWeight: theme.fontWeights.bold
   },
@@ -58,7 +63,7 @@ const styles = StyleSheet.create({
     color: theme.colors.warning
   },
   disabled: {
-    opacity: theme.misc.disabledOpacity
+    opacity: theme.global.disabledOpacity
   },
   lowercase: {
     textTransform: "lowercase"

@@ -1,5 +1,5 @@
 import { Image, Pressable, StyleSheet, View } from "react-native";
-import theme from "../utils/theme";
+import theme from "../styles/theme";
 import StyledText from "./StyledText";
 
 // type Denuncia = {
@@ -37,7 +37,9 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     borderWidth: 2,
     borderColor: theme.colors.secondary,
+    backgroundColor: theme.colors.white,
     maxWidth: "100%",
+    elevation: 3,
   },
   cardOnDetail: {
     flexDirection: 'column',
@@ -50,7 +52,7 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     borderColor: theme.colors.secondary,
     borderRadius: 2,
-    borderRightWidth: 2,
+    borderRightWidth: 2, // No lo toma??
     overflow: "hidden",
   },
   imageOnDetail: {
