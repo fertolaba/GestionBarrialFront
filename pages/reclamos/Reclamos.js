@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { CreateButton, StateButton } from '../components/Buttons';
+import { CreateButton, StateButton } from '../../components/Buttons';
 
 export default function Reclamos() {
   const navigation = useNavigation();
