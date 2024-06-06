@@ -23,11 +23,20 @@ const styles = StyleSheet.create({
     fontSize: theme.fontSizes.body,
     fontWeight: theme.fontWeights.normal
   },
-  colorPrimary: {
+  primary: {
     color: theme.colors.primary,
   },
-  colorSecondary: {
+  secondary: {
     color: theme.colors.secondary,
+  },
+  success: {
+    color: theme.colors.success
+  },
+  alert: {
+    color: theme.colors.alert
+  },
+  warning: {
+    color: theme.colors.warning
   },
   brand: {
     fontSize: theme.fontSizes.brand
@@ -52,15 +61,6 @@ const styles = StyleSheet.create({
   },
   bolder: {
     fontWeight: theme.fontWeights.bolder
-  },
-  success: {
-    color: theme.colors.success
-  },
-  alert: {
-    color: theme.colors.alert
-  },
-  warning: {
-    color: theme.colors.warning
   },
   disabled: {
     opacity: theme.global.disabledOpacity
