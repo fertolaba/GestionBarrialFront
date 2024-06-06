@@ -7,7 +7,6 @@ import StyledText from '../../components/ui/StyledText';
 import { Button } from 'react-native';
 import { capitalizeFirstLetter } from "../../utils/strings";
 import { StyledTextInput } from '../../components/ui/StyledTextInput';
-import { MaterialButton } from '../../components/ui/MaterialButton';
 
 const initialValuesServicioProfesional = {
 	nombre: "",
