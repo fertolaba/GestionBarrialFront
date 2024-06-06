@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
 import theme from '../../styles/theme';
-import StyledText from '../../components/StyledText';
+import StyledText from '../../components/ui/StyledText';
 
-export default function Login() {
+export default function LoginScreen() {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
 

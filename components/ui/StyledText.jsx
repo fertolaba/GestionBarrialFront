@@ -1,5 +1,5 @@
 import { StyleSheet, Text } from "react-native"
-import theme from "../styles/theme"
+import theme from "../../styles/theme"
 
 
 const StyledText = ({ variant, fontSize, textTransform, bold, disabled, color, style, ...props }) => {

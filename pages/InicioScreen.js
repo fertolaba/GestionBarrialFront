@@ -1,10 +1,10 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-export default function Servicios() {
+export default function InicioScreen() {
   return (
     <View>
-      <Text>Servicios</Text>
+      <Text>Gestion Barrial</Text>
     </View>
   )
 }

@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { CreateButton, StateButton } from '../../components/Buttons';
 
-export default function Reclamos() {
+export default function ReclamosScreen() {
   const navigation = useNavigation();
 
   return (
