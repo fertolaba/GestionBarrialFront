@@ -1,7 +1,8 @@
-import { Button, SafeAreaView, StyleSheet } from "react-native";
+import { SafeAreaView, StyleSheet } from "react-native";
 import { DenunciaCard } from "../../components/DenunciasCard";
 import StyledText from "../../components/ui/StyledText";
 import theme from "../../styles/theme";
+import { StyledButton } from "../../components/ui/StyledButton";
 
 function getVariantColorByState(state) {
   switch (state) {
@@ -20,7 +21,7 @@ function getVariantColorByState(state) {
 
 export function DenunciaDetalle({ route, navigation }) {
   const { denuncia } = route.params;
-  const VolverDenunciaScreenBtn = () => <Button onPress={() => navigation.push(`Listado`)} title="Volver a denuncias" />
+  const VolverDenunciaScreenBtn = () => <StyledButton variant={"secondary"} onPress={() => navigation.push(`Listado`)} title="Volver a denuncias" />
 
   return (
     <SafeAreaView style={styles.screenContainer}>

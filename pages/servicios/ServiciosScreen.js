@@ -1,6 +1,7 @@
 import React from 'react'
-import { View, StyleSheet, Button } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import theme from '../../styles/theme';
+import { StyledButton } from '../../components/ui/StyledButton';
 
 const ServiciosScreen = ({ navigation }) => {
   return (
@@ -8,11 +9,10 @@ const ServiciosScreen = ({ navigation }) => {
       <View style={styles.container}>
         {
           [{ text: "Comercio", path: "Comercio" }, { text: "Servicio Profesional", path: "ServicioProfesional" }].map(s => (
-            <Button
+            <StyledButton
               key={s.path}
               title={s.text}
-              color={theme.colors.primary}
-              style={styles.btn}
+              variant={"primary"}
               onPress={() => navigation.navigate(s.path)}
             />
           ))
@@ -34,10 +34,6 @@ const styles = StyleSheet.create({
   container: {
     gap: 20,
   },
-  btn: {
-    padding: 5,
-    margin: 5,
-  }
 });
 
 export default ServiciosScreen;

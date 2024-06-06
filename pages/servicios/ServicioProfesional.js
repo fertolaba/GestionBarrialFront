@@ -1,12 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import theme from '../../styles/theme';
 import { Formik } from 'formik'
-import { TextInput } from 'react-native';
 import StyledText from '../../components/ui/StyledText';
-import { Button } from 'react-native';
 import { capitalizeFirstLetter } from "../../utils/strings";
 import { StyledTextInput } from '../../components/ui/StyledTextInput';
+import { StyledButton } from '../../components/ui/StyledButton';
 
 const initialValuesServicioProfesional = {
 	nombre: "",
@@ -54,8 +53,8 @@ const CrearServicioProfesional = ({ navigation }) => {
 							</View>
 
 							<View style={styles.formControls}>
-								<Button title="Crear" onPress={handleSubmit} />
-								<Button title="Cancelar" onPress={() => navigation.goBack()} />
+								<StyledButton variant={"success"} title="Crear" onPress={handleSubmit} />
+								<StyledButton variant={"secondary"} title="Cancelar" onPress={() => navigation.goBack()} />
 							</View>
 
 						</View>
