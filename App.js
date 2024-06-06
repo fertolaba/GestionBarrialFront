@@ -5,7 +5,7 @@ import { DrawerItemList, createDrawerNavigator } from '@react-navigation/drawer'
 import { NativeScreenNavigationContainer } from 'react-native-screens';
 import { NavigationContainer } from '@react-navigation/native';
 import Inicio from './pages/Inicio';
-import Denuncias from './pages/Denuncias';
+import Denuncias from './pages/denuncias/Denuncias';
 import Servicios from './pages/Servicios';
 import CustomDrawer from './components/CustomDrawer';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -14,6 +14,7 @@ import Reclamos from './pages/Reclamos';
 import GenerarReclamos from './pages/screens/GenerarReclamos';
 import { createStackNavigator } from '@react-navigation/stack';
 import Login from './pages/Login';
+import { DenunciaDetalle } from './pages/denuncias/DenunciaDetalle';
 
 
 const Drawer = createDrawerNavigator();
@@ -31,6 +32,23 @@ function ReclamosStack() {
         name="GenerarReclamos"
         component={GenerarReclamos}
         options={{ headerTitle: 'Generar Reclamos', headerShown: false }} // Mostrar encabezado personalizado para GenerarReclamos
+      />
+    </Stack.Navigator>
+  );
+}
+
+function DenunciasStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Listado"
+        component={Denuncias}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Detalle"
+        component={DenunciaDetalle}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );
@@ -88,8 +106,8 @@ function DrawerNavigator(props) {
       <Drawer.Screen name="Gestion Barrial" component={Inicio} />
       <Drawer.Screen name="Reclamos" component={ReclamosStack} />
       <Drawer.Screen name="Servicios" component={Servicios} />
-      <Drawer.Screen name="Denuncias" component={Denuncias} />
-      
+      <Drawer.Screen name="Denuncias" component={DenunciasStack} />
+
     </Drawer.Navigator>
   );
 }

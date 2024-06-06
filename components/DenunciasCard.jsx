@@ -1,4 +1,4 @@
-import { Image, StyleSheet, View } from "react-native";
+import { Image, Pressable, StyleSheet, View } from "react-native";
 import theme from "../utils/theme";
 import StyledText from "./StyledText";
 
@@ -12,40 +12,61 @@ import StyledText from "./StyledText";
 // }
 
 
-export const DenunciasCard = ({ denuncia: { imageSource, tipo, descripcion }, ...props }) => {
-    return (
-        <View style={styles.card} {...props}>
-            <Image style={styles.cardImage} source={{ uri: imageSource }} />
-            <View style={styles.cardBody}>
-                <StyledText fontSize={"heading"} bold="bolder">{tipo}</StyledText>
-                <StyledText>{descripcion}</StyledText>
-            </View>
-        </View>
-    )
+export const DenunciaCard = ({ denuncia: { imageSource, tipo, descripcion }, isDetail, ...props }) => {
+
+  const appliedCardStyle = [styles.card, isDetail && styles.cardOnDetail]
+  const appliedImageStyle = [styles.cardImage, isDetail && styles.imageOnDetail]
+  const appliedCardBodyStyle = [styles.cardBody, isDetail && styles.bodyOnDetail]
+
+  return (
+    <Pressable style={appliedCardStyle} {...props}>
+      <Image style={appliedImageStyle} source={{ uri: imageSource }} />
+      <View style={appliedCardBodyStyle}>
+        <StyledText fontSize={"heading"} bold="bolder">{tipo}</StyledText>
+        <StyledText>{descripcion}</StyledText>
+      </View>
+    </Pressable>
+  )
 }
 
 
 const styles = StyleSheet.create({
-    card: {
-        flexDirection: 'row',
-        borderRadius: 2,
-        overflow: 'hidden',
-        borderWidth: 2,
-        borderColor: theme.colors.secondary,
-    },
-    cardImage: {
-        maxWidth: 300,
-        flex: 2,
-        objectFit: 'cover',
-        aspectRatio: 1,
-        borderColor: theme.colors.secondary,
-        borderRadius: 2,
-        borderRightWidth: 2,
-        overflow: "hidden",
-    },
-    cardBody: {
-        flex: 4,
-        padding: 20,
-        justifyContent: 'center', 
-    }
+  card: {
+    flexDirection: 'row',
+    borderRadius: 2,
+    overflow: 'hidden',
+    borderWidth: 2,
+    borderColor: theme.colors.secondary,
+    maxWidth: "100%",
+  },
+  cardOnDetail: {
+    flexDirection: 'column',
+    maxHeight: "50%"
+  },
+  cardImage: {
+    maxWidth: 300,
+    flex: 2,
+    objectFit: 'cover',
+    aspectRatio: 1,
+    borderColor: theme.colors.secondary,
+    borderRadius: 2,
+    borderRightWidth: 2,
+    overflow: "hidden",
+  },
+  imageOnDetail: {
+    flex: 6,
+    minWidth: "100%",
+    maxWidth: '100%',
+    borderRightWidth: 0,
+    borderRightBottom: 2,
+  },
+  cardBody: {
+    flex: 4,
+    padding: 20,
+    justifyContent: 'center',
+  },
+  bodyOnDetail: {
+    flex: 1,
+    alignItems: 'center'
+  }
 })
