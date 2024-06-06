@@ -1,101 +1,140 @@
-import React from 'react'
-import { View, StyleSheet } from 'react-native'
-import theme from '../../styles/theme';
-import { Formik } from 'formik'
-import StyledText from '../../components/ui/StyledText';
-import { capitalizeFirstLetter } from "../../utils/strings";
-import { StyledTextInput } from '../../components/ui/StyledTextInput';
-import { StyledButton } from '../../components/ui/StyledButton';
+import React, { useState } from 'react';
+import { View, TextInput, Button, StyleSheet, Alert } from 'react-native';
 
-const initialValuesServicioProfesional = {
-	nombre: "",
-	apellido: "",
-	telefono: "",
-	horarios: "",
-	rubros: "",
-	descripcion: "",
-	imagen: "",
-}
+const ServicioProfesional = () => {
+  const [cargoDelSitio, setCargoDelSitio] = useState('');
+  const [apertura, setApertura] = useState('');
+  const [calle, setCalle] = useState('');
+  const [cierre, setCierre] = useState('');
+  const [comentarios, setComentarios] = useState('');
+  const [entreCalleA, setEntreCalleA] = useState('');
+  const [entreCalleB, setEntreCalleB] = useState('');
+  const [numero, setNumero] = useState('');
+  const [longitud, setLongitud] = useState('');
+  const [latitud, setLatitud] = useState('');
 
-const CrearServicioProfesional = ({ navigation }) => {
+  const handleSubmit = async () => {
+    try {
+      const data = {
+        cargoDelSitio,
+        apertura,
+        calle,
+        cierre,
+        comentarios,
+        entreCalleA,
+        entreCalleB,
+        numero,
+		latitud,
+		longitud,
+      };
 
-	function handleFormSubmit(values) {
-		console.log(values)
-	}
+      const response = await fetch('http://localhost:8080/api/sitios/crear', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
 
-	return (
-		<View style={styles.screenContainer}>
+      if (!response.ok) {
+        throw new Error('Error al enviar los datos');
+      }
 
-			<Formik initialValues={initialValuesServicioProfesional} onSubmit={handleFormSubmit}>
-				{({ handleChange, handleSubmit, values, handleBlur }) => {
-					return (
-						<View style={styles.form}>
+      // Manejar respuesta exitosa
+      console.log('Respuesta del servidor:', response);
+      Alert.alert('Datos enviados correctamente');
+    } catch (error) {
+      // Manejar errores
+      console.error('Error al enviar los datos:', error);
+      Alert.alert('Error al enviar los datos, intenta nuevamente');
+    }
+  };
 
-							{
-								Object.keys(initialValuesServicioProfesional).map((key) => (
-									key === 'imagen'
-										? null
-										: (
-											<StyledTextInput
-												key={key}
-												placeholder={capitalizeFirstLetter(key)}
-												value={values[key]}
-												onChangeText={handleChange(key)}
-												onBlur={handleBlur(key)}
-											/>
-										)
-								))
-							}
-
-							<View style={styles.imgUploadSection}>
-								<StyledText style={styles.imgUploadBtn} onPress={() => console.log("desde camara")}>*camara*</StyledText>
-								<StyledText style={styles.imgUploadBtn} onPress={() => console.log("desde archivo")}>*archivo*</StyledText>
-							</View>
-
-							<View style={styles.formControls}>
-								<StyledButton variant={"success"} title="Crear" onPress={handleSubmit} />
-								<StyledButton variant={"secondary"} title="Cancelar" onPress={() => navigation.goBack()} />
-							</View>
-
-						</View>
-
-					)
-				}}
-			</Formik >
-		</View >
-	)
-}
+  return (
+    <View style={styles.container}>
+      <TextInput
+        style={styles.input}
+        placeholder="Cargo del sitio"
+        value={cargoDelSitio}
+        onChangeText={setCargoDelSitio}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Apertura"
+        value={apertura}
+        onChangeText={setApertura}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Calle"
+        value={calle}
+        onChangeText={setCalle}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Cierre"
+        value={cierre}
+        onChangeText={setCierre}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Comentarios"
+        value={comentarios}
+        onChangeText={setComentarios}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Entre calle A"
+        value={entreCalleA}
+        onChangeText={setEntreCalleA}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Entre calle B"
+        value={entreCalleB}
+        onChangeText={setEntreCalleB}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Número"
+        value={numero}
+        onChangeText={setNumero}
+        keyboardType="numeric"
+      />
+	        <TextInput
+        style={styles.input}
+        placeholder="Latitud"
+        value={latitud}
+        onChangeText={setLatitud}
+        keyboardType="numeric"
+      />
+	        <TextInput
+        style={styles.input}
+        placeholder="Longitud"
+        value={longitud}
+        onChangeText={setLongitud}
+        keyboardType="numeric"
+      />
+      <Button title="Enviar" onPress={handleSubmit} />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
-	screenContainer: {
-		justifyContent: 'start',
-		alignItems: 'center',
-		width: "100%",
-		height: "100%",
-		backgroundColor: theme.colors.white,
-		padding: theme.global.screenInnerPadding,
-	},
-	form: {
-		gap: 20,
-		width: "100%",
-	},
-	imgUploadSection: {
-		flexDirection: 'row',
-		gap: 10,
-		justifyContent: 'center',
-	},
-	imgUploadBtn: {
-		backgroundColor: 'red',
-		alignItems: 'center',
-		justifyContent: 'center',
-		aspectRatio: 1,
-		height: 80,
-		padding: 5,
-	},
-	formControls: {
-		marginTop: 20,
-		gap: 10,
-	},
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    width: '100%',
+    marginBottom: 10,
+    paddingHorizontal: 10,
+  },
 });
 
-export default CrearServicioProfesional;
+export default ServicioProfesional;

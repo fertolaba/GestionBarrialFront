@@ -1,5 +1,5 @@
-import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
 import theme from '../../styles/theme';
 import { StyledButton } from '../../components/ui/StyledButton';
 
@@ -8,19 +8,22 @@ const ServiciosScreen = ({ navigation }) => {
     <View style={styles.screenContainer}>
       <View style={styles.container}>
         {
-          [{ text: "Comercio", path: "Comercio" }, { text: "Servicio Profesional", path: "ServicioProfesional" }].map(s => (
+          [
+            { text: "Comercio", path: "ServicioComercio" },
+            { text: "Servicio Profesional", path: "ServicioProfesional" }
+          ].map(s => (
             <StyledButton
               key={s.path}
               title={s.text}
               variant={"primary"}
-              onPress={() => navigation.navigate(s.path)}
+              onPress={() => navigation.navigate(s.path)} // Modificado
             />
           ))
         }
       </View>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   screenContainer: {
