@@ -7,10 +7,16 @@ const ServiciosScreen = ({ navigation }) => {
     <View style={styles.screenContainer}>
       <View style={styles.container}>
         {
-          [{ text: "Comercio", path: "Comercio" }, { text: "Servicio Profesional", path: "ServicioProfesional" }].map(s => <Button color={theme.colors.primary} style={styles.btn} key={s.path} title={s.text} onPress={() => navigation.navigate(s.path)} />)
+          [{ text: "Comercio", path: "Comercio" }, { text: "Servicio Profesional", path: "ServicioProfesional" }].map(s => (
+            <Button
+              key={s.path}
+              title={s.text}
+              color={theme.colors.primary}
+              style={styles.btn}
+              onPress={() => navigation.navigate(s.path)}
+            />
+          ))
         }
-
-        {/* <StyledButtonText title="asd" variant={'primary'}>holasdasdi</StyledButtonText> */}
       </View>
     </View>
   )

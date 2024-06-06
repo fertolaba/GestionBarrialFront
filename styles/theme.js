@@ -30,7 +30,7 @@ const theme = {
     global: {
         disabledOpacity: 0.6,
         borderRadius: 3,
-        screenInnerPadding: 20,
+        screenInnerPadding: 30,
     }
 }
 

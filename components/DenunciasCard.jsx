@@ -33,7 +33,7 @@ export const DenunciaCard = ({ denuncia: { imageSource, tipo, descripcion }, isD
 const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
-    borderRadius: 2,
+    borderRadius: theme.global.borderRadius,
     overflow: 'hidden',
     borderWidth: 2,
     borderColor: theme.colors.secondary,
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     objectFit: 'cover',
     aspectRatio: 1,
     borderColor: theme.colors.secondary,
-    borderRadius: 2,
+    borderRadius: theme.global.borderRadius,
     borderRightWidth: 2, // No lo toma??
     overflow: "hidden",
   },
