@@ -1,10 +1,10 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-export default function CustomDrawer() {
+export default function ReclamosInspector() {
   return (
     <View>
-      <Text>CustomDrawer</Text>
+      <Text>ReclamosInspector</Text>
     </View>
   )
 }

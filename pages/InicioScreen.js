@@ -6,7 +6,7 @@ import theme from '../styles/theme'
 export default function InicioScreen() {
   return (
     <View style={styles.container}>
-      <Text>Gestion Barrial</Text>
+      <Text>Inicio</Text>
       <View>
         <StyledButton variant={'primary'} onPress={()=>console.log("pressed")} >asdasd</StyledButton>
       </View>
