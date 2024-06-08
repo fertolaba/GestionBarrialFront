@@ -3,6 +3,8 @@ import { View, StyleSheet, TouchableOpacity, TextInput, Alert } from 'react-nati
 import { useNavigation } from '@react-navigation/native';
 import theme from '../../styles/theme';
 import StyledText from '../../components/ui/StyledText';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useState, useEffect } from 'react';
 
 
 export default function LoginScreen() {
@@ -10,25 +12,44 @@ export default function LoginScreen() {
   const [password, setPassword] = React.useState("");
   const navigation = useNavigation();
 
+  useEffect(() => {
+    retrieveLoginData();
+  }, []);
+
+  const retrieveLoginData = async () => {
+    try {
+      const savedIdentifier = await AsyncStorage.getItem('identifier');
+      const savedPassword = await AsyncStorage.getItem('password');
+      if (savedIdentifier !== null && savedPassword !== null) {
+        setIdentifier(savedIdentifier);
+        setPassword(savedPassword);
+      }
+    } catch (error) {
+      console.error('Error al recuperar los datos de inicio de sesión:', error);
+    }
+  };
+
   const handleLogin = async () => {
     try {
       const response = await fetch(`http://localhost:8080/api/vecinos/login?identifier=${identifier}&password=${password}`, {
-        method: 'GET', // Cambia 'GET' a 'POST' si el backend requiere una solicitud POST
+        method: 'GET', 
         headers: {
           'Content-Type': 'application/json',
         },
       });
 
       if (response.ok) {
-        const message = await response.text(); // Obtener el texto plano de la respuesta
+        const message = await response.text(); 
         Alert.alert('Éxito', message);
+        await AsyncStorage.setItem('identifier', identifier);
+        await AsyncStorage.setItem('password', password);
         if (message === 'Eres un inspector.') {
-          navigation.reset({ // Resetear la navegación y abrir una nueva pila de navegación con solo 'InicioInspector'
+          navigation.reset({ 
             index: 0,
             routes: [{ name: 'InicioInspector' }],
           });
         } else if (message === 'Eres un vecino.') {
-          navigation.reset({ // Resetear la navegación y abrir una nueva pila de navegación con solo 'InicioVecino'
+          navigation.reset({ 
             index: 0,
             routes: [{ name: 'InicioVecino' }],
           });
