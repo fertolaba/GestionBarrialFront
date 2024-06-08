@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Foto from "./assets/foto1.png";
 import StyledText from './components/ui/StyledText';
 import theme from './styles/theme';
+import DrawerNavigation from './VecinoUsuario/InicioVecino';
 
 import { Stack } from './pages/routes';
 import LoginScreen from './pages/login/LoginScreen';
@@ -69,6 +70,7 @@ export function MainStack() {
       <Stack.Screen name="Login" component={LoginScreen} options={{ headerTitle: 'Iniciar Sesión' }} />
       <Stack.Screen name="InicioVecino" component={InicioVecino} options={{ headerShown: false }} />
       <Stack.Screen name="InicioInspector" component={InicioInspector}options={{ headerShown: false }} />
+      <Stack.Screen name="DrawerNavigation" component={DrawerNavigation} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }
