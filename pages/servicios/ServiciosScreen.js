@@ -2,19 +2,25 @@ import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, SafeAreaView, FlatList } from 'react-native';
 import theme from '../../styles/theme';
 import { StyledText } from '../../components/ui';
-import sitiosServices from '../../services/sitios.services';
 import SitioUsuario from "../../components/sitios/SitioUsuario";
+import { useIsFocused, useNavigation } from '@react-navigation/native';
+import sitiosServices from '../../services/sitios.services';
 
-const ServiciosScreen = ({ navigation, route }) => {
+const ServiciosScreen = () => {
+  const navigation = useNavigation();
+  const isFocused = useIsFocused()
+
+  const [usuario, _setUsuario] = useState({
+    nombre: "Juan Perez",
+    documento: "DNI28000046",
+  })
   const [servicioUsuario, setServicioUsuario] = useState(null)
 
   useEffect(() => {
-    const DOCUMENTO_PRUEBA = "DNI28000046";
-
-    sitiosServices.getSitioByDocumento(DOCUMENTO_PRUEBA)
+    isFocused && sitiosServices.getSitioByDocumento(usuario.documento)
       .then(setServicioUsuario)
       .catch(console.error)
-  }, [route])
+  }, [isFocused])
 
   return (
     <View style={styles.screenContainer}>

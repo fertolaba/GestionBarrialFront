@@ -7,6 +7,7 @@ import { numberRegex } from '../../utils/regex';
 import { useRoute } from '@react-navigation/native';
 
 import theme from '../../styles/theme';
+import sitiosServices from '../../services/sitios.services';
 
 const defaultSitio = {
   cargoDelSitio: `Sitio de Juan Perez`,
@@ -58,26 +59,11 @@ const ServicioProfesional = ({ navigation }) => {
     if (!validateFields()) {
       return;
     }
-
-    const data = servicio;
-
-    setDisableButton(true);
     console.log('Enviando datos...')
 
     try {
-      let apiBaseUrl = "http://10.0.2.2:8080/api"
-      let endpoint = "/sitios/" + (Boolean(sitio) ? "editar" : "crear")
-
-      const apiUrl = apiBaseUrl + endpoint
-      const method = Boolean(sitio) ? "PUT" : 'POST'
-
-      await fetch(apiUrl, {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      })
+      Promise.resolve(() => setDisableButton(true))
+        .then(() => sitiosServices.saveSitio(servicio, Boolean(sitio)))
         .then((res) => { // Llega vacio desde el back, no es ni json
           console.info('Data desde el backend:', res)
           Alert.alert('Datos enviados correctamente')
@@ -94,7 +80,6 @@ const ServicioProfesional = ({ navigation }) => {
       Alert.alert('Error al enviar los datos, intenta nuevamente');
     }
     setDisableButton(false)
-
   };
 
   return (
@@ -182,7 +167,7 @@ const ServicioProfesional = ({ navigation }) => {
       />
 
       <View style={styles.controls}>
-        <StyledButton title={Boolean(sitio) ? "Editar" : "Enviar"} style={styles.button} variant={"primary"} onPress={handleSubmit} disabled={disableButton} />
+        <StyledButton title={Boolean(sitio) ? "Editar sitio" : "Crear sitio"} style={styles.button} variant={"primary"} onPress={handleSubmit} disabled={disableButton} />
         <StyledButton title="Atras" style={styles.button} variant={"secondary"} onPress={goBack} disabled={disableButton} />
       </View>
 
