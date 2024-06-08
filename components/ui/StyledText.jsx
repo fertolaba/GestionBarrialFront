@@ -2,7 +2,7 @@ import { StyleSheet, Text } from "react-native"
 import theme from "../../styles/theme"
 
 
-export const StyledText = ({ variant, fontSize, textTransform, bold, disabled, color, style, ...props }) => {
+export const StyledText = ({ variant, fontSize, textTransform, bold, disabled, color, center, align, style, ...props }) => {
   const appliedStyles = [
     styles.text,
     variant && ["primary", "secondary", "success", "alert", "warning"].includes(variant) && styles[variant],
@@ -11,6 +11,8 @@ export const StyledText = ({ variant, fontSize, textTransform, bold, disabled, c
     disabled && styles.disabled,
     textTransform && styles[textTransform],
     color && { color },
+    center && styles.center,
+    align && ["left", "right", "center", "justify"].includes(align) && { textAlign: align },
     style, // por si igual faltan styles personalizados
   ]
 
@@ -73,6 +75,18 @@ const styles = StyleSheet.create({
   },
   capitalize: {
     textTransform: "capitalize"
+  },
+  center: {
+    textAlign: "center"
+  },
+  left: {
+    textAlign: "left"
+  },
+  right: {
+    textAlign: "right"
+  },
+  justify: {
+    textAlign: "justify"
   }
 })
 

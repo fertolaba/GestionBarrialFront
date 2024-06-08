@@ -9,7 +9,7 @@ import StyledText from './components/ui/StyledText';
 import theme from './styles/theme';
 import DrawerNavigation from './VecinoUsuario/InicioVecino';
 
-import { Stack } from './pages/routes';
+import { ServiciosStack, Stack } from './pages/routes';
 import LoginScreen from './pages/login/LoginScreen';
 import InicioVecino from './VecinoUsuario/InicioVecino';
 import InicioInspector from './InspectorUsuario/InicioInspector';
@@ -18,7 +18,7 @@ import InicioScreen from './pages/InicioScreen';
 const Drawer = createDrawerNavigator();
 
 function CustomDrawerContent({ navigation }) {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // FORZANDO LOGEO PARA PRUEBAS DE PANTALLAS INDIVIDUALES
 
   const handlePress = (screenName) => {
     if (!isLoggedIn && screenName !== 'Gestion Barrial') {
@@ -69,7 +69,7 @@ export function MainStack() {
       <Stack.Screen name="Home" component={DrawerNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="Login" component={LoginScreen} options={{ headerTitle: 'Iniciar Sesión' }} />
       <Stack.Screen name="InicioVecino" component={InicioVecino} options={{ headerShown: false }} />
-      <Stack.Screen name="InicioInspector" component={InicioInspector}options={{ headerShown: false }} />
+      <Stack.Screen name="InicioInspector" component={InicioInspector} options={{ headerShown: false }} />
       <Stack.Screen name="DrawerNavigation" component={DrawerNavigation} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
@@ -80,7 +80,7 @@ function DrawerNavigator({ navigation }) {
     <Drawer.Navigator drawerContent={(drawerProps) => <CustomDrawerContent {...drawerProps} navigation={navigation} />}>
       <Drawer.Screen name="Inicio" component={InicioScreen} />
       <Drawer.Screen name="Reclamos" component={() => null} />
-      <Drawer.Screen name="Servicios" component={() => null} />
+      <Drawer.Screen name="Servicios" component={ServiciosStack} />
       <Drawer.Screen name="Denuncias" component={() => null} />
     </Drawer.Navigator>
   );

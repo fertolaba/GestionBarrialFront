@@ -3,56 +3,41 @@ import { View, SafeAreaView, StyleSheet, Alert } from 'react-native';
 
 import { StyledButton, StyledTextInput } from '../../components/ui';
 import { numberRegex } from '../../utils/regex';
+
+import { useRoute } from '@react-navigation/native';
+
 import theme from '../../styles/theme';
 
+const defaultSitio = {
+  cargoDelSitio: `Sitio de Juan Perez`,
+  calle: "",
+  numero: "",
+  entreCalleA: "",
+  entreCalleB: "",
+  apertura: "",
+  cierre: "",
+  descripcion: "",
+  comentarios: "",
+  longitud: "",
+  latitud: "",
+}
+
 const ServicioProfesional = ({ navigation }) => {
-  const [cargoDelSitio, setCargoDelSitio] = useState('');
-
-  const [calle, setCalle] = useState('');
-  const [comentarios, setComentarios] = useState('');
-  const [entreCalleA, setEntreCalleA] = useState('');
-  const [entreCalleB, setEntreCalleB] = useState('');
-  const [numero, setNumero] = useState('');
-  const [longitud, setLongitud] = useState('');
-  const [latitud, setLatitud] = useState('');
-
-  const [apertura, setApertura] = useState(new Date());
-  const [cierre, setCierre] = useState(new Date());
+  const route = useRoute();
+  const sitio = route.params?.sitio ?? null;
+  const [servicio, setServicio] = useState(sitio ?? defaultSitio)
 
   const [disableButton, setDisableButton] = useState(false);
 
-
-  const clearInputs = () => {
-    setCargoDelSitio("")
-    setApertura("")
-    setCalle("")
-    setCierre("")
-    setComentarios("")
-    setEntreCalleA("")
-    setEntreCalleB("")
-    setNumero("")
-    setLongitud("")
-    setLatitud("")
+  const handleChange = (servicioKey, value) => {
+    setServicio({ ...servicio, [servicioKey]: value });
   }
 
-  const handleNumericInputChange = (value, setter) => {
-    if (value === '' || numberRegex.test(value)) {
-      setter(value);
-    }
-  };
-
   const validateFields = () => {
+    const { cargoDelSitio, calle, numero, entreCalleA, entreCalleB, apertura, cierre, comentarios, longitud, latitud } = servicio;
+    console.log(servicio)
     if (
-      cargoDelSitio === '' ||
-      apertura === '' ||
-      calle === '' ||
-      cierre === '' ||
-      comentarios === '' ||
-      entreCalleA === '' ||
-      entreCalleB === '' ||
-      numero === '' ||
-      longitud === '' ||
-      latitud === ''
+      [cargoDelSitio, calle, numero, entreCalleA, entreCalleB, apertura, cierre, comentarios, longitud, latitud].some((field) => Boolean(field) === false)
     ) {
       Alert.alert('Todos los campos son requeridos');
       return false;
@@ -74,30 +59,20 @@ const ServicioProfesional = ({ navigation }) => {
       return;
     }
 
-    const data = {
-      cargoDelSitio,
-      apertura,
-      calle,
-      cierre,
-      comentarios,
-      entreCalleA,
-      entreCalleB,
-      numero,
-      latitud,
-      longitud,
-    };
+    const data = servicio;
 
     setDisableButton(true);
     console.log('Enviando datos...')
 
     try {
       let apiBaseUrl = "http://10.0.2.2:8080/api"
-      // apiBaseUrl =  "http://localhost:8080/api" // Para dispositivos fisicos
-      let endpoint = "/sitios/crear"
-      const postUrl = apiBaseUrl + endpoint
+      let endpoint = "/sitios/" + (Boolean(sitio) ? "editar" : "crear")
 
-      await fetch(postUrl, {
-        method: 'POST',
+      const apiUrl = apiBaseUrl + endpoint
+      const method = Boolean(sitio) ? "PUT" : 'POST'
+
+      await fetch(apiUrl, {
+        method,
         headers: {
           'Content-Type': 'application/json',
         },
@@ -106,7 +81,7 @@ const ServicioProfesional = ({ navigation }) => {
         .then((res) => { // Llega vacio desde el back, no es ni json
           console.info('Data desde el backend:', res)
           Alert.alert('Datos enviados correctamente')
-          clearInputs()
+          navigation.goBack({ refresh: true })
         })
         .catch(err => {
           console.error('Error desde el backend:')
@@ -127,80 +102,87 @@ const ServicioProfesional = ({ navigation }) => {
 
       <StyledTextInput
         style={styles.input}
-        placeholder="Cargo del sitio"
-        value={cargoDelSitio}
-        onChangeText={setCargoDelSitio}
+        placeholder="A cargo de quien esta el sitio?"
+        value={servicio.cargoDelSitio}
+        onChangeText={t => handleChange('cargoDelSitio', t)}
+      />
+
+      <StyledTextInput
+        style={styles.input}
+        placeholder="Descripción"
+        value={servicio.descripcion}
+        onChangeText={t => handleChange('descripcion', t)}
       />
 
       <StyledTextInput
         style={styles.input}
         placeholder="Calle"
-        value={calle}
-        onChangeText={setCalle}
+        value={servicio.calle}
+        onChangeText={t => handleChange('calle', t)}
       />
 
       <StyledTextInput
         style={styles.input}
-        placeholder="Apertura"
-        value={apertura}
-        onPress={setApertura}
+        placeholder="Horario apertura"
+        value={servicio.apertura}
+        onChangeText={t => handleChange('apertura', t)}
       />
+
 
       <StyledTextInput
         style={styles.input}
-        placeholder="Cierre"
-        value={cierre}
-        onPress={setCierre}
+        placeholder="Horario cierre"
+        value={servicio.cierre}
+        onChangeText={t => handleChange('cierre', t)}
       />
-
 
       <StyledTextInput
         style={styles.input}
         placeholder="Comentarios"
-        value={comentarios}
-        onChangeText={setComentarios}
+        value={servicio.comentarios}
+        onChangeText={t => handleChange('comentarios', t)}
       />
 
       <StyledTextInput
         style={styles.input}
         placeholder="Entre calle A"
-        value={entreCalleA}
-        onChangeText={setEntreCalleA}
+        value={servicio.entreCalleA}
+        onChangeText={t => handleChange('entreCalleA', t)}
       />
 
       <StyledTextInput
         style={styles.input}
         placeholder="Entre calle B"
-        value={entreCalleB}
-        onChangeText={setEntreCalleB}
+        value={servicio.entreCalleB}
+        onChangeText={t => handleChange('entreCalleB', t)}
       />
 
       <StyledTextInput
         style={styles.input}
         placeholder="Número"
-        value={numero}
-        onChangeText={(value) => handleNumericInputChange(value, setNumero)}
+        value={servicio.numero}
+        onChangeText={t => handleChange('numero', t)}
         keyboardType="numeric"
       />
 
       <StyledTextInput
         style={styles.input}
         placeholder="Latitud"
-        value={latitud}
-        onChangeText={(value) => handleNumericInputChange(value, setLatitud)}
+        value={servicio.latitud}
+        onChangeText={t => handleChange('latitud', t)}
         keyboardType="numeric"
       />
 
       <StyledTextInput
         style={styles.input}
         placeholder="Longitud"
-        value={longitud}
-        onChangeText={(value) => handleNumericInputChange(value, setLongitud)}
+        value={servicio.longitud}
+        onChangeText={t => handleChange('longitud', t)}
         keyboardType="numeric"
       />
 
       <View style={styles.controls}>
-        <StyledButton title="Enviar" style={styles.button} variant={"primary"} onPress={handleSubmit} disabled={disableButton} />
+        <StyledButton title={Boolean(sitio) ? "Editar" : "Enviar"} style={styles.button} variant={"primary"} onPress={handleSubmit} disabled={disableButton} />
         <StyledButton title="Atras" style={styles.button} variant={"secondary"} onPress={goBack} disabled={disableButton} />
       </View>
 

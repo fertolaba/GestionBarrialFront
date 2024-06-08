@@ -55,11 +55,16 @@ export function ServiciosStack() {
                 options={{ headerShown: false }}
             />
             <Stack.Screen
-                name="ServicioProfesional"
+                name="CrearServicioProfesional"
                 component={ServicioProfesional}
                 options={{ headerShown: false }}
             />
-                        <Stack.Screen
+            <Stack.Screen
+                name="EditarServicioProfesional"
+                component={ServicioProfesional}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
                 name="ServicioComercio"
                 component={ServicioComercio}
                 options={{ headerShown: false }}
