@@ -8,7 +8,7 @@ import Foto from "./assets/foto1.png";
 import StyledText from './components/ui/StyledText';
 import theme from './styles/theme';
 import DrawerNavigation from './VecinoUsuario/InicioVecino';
-
+import Detalle from './Detalle';
 import { ServiciosStack, Stack } from './pages/routes';
 import LoginScreen from './pages/login/LoginScreen';
 import InicioVecino from './VecinoUsuario/InicioVecino';
@@ -68,6 +68,7 @@ export function MainStack() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Home" component={DrawerNavigator} options={{ headerShown: false }} />
+      <Stack.Screen name="Detalle" component={Detalle} />
       <Stack.Screen name="Login" component={LoginScreen} options={{ headerTitle: 'Iniciar Sesión' }} />
       <Stack.Screen name="InicioVecino" component={InicioVecino} options={{ headerShown: false }} />
       <Stack.Screen name="InicioInspector" component={InicioInspector} options={{ headerShown: false }} />
