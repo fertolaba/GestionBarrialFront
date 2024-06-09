@@ -19,12 +19,21 @@ export default function Detalle({ route }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    padding: theme.global.screenInnerPadding,
-  },
-  detailTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-});
+    container: {
+      padding: theme.global.screenInnerPadding,
+    },
+    detailTitle: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      marginBottom: 20,
+    },
+    label: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      marginTop: 10,
+    },
+    text: {
+      fontSize: 18,
+      marginBottom: 10,
+    },
+  });;
