@@ -8,6 +8,7 @@ import { useRoute } from '@react-navigation/native';
 
 import theme from '../../styles/theme';
 import sitiosServices from '../../services/sitios.services';
+import { useUser } from '../../context/UserContext';
 
 const defaultSitio = {
   cargoDelSitio: `Sitio de Juan Perez`,
@@ -26,6 +27,7 @@ const defaultSitio = {
 const ServicioProfesional = ({ navigation }) => {
   const route = useRoute();
   const sitio = route.params?.sitio ?? null;
+  const { user } = useUser();
   const [servicio, setServicio] = useState(sitio ?? defaultSitio)
 
   const [disableButton, setDisableButton] = useState(false);
@@ -36,7 +38,7 @@ const ServicioProfesional = ({ navigation }) => {
 
   const validateFields = () => {
     const { cargoDelSitio, calle, numero, entreCalleA, entreCalleB, apertura, cierre, comentarios, longitud, latitud } = servicio;
-    console.log(servicio)
+
     if (
       [cargoDelSitio, calle, numero, entreCalleA, entreCalleB, apertura, cierre, comentarios, longitud, latitud].some((field) => Boolean(field) === false)
     ) {
@@ -63,7 +65,7 @@ const ServicioProfesional = ({ navigation }) => {
 
     try {
       Promise.resolve(() => setDisableButton(true))
-        .then(() => sitiosServices.saveSitio(servicio, Boolean(sitio)))
+        .then(() => sitiosServices.saveSitio({ ...servicio, documento: user.documento }, Boolean(sitio)))
         .then((res) => { // Llega vacio desde el back, no es ni json
           console.info('Data desde el backend:', res)
           Alert.alert('Datos enviados correctamente')

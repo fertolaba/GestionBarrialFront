@@ -5,22 +5,23 @@ import { StyledText } from '../../components/ui';
 import SitioUsuario from "../../components/sitios/SitioUsuario";
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import sitiosServices from '../../services/sitios.services';
+import { useUser } from '../../context/UserContext';
 
 const ServiciosScreen = () => {
   const navigation = useNavigation();
   const isFocused = useIsFocused()
 
-  const [usuario, _setUsuario] = useState({
-    nombre: "Juan Perez",
-    documento: "DNI28000046",
-  })
-  const [servicioUsuario, setServicioUsuario] = useState(null)
+  const { user } = useUser()
 
+  const [servicioUsuario, setServicioUsuario] = useState(null)
   useEffect(() => {
-    isFocused && sitiosServices.getSitioByDocumento(usuario.documento)
+    user.documento && isFocused && sitiosServices.getSitioByDocumento(user.documento)
       .then(setServicioUsuario)
       .catch(console.error)
-  }, [isFocused])
+    !Boolean(user) && setServicioUsuario(null);
+
+  }, [isFocused, user.documento])
+
 
   return (
     <View style={styles.screenContainer}>

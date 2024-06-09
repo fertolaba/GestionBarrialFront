@@ -1,16 +1,19 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, TextInput, Alert } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import theme from '../../styles/theme';
-import StyledText from '../../components/ui/StyledText';
+import { StyledText, StyledTextInput } from '../../components/ui';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState, useEffect } from 'react';
 
+import { useUser } from '../../context/UserContext';
 
 export default function LoginScreen() {
-  const [identifier, setIdentifier] = React.useState("");
-  const [password, setPassword] = React.useState("");
   const navigation = useNavigation();
+  const { user, login } = useUser();
+
+  const [identificador, setIdentificador] = useState("DNI28000046");
+  const [password, setPassword] = useState("123");
 
   useEffect(() => {
     retrieveLoginData();
@@ -18,11 +21,14 @@ export default function LoginScreen() {
 
   const retrieveLoginData = async () => {
     try {
-      const savedIdentifier = await AsyncStorage.getItem('identifier');
+      const savedidentificador = await AsyncStorage.getItem('identificador');
       const savedPassword = await AsyncStorage.getItem('password');
-      if (savedIdentifier !== null && savedPassword !== null) {
-        setIdentifier(savedIdentifier);
+
+      if (savedidentificador !== null && savedPassword !== null) {
+        setIdentificador(savedidentificador);
         setPassword(savedPassword);
+
+        handleLogin();
       }
     } catch (error) {
       console.error('Error al recuperar los datos de inicio de sesión:', error);
@@ -31,36 +37,36 @@ export default function LoginScreen() {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/vecinos/login?identifier=${identifier}&password=${password}`, {
-        method: 'GET', 
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const usuarioLoggeado = await login({ identificador, password })
 
-      if (response.ok) {
-        const message = await response.text(); 
-        Alert.alert('Éxito', message);
-        await AsyncStorage.setItem('identifier', identifier);
+      if (usuarioLoggeado) {
+        Alert.alert('Bienvenido', `Hola ${usuarioLoggeado.nombre}!`);
+        await AsyncStorage.setItem('identificador', usuarioLoggeado.identificador);
         await AsyncStorage.setItem('password', password);
-        if (message === 'Eres un inspector.') {
-          navigation.reset({ 
-            index: 0,
-            routes: [{ name: 'InicioInspector' }],
-          });
-        } else if (message === 'Eres un vecino.') {
-          navigation.reset({ 
-            index: 0,
-            routes: [{ name: 'InicioVecino' }],
-          });
+
+        switch (usuarioLoggeado.tipoUsuario) {
+          case 'inspector':
+            navigation.reset({
+              index: 0,
+              routes: [{ name: 'InicioInspector' }],
+            });
+            break;
+          case 'vecino':
+            navigation.reset({
+              index: 0,
+              routes: [{ name: 'InicioVecino' }],
+            });
+            break;
+          default:
+            Alert.alert('Error', 'Tipo de usuario no reconocido');
         }
+
       } else {
-        const errorData = await response.text();
-        Alert.alert('Error', errorData);
+        Alert.alert("Error", "Usuario o contraseña incorrectos");
       }
     } catch (error) {
       console.error('Error:', error);
-      Alert.alert('Error', 'Algo salió mal. Inténtalo de nuevo.');
+      Alert.alert('Error inesperado', 'Algo salió mal. Inténtalo de nuevo.');
     }
   };
 
@@ -71,22 +77,20 @@ export default function LoginScreen() {
       </View>
 
       <View style={styles.formGroup}>
-        <StyledText fontSize={"title"} bold={"medium"} style={styles.label}>Email</StyledText>
-        <TextInput
-          onChangeText={setIdentifier}
-          value={identifier}
-          style={styles.input}
-          placeholder='Email'
+        <StyledText fontSize={"subheading"} bold={"medium"} style={styles.label}>Identificación</StyledText>
+        <StyledTextInput
+          onChangeText={setIdentificador}
+          value={identificador}
+          placeholder='Documento o legajo'
           keyboardType='email-address'
         />
       </View>
 
       <View style={styles.formGroup}>
         <StyledText fontSize={"title"} bold={"medium"} style={styles.label}>Contraseña</StyledText>
-        <TextInput
+        <StyledTextInput
           onChangeText={setPassword}
           value={password}
-          style={styles.input}
           placeholder='Contraseña'
           secureTextEntry={true}
         />
@@ -111,14 +115,6 @@ const styles = StyleSheet.create({
     gap: 2,
     width: "100%",
     maxWidth: 600,
-  },
-  label: {
-
-  },
-  input: {
-    height: 40,
-    padding: 10,
-    backgroundColor: "#ffffff",
   },
   button: {
     width: "100%",

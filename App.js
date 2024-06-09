@@ -14,6 +14,7 @@ import LoginScreen from './pages/login/LoginScreen';
 import InicioVecino from './VecinoUsuario/InicioVecino';
 import InicioInspector from './InspectorUsuario/InicioInspector';
 import InicioScreen from './pages/InicioScreen';
+import { UserProvider } from './context/UserContext';
 
 const Drawer = createDrawerNavigator();
 
@@ -89,7 +90,9 @@ function DrawerNavigator({ navigation }) {
 export default function App() {
   return (
     <NavigationContainer>
-      <MainStack />
+      <UserProvider>
+        <MainStack />
+      </UserProvider>
     </NavigationContainer>
   );
 }

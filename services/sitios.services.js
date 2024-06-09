@@ -44,7 +44,7 @@ class SitiosServices {
 
   saveSitio = async (sitio, isUpdate) => {
     const url = `${this._apiUrl}/${isUpdate ? "editar" : "crear"}`;
-
+    console.info({ sitio })
     try {
       const response = await fetchWithTimeout(url, {
         method: isUpdate ? "PUT" : 'POST',
@@ -52,7 +52,8 @@ class SitiosServices {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(sitio),
-      });
+      })
+      console.warn({ response })
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
