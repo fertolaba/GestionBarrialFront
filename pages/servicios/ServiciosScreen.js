@@ -15,12 +15,12 @@ const ServiciosScreen = () => {
 
   const [servicioUsuario, setServicioUsuario] = useState(null)
   useEffect(() => {
-    user.documento && isFocused && sitiosServices.getSitioByDocumento(user.documento)
+    user?.documento && isFocused && sitiosServices.getSitioByDocumento(user.documento)
       .then(setServicioUsuario)
       .catch(console.error)
     !Boolean(user) && setServicioUsuario(null);
 
-  }, [isFocused, user.documento])
+  }, [isFocused, user?.documento])
 
 
   return (

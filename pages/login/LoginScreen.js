@@ -12,39 +12,47 @@ export default function LoginScreen() {
   const navigation = useNavigation();
   const { user, login } = useUser();
 
-  const [identificador, setIdentificador] = useState("DNI28000046");
-  const [password, setPassword] = useState("123");
+  const [identificador, setIdentificador] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [retrievedFromStorage, setRetrievedFromStorage] = useState(false);
 
   useEffect(() => {
+    const retrieveLoginData = async () => {
+      try {
+        const savedidentificador = await AsyncStorage.getItem('identificador');
+        const savedPassword = await AsyncStorage.getItem('password');
+
+        if (savedidentificador !== null && savedPassword !== null) {
+          setIdentificador(savedidentificador);
+          setPassword(savedPassword);
+          setRetrievedFromStorage(true);
+        }
+      } catch (error) {
+        console.error('Error al recuperar los datos de inicio de sesión:', error);
+      }
+    };
+
     retrieveLoginData();
   }, []);
 
-  const retrieveLoginData = async () => {
-    try {
-      const savedidentificador = await AsyncStorage.getItem('identificador');
-      const savedPassword = await AsyncStorage.getItem('password');
-
-      if (savedidentificador !== null && savedPassword !== null) {
-        setIdentificador(savedidentificador);
-        setPassword(savedPassword);
-
-        handleLogin();
-      }
-    } catch (error) {
-      console.error('Error al recuperar los datos de inicio de sesión:', error);
+  useEffect(() => {
+    if (retrievedFromStorage) {
+      handleLogin();
     }
-  };
+  }, [retrievedFromStorage]);
+
 
   const handleLogin = async () => {
     try {
-      const usuarioLoggeado = await login({ identificador, password })
+      await login({ identificador, password })
 
-      if (usuarioLoggeado) {
-        Alert.alert('Bienvenido', `Hola ${usuarioLoggeado.nombre}!`);
-        await AsyncStorage.setItem('identificador', usuarioLoggeado.identificador);
+      if (user) {
+        Alert.alert('Bienvenido', `Hola ${user.nombre}!`);
+        await AsyncStorage.setItem('identificador', user.identificador);
         await AsyncStorage.setItem('password', password);
 
-        switch (usuarioLoggeado.tipoUsuario) {
+        switch (user.tipoUsuario) {
           case 'inspector':
             navigation.reset({
               index: 0,
