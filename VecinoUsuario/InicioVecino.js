@@ -11,7 +11,7 @@ import DenunciasVecino from './DenunciasVecino';
 import ServiciosVecino from './ServiciosVecino';
 import SesionCerrada from './SesionCerrada';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import InicioScreen from '../pages/InicioScreen';
 import { ServiciosStack } from '../pages/routes';
 
 const Drawer = createDrawerNavigator();

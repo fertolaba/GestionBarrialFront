@@ -8,18 +8,18 @@ import Foto from "./assets/foto1.png";
 import StyledText from './components/ui/StyledText';
 import theme from './styles/theme';
 import DrawerNavigation from './VecinoUsuario/InicioVecino';
-
+import Detalle from './Detalle';
 import { ServiciosStack, Stack } from './pages/routes';
 import LoginScreen from './pages/login/LoginScreen';
 import InicioVecino from './VecinoUsuario/InicioVecino';
 import InicioInspector from './InspectorUsuario/InicioInspector';
 import InicioScreen from './pages/InicioScreen';
 import { UserProvider } from './context/UserContext';
-
+import SesionCerrada from './VecinoUsuario/SesionCerrada';
 const Drawer = createDrawerNavigator();
 
 function CustomDrawerContent({ navigation }) {
-  const [isLoggedIn, setIsLoggedIn] = useState(true); // FORZANDO LOGEO PARA PRUEBAS DE PANTALLAS INDIVIDUALES
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // FORZANDO LOGEO PARA PRUEBAS DE PANTALLAS INDIVIDUALES
 
   const handlePress = (screenName) => {
     if (!isLoggedIn && screenName !== 'Gestion Barrial') {
@@ -68,6 +68,8 @@ export function MainStack() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Home" component={DrawerNavigator} options={{ headerShown: false }} />
+      <Stack.Screen name="Detalle" component={Detalle} />
+      <Stack.Screen name="SesionCerrada" component={SesionCerrada} options={{ headerTitle: 'Sesión Cerrada' }} />
       <Stack.Screen name="Login" component={LoginScreen} options={{ headerTitle: 'Iniciar Sesión' }} />
       <Stack.Screen name="InicioVecino" component={InicioVecino} options={{ headerShown: false }} />
       <Stack.Screen name="InicioInspector" component={InicioInspector} options={{ headerShown: false }} />

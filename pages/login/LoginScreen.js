@@ -23,6 +23,7 @@ export default function LoginScreen() {
         const savedidentificador = await AsyncStorage.getItem('identificador');
         const savedPassword = await AsyncStorage.getItem('password');
 
+       
         if (savedidentificador !== null && savedPassword !== null) {
           setIdentificador(savedidentificador);
           setPassword(savedPassword);
