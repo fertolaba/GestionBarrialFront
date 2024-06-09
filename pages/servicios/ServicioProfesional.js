@@ -65,11 +65,15 @@ const ServicioProfesional = ({ navigation }) => {
 
     try {
       Promise.resolve(() => setDisableButton(true))
-        .then(() => sitiosServices.saveSitio({ ...servicio, documento: user.documento }, Boolean(sitio)))
-        .then((res) => { // Llega vacio desde el back, no es ni json
-          console.info('Data desde el backend:', res)
+        .then(() => sitiosServices.saveSitio({ ...servicio, documento: user.identificador }, Boolean(sitio)))
+        .then((ok) => { // Llega vacio desde el back, no es ni json
+          if (!ok) {
+            throw new Error('Error al enviar los datos');
+          } 
+          
+          console.info('Salvado por el backend', ok)
           Alert.alert('Datos enviados correctamente')
-          navigation.goBack({ refresh: true })
+          navigation.navigate('SeleccionTipo')
         })
         .catch(err => {
           console.error('Error desde el backend:')

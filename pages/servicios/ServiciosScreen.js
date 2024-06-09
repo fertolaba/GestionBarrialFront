@@ -7,27 +7,34 @@ import { useIsFocused, useNavigation } from '@react-navigation/native';
 import sitiosServices from '../../services/sitios.services';
 import { useUser } from '../../context/UserContext';
 
+
 const ServiciosScreen = () => {
   const navigation = useNavigation();
   const isFocused = useIsFocused()
 
   const { user } = useUser()
 
+  const [isLoading, setIsloading] = useState(true);
   const [servicioUsuario, setServicioUsuario] = useState(null)
+
   useEffect(() => {
-    user?.documento && isFocused && sitiosServices.getSitioByDocumento(user.documento)
-      .then(setServicioUsuario)
-      .catch(console.error)
+    user?.identificador && isFocused
+      ? sitiosServices.getSitioByDocumento(user.identificador)
+        .then(setServicioUsuario)
+        .catch(console.error)
+        .finally(() => setIsloading(false))
+      : setIsloading(false)
+
     !Boolean(user) && setServicioUsuario(null);
 
-  }, [isFocused, user?.documento])
-
+  }, [isFocused, user?.identificador])
 
   return (
     <View style={styles.screenContainer}>
 
       <View style={styles.container}>
-        <SitioUsuario servicio={servicioUsuario} navigation={navigation} />
+
+        <SitioUsuario loading={isLoading} servicio={servicioUsuario} user={user} navigation={navigation} />
 
         <View>
 

@@ -12,6 +12,8 @@ import ServiciosVecino from './ServiciosVecino';
 import SesionCerrada from './SesionCerrada';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import { ServiciosStack } from '../pages/routes';
+
 const Drawer = createDrawerNavigator();
 
 function InicioVecino() {
@@ -44,7 +46,7 @@ function CustomDrawerContent(props) {
       </View>
       <DrawerItemList {...props} />
       <View style={{ marginTop: 'auto', padding: 20, alignItems: 'center' }}>
-        <TouchableOpacity onPress={(handleLogout) }>
+        <TouchableOpacity onPress={(handleLogout)}>
           <StyledText style={{ color: 'blue' }}>Cerrar Sesión</StyledText>
         </TouchableOpacity>
       </View>
@@ -62,14 +64,14 @@ function DrawerNavigation() {
         <Drawer.Screen name="InicioVecino" component={InicioVecino} />
         <Drawer.Screen name="Reclamos" component={ReclamosVecino} />
         <Drawer.Screen name="Denuncia" component={DenunciasVecino} />
-        <Drawer.Screen name="Servicios" component={ServiciosVecino} />
-        <Drawer.Screen 
-          name="SesionCerrada" 
-          component={SesionCerrada} 
-          options={{ 
+        <Drawer.Screen name="Servicios" component={ServiciosStack} />
+        <Drawer.Screen
+          name="SesionCerrada"
+          component={SesionCerrada}
+          options={{
             headerShown: false,
-            drawerItemStyle: { display: 'none' } 
-          }} 
+            drawerItemStyle: { display: 'none' }
+          }}
         />
       </Drawer.Navigator>
     </NavigationContainer>

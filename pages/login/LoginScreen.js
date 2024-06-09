@@ -12,8 +12,8 @@ export default function LoginScreen() {
   const navigation = useNavigation();
   const { user, login } = useUser();
 
-  const [identificador, setIdentificador] = useState("");
-  const [password, setPassword] = useState("");
+  const [identificador, setIdentificador] = useState("DNI28000046");
+  const [password, setPassword] = useState("123");
 
   const [retrievedFromStorage, setRetrievedFromStorage] = useState(false);
 

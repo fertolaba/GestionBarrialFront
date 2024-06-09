@@ -60,6 +60,8 @@ class SitiosServices {
       return response;
     } catch (error) {
       console.error('Error fetching data:', error);
+      
+      return false;
     }
   };
 }

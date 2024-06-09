@@ -4,6 +4,19 @@ import { generatePlaceholderImage } from "../../utils/images"
 
 import theme from "../../styles/theme"
 
+export const CardNotLoggedIn = ({ navigation }) => {
+  return (
+    <View style={styles.sinServicioCard}>
+      <View>
+        <StyledText bold center fontSize={'subheading'}>Inicia sesión para crear tu sitio</StyledText>
+        <StyledText center fontSize={'subtitle'}>Crea tu sitio para que los vecinos puedan ver tu comercio o los servicios que brindas</StyledText>
+      </View>
+      <StyledButton title={"Iniciar sesión"} variant={'success'} style={styles.btn} onPress={() => navigation.navigate("Login")} />
+    </View>
+  )
+}
+
+
 export const CardSinSitio = ({ navigation }) => {
   return (
     <View style={styles.sinServicioCard}>
@@ -41,7 +54,17 @@ export const CardSitioPropio = ({ sitio, navigation }) => {
   )
 }
 
-const SitioUsuario = ({ navigation, servicio }) => {
+const SitioUsuario = ({ navigation, user, servicio, loading }) => {
+  console.log({
+    user,
+    loading,
+    servicio 
+  })
+  if (loading) return <StyledText center>Cargando...</StyledText>
+  if (!user) return <CardNotLoggedIn navigation={navigation} />
+  if (user.tipoUsuario === "inspector") return null;
+
+
   return (
     <View>
       {
