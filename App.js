@@ -1,4 +1,4 @@
-import { View, Image, TouchableOpacity, Alert } from 'react-native';
+import { View, Image, TouchableOpacity, Alert, StyleSheet , Text} from 'react-native';
 import React, { useState } from 'react'; // Solo una vez aquí
 import 'react-native-gesture-handler';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -16,6 +16,8 @@ import InicioInspector from './InspectorUsuario/InicioInspector';
 import InicioScreen from './pages/InicioScreen';
 import { UserProvider } from './context/UserContext';
 import SesionCerrada from './VecinoUsuario/SesionCerrada';
+import Notificacion
+ from './Notificacion';
 const Drawer = createDrawerNavigator();
 
 function CustomDrawerContent({ navigation }) {
@@ -33,7 +35,6 @@ function CustomDrawerContent({ navigation }) {
       navigation.navigate(screenName);
     }
   };
-
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.white }}>
       <View style={{ height: 200, width: '100%', alignItems: 'center', justifyContent: 'center' }}>
@@ -42,18 +43,18 @@ function CustomDrawerContent({ navigation }) {
         <StyledText>Invitado</StyledText>
       </View>
       <View>
-        <TouchableOpacity style={{ padding: 20 }} onPress={() => handlePress('Inicio')}>
-          <StyledText>Inicio</StyledText>
-        </TouchableOpacity>
-        <TouchableOpacity style={{ padding: 20 }} onPress={() => handlePress('Reclamos')}>
-          <StyledText>Reclamos</StyledText>
-        </TouchableOpacity>
-        <TouchableOpacity style={{ padding: 20 }} onPress={() => handlePress('Servicios')}>
-          <StyledText>Servicios</StyledText>
-        </TouchableOpacity>
-        <TouchableOpacity style={{ padding: 20 }} onPress={() => handlePress('Denuncias')}>
-          <StyledText>Denuncias</StyledText>
-        </TouchableOpacity>
+      <TouchableOpacity style={styles.drawerButton} onPress={() => handlePress('Inicio')}>
+        <StyledText style={styles.drawerButtonText}>Inicio</StyledText>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.drawerButton} onPress={() => handlePress('ReclamosVecinos')}>
+        <StyledText style={styles.drawerButtonText}>Reclamo</StyledText>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.drawerButton} onPress={() => handlePress('DenunciasVecinos')}>
+        <StyledText style={styles.drawerButtonText}>Denuncia</StyledText>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.drawerButton} onPress={() => handlePress('ServiciosScreen')}>
+        <StyledText style={styles.drawerButtonText}>Servicios</StyledText>
+      </TouchableOpacity>
       </View>
       <View style={{ marginTop: 'auto', padding: 20, alignItems: 'center' }}>
         <TouchableOpacity onPress={() => navigation.navigate('Login')}>
@@ -69,6 +70,7 @@ export function MainStack() {
     <Stack.Navigator>
       <Stack.Screen name="Home" component={DrawerNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="Detalle" component={Detalle} />
+      <Stack.Screen name="Notificacion" component={Notificacion} />
       <Stack.Screen name="SesionCerrada" component={SesionCerrada} options={{ headerTitle: 'Sesión Cerrada' }} />
       <Stack.Screen name="Login" component={LoginScreen} options={{ headerTitle: 'Iniciar Sesión' }} />
       <Stack.Screen name="InicioVecino" component={InicioVecino} options={{ headerShown: false }} />
@@ -78,13 +80,47 @@ export function MainStack() {
   );
 }
 
+function DummyScreen() {
+  return (
+    <View>
+      <StyledText>No tiene permisos</StyledText>
+    </View>
+  );
+}
+
 function DrawerNavigator({ navigation }) {
   return (
     <Drawer.Navigator drawerContent={(drawerProps) => <CustomDrawerContent {...drawerProps} navigation={navigation} />}>
-      <Drawer.Screen name="Inicio" component={InicioScreen} />
-      <Drawer.Screen name="Reclamos" component={() => null} />
-      <Drawer.Screen name="Servicios" component={ServiciosStack} />
-      <Drawer.Screen name="Denuncias" component={() => null} />
+      <Drawer.Screen name="Inicio" component={InicioScreen}            options={{
+            headerTitle: () => (
+              <View style={{ padding: 10, paddingLeft: 60, justifyContent: "center" }}>
+                <Text style={{ fontSize: 25, fontWeight: 'bold' }}>Gestión Barrial</Text>
+              </View>
+            ),
+          }} />
+      <Drawer.Screen name="Reclamos" component={() => DummyScreen}  options={{
+            headerTitle: () => (
+              <View style={{ padding: 10, paddingLeft: 83, justifyContent: "center" }}>
+                <Text style={{ fontSize: 30, fontWeight: 'bold' }}>Reclamos</Text>
+              </View>
+            ),
+          }}/>
+      <Drawer.Screen name="Servicios" component={ServiciosStack} options={{
+            headerTitle: () => (
+              <View style={{ padding: 10, paddingLeft: 85, justifyContent: "center" }}>
+                <Text style={{ fontSize: 30, fontWeight: 'bold' }}>Servicios</Text>
+              </View>
+            ),
+          }}/>
+      <Drawer.Screen name="Denuncias" component={() => DummyScreen} options={{
+            headerTitle: () => (
+              <View style={{ padding: 10, paddingLeft: 83, justifyContent: "center" }}>
+                <Text style={{ fontSize: 30, fontWeight: 'bold' }}>Denuncias</Text>
+              </View>
+            ),
+          }} />
+
+
     </Drawer.Navigator>
   );
 }
@@ -98,3 +134,50 @@ export default function App() {
     </NavigationContainer>
   );
 }
+
+const styles = StyleSheet.create({
+  drawerContainer: {
+    flex: 1,
+    backgroundColor: 'white',
+    paddingTop: 30,
+    alignItems: 'center',
+  },
+  headerContainer: {
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+  profileImage: {
+    height: 100,
+    width: 100,
+    borderRadius: 50,
+  },
+  welcomeText: {
+    marginTop: 15,
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  usernameText: {
+    fontSize: 14,
+    color: 'gray',
+  },
+  drawerButton: {
+    backgroundColor: theme.colors.primary,
+    padding: 12,
+    borderRadius: 8,
+    width: '70%',
+    alignItems: 'center',
+    marginTop: 15,
+  },
+  drawerButtonText: {
+    color: 'white',
+    fontSize: 14,
+  },
+  logoutContainer: {
+    marginTop: 'auto',
+    marginBottom: 15,
+  },
+  logoutText: {
+    color: 'blue',
+    fontSize: 14,
+  },
+});

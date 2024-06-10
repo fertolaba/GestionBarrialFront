@@ -100,7 +100,7 @@ const ServicioProfesional = ({ navigation }) => {
 
       <StyledTextInput
         style={styles.input}
-        placeholder="Descripción"
+        placeholder="Descripción (Max. 1000)"
         value={servicio.descripcion}
         onChangeText={t => handleChange('descripcion', t)}
       />

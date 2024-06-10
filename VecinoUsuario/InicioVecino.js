@@ -10,7 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import NotificacionVecino from '../Notificacion';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import SesionCerrada from "./SesionCerrada";
-
+import InicioScreen from '../pages/InicioScreen';
 import ReclamosVecino from "./ReclamosVecino";
 import ServiciosScreen from '../pages/servicios/ServiciosScreen';
 import DenunciasVecino from "./DenunciasVecino";
@@ -18,6 +18,7 @@ import LoginScreen from '../pages/login/LoginScreen';
 import { ServiciosStack } from '../pages/routes';
 import { StyledButton } from '../components/ui';
 import { useUser } from '../context/UserContext';
+import Detalle from '../pages/servicios/Detalle';
 
 const Drawer = createDrawerNavigator();
 
@@ -97,7 +98,7 @@ function DrawerNavigation() {
       >
         <Drawer.Screen
           name="Inicio"
-          component={() => null}
+          component={InicioScreen}
           options={{
             headerTitle: () => (
               <View style={{ padding: 10, paddingLeft: 60, justifyContent: "center" }}>
@@ -129,6 +130,7 @@ function DrawerNavigation() {
         }} />
         <Drawer.Screen name="SesionCerrada" component={LoginScreen} options={{ drawerItemStyle: { display: 'none' } }} />
         <Drawer.Screen name="Notificacion" component={NotificacionVecino} options={{ headerTitle: 'Notificaciones' }} />
+        <Drawer.Screen name="Detalle" component={Detalle} />
       </Drawer.Navigator>
     </NavigationContainer>
   );
