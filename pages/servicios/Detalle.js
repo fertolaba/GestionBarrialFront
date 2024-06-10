@@ -7,7 +7,7 @@ export default function Detalle({ route }) {
 
   return (
     <View style={styles.container}>
-      {sitio.imageUrl && <Image source={{ uri: sitio.imageUrl }} style={styles.image} />}
+      <Image style={styles.image} source={{ uri: 'https://via.placeholder.com/150' }} />
       <Text style={styles.detailTitle}>{sitio.nombre}</Text>
       <Text style={styles.label}>Calle:</Text>
       <Text style={styles.text}>{sitio.calle}</Text>

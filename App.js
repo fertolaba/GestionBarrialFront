@@ -1,5 +1,5 @@
-import { View, Image, TouchableOpacity, Alert, StyleSheet , Text} from 'react-native';
-import React, { useState } from 'react'; // Solo una vez aquí
+import { View, Image, TouchableOpacity, Alert, StyleSheet, Text } from 'react-native';
+import React, { useState } from 'react';
 import 'react-native-gesture-handler';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
@@ -16,12 +16,12 @@ import InicioInspector from './InspectorUsuario/InicioInspector';
 import InicioScreen from './pages/InicioScreen';
 import { UserProvider } from './context/UserContext';
 import SesionCerrada from './VecinoUsuario/SesionCerrada';
-import Notificacion
- from './Notificacion';
+import Notificacion from './Notificacion';
+
 const Drawer = createDrawerNavigator();
 
 function CustomDrawerContent({ navigation }) {
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // FORZANDO LOGEO PARA PRUEBAS DE PANTALLAS INDIVIDUALES
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handlePress = (screenName) => {
     if (!isLoggedIn && screenName !== 'Gestion Barrial') {
@@ -35,6 +35,7 @@ function CustomDrawerContent({ navigation }) {
       navigation.navigate(screenName);
     }
   };
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.white }}>
       <View style={{ height: 200, width: '100%', alignItems: 'center', justifyContent: 'center' }}>
@@ -43,18 +44,18 @@ function CustomDrawerContent({ navigation }) {
         <StyledText>Invitado</StyledText>
       </View>
       <View>
-      <TouchableOpacity style={styles.drawerButton} onPress={() => handlePress('Inicio')}>
-        <StyledText style={styles.drawerButtonText}>Inicio</StyledText>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.drawerButton} onPress={() => handlePress('ReclamosVecinos')}>
-        <StyledText style={styles.drawerButtonText}>Reclamo</StyledText>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.drawerButton} onPress={() => handlePress('DenunciasVecinos')}>
-        <StyledText style={styles.drawerButtonText}>Denuncia</StyledText>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.drawerButton} onPress={() => handlePress('ServiciosScreen')}>
-        <StyledText style={styles.drawerButtonText}>Servicios</StyledText>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.drawerButton} onPress={() => handlePress('Inicio')}>
+          <StyledText style={styles.drawerButtonText}>Inicio</StyledText>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.drawerButton} onPress={() => handlePress('ReclamosVecinos')}>
+          <StyledText style={styles.drawerButtonText}>Reclamo</StyledText>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.drawerButton} onPress={() => handlePress('DenunciasVecinos')}>
+          <StyledText style={styles.drawerButtonText}>Denuncia</StyledText>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.drawerButton} onPress={() => handlePress('ServiciosScreen')}>
+          <StyledText style={styles.drawerButtonText}>Servicios</StyledText>
+        </TouchableOpacity>
       </View>
       <View style={{ marginTop: 'auto', padding: 20, alignItems: 'center' }}>
         <TouchableOpacity onPress={() => navigation.navigate('Login')}>
@@ -62,6 +63,65 @@ function CustomDrawerContent({ navigation }) {
         </TouchableOpacity>
       </View>
     </SafeAreaView>
+  );
+}
+
+function DummyScreen() {
+  return (
+    <View>
+      <StyledText>No tiene permisos</StyledText>
+    </View>
+  );
+}
+
+function DrawerNavigator({ navigation }) {
+  return (
+    <Drawer.Navigator drawerContent={(drawerProps) => <CustomDrawerContent {...drawerProps} navigation={navigation} />}>
+      <Drawer.Screen
+        name="Inicio"
+        component={InicioScreen}
+        options={{
+          headerTitle: () => (
+            <View style={{ padding: 10, paddingLeft: 60, justifyContent: "center" }}>
+              <Text style={{ fontSize: 25, fontWeight: 'bold' }}>Gestión Barrial</Text>
+            </View>
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Reclamos"
+        component={DummyScreen}
+        options={{
+          headerTitle: () => (
+            <View style={{ padding: 10, paddingLeft: 83, justifyContent: "center" }}>
+              <Text style={{ fontSize: 30, fontWeight: 'bold' }}>Reclamos</Text>
+            </View>
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Servicios"
+        component={ServiciosStack}
+        options={{
+          headerTitle: () => (
+            <View style={{ padding: 10, paddingLeft: 85, justifyContent: "center" }}>
+              <Text style={{ fontSize: 30, fontWeight: 'bold' }}>Servicios</Text>
+            </View>
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Denuncias"
+        component={DummyScreen}
+        options={{
+          headerTitle: () => (
+            <View style={{ padding: 10, paddingLeft: 83, justifyContent: "center" }}>
+              <Text style={{ fontSize: 30, fontWeight: 'bold' }}>Denuncias</Text>
+            </View>
+          ),
+        }}
+      />
+    </Drawer.Navigator>
   );
 }
 
@@ -77,51 +137,6 @@ export function MainStack() {
       <Stack.Screen name="InicioInspector" component={InicioInspector} options={{ headerShown: false }} />
       <Stack.Screen name="DrawerNavigation" component={DrawerNavigation} options={{ headerShown: false }} />
     </Stack.Navigator>
-  );
-}
-
-function DummyScreen() {
-  return (
-    <View>
-      <StyledText>No tiene permisos</StyledText>
-    </View>
-  );
-}
-
-function DrawerNavigator({ navigation }) {
-  return (
-    <Drawer.Navigator drawerContent={(drawerProps) => <CustomDrawerContent {...drawerProps} navigation={navigation} />}>
-      <Drawer.Screen name="Inicio" component={InicioScreen}            options={{
-            headerTitle: () => (
-              <View style={{ padding: 10, paddingLeft: 60, justifyContent: "center" }}>
-                <Text style={{ fontSize: 25, fontWeight: 'bold' }}>Gestión Barrial</Text>
-              </View>
-            ),
-          }} />
-      <Drawer.Screen name="Reclamos" component={() => DummyScreen}  options={{
-            headerTitle: () => (
-              <View style={{ padding: 10, paddingLeft: 83, justifyContent: "center" }}>
-                <Text style={{ fontSize: 30, fontWeight: 'bold' }}>Reclamos</Text>
-              </View>
-            ),
-          }}/>
-      <Drawer.Screen name="Servicios" component={ServiciosStack} options={{
-            headerTitle: () => (
-              <View style={{ padding: 10, paddingLeft: 85, justifyContent: "center" }}>
-                <Text style={{ fontSize: 30, fontWeight: 'bold' }}>Servicios</Text>
-              </View>
-            ),
-          }}/>
-      <Drawer.Screen name="Denuncias" component={() => DummyScreen} options={{
-            headerTitle: () => (
-              <View style={{ padding: 10, paddingLeft: 83, justifyContent: "center" }}>
-                <Text style={{ fontSize: 30, fontWeight: 'bold' }}>Denuncias</Text>
-              </View>
-            ),
-          }} />
-
-
-    </Drawer.Navigator>
   );
 }
 
@@ -154,30 +169,37 @@ const styles = StyleSheet.create({
   welcomeText: {
     marginTop: 15,
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: 'bold', // Letra en negrita
   },
   usernameText: {
     fontSize: 14,
     color: 'gray',
+    fontWeight: 'bold', // Letra en negrita
   },
   drawerButton: {
     backgroundColor: theme.colors.primary,
     padding: 12,
     borderRadius: 8,
-    width: '70%',
+    width: '80%', // Ajusta el ancho según tus necesidades
     alignItems: 'center',
     marginTop: 15,
+    alignSelf: 'center', // Añade esta línea para centrar el botón
   },
   drawerButtonText: {
     color: 'white',
-    fontSize: 14,
+    fontSize: 16,
+    fontWeight: 'bold', // Letra en negrita
   },
   logoutContainer: {
     marginTop: 'auto',
     marginBottom: 15,
+    alignItems: 'center', // Añade esta línea para centrar el texto
   },
   logoutText: {
     color: 'blue',
     fontSize: 14,
+    fontWeight: 'bold', // Letra en negrita
   },
 });
+
+

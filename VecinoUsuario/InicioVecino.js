@@ -19,6 +19,7 @@ import { ServiciosStack } from '../pages/routes';
 import { StyledButton } from '../components/ui';
 import { useUser } from '../context/UserContext';
 import Detalle from '../pages/servicios/Detalle';
+import Notificacion from '../Notificacion';
 
 const Drawer = createDrawerNavigator();
 
