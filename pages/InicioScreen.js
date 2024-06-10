@@ -36,7 +36,7 @@ export default function InicioScreen() {
             >
               <Image style={styles.image} source={{ uri: 'https://via.placeholder.com/150' }} />
               <View style={styles.textContainer}>
-                <Text style={styles.title}>{sitio.nombre}</Text>
+                <Text style={styles.title}>{sitio.cargoDelSitio}</Text>
                 <Text style={styles.description}>{sitio.descripcion}</Text>
               </View>
             </TouchableOpacity>
