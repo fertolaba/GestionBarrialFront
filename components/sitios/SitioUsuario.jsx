@@ -55,25 +55,12 @@ export const CardSitioPropio = ({ sitio, navigation }) => {
 }
 
 const SitioUsuario = ({ navigation, user, servicio, loading }) => {
-  console.log({
-    user,
-    loading,
-    servicio
-  })
   if (loading) return <StyledText center>Cargando...</StyledText>
   if (!user) return <CardNotLoggedIn navigation={navigation} />
   if (user.tipoUsuario === "inspector") return null;
+  if (!servicio) return <CardSinSitio navigation={navigation} />
 
-
-  return (
-    <View>
-      {
-        servicio
-          ? <CardSitioPropio sitio={servicio} navigation={navigation} />
-          : <CardSinSitio navigation={navigation} />
-      }
-    </View>
-  )
+  return <CardSitioPropio sitio={servicio} navigation={navigation} />
 }
 
 const styles = StyleSheet.create({

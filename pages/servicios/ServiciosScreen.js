@@ -20,12 +20,17 @@ const ServiciosScreen = () => {
   useEffect(() => {
     user?.identificador && isFocused
       ? sitiosServices.getSitioByDocumento(user.identificador)
-        .then(servicio => setServicioUsuario({
-          ...servicio,
-          latitud: String(servicio.latitud),
-          longitud: String(servicio.longitud),
-          numero: String(servicio.numero),
-        }))
+        .then(servicio => {
+          if (servicio)
+            setServicioUsuario({
+              ...servicio,
+              latitud: String(servicio.latitud),
+              longitud: String(servicio.longitud),
+              numero: String(servicio.numero),
+            })
+
+        })
+
         .catch(console.error)
         .finally(() => setIsloading(false))
       : setIsloading(false)
