@@ -40,7 +40,7 @@ export const CardSitioPropio = ({ sitio, navigation }) => {
           <StyledText center fontSize={'subtitle'}>{sitio.descripcion}</StyledText>
 
           <View style={styles.controlsContainer}>
-            <StyledButton title={"Ver sitio"} variant={'success'} style={styles.btn} onPress={() => Alert.alert(JSON.stringify(sitio))} />
+            <StyledButton title={"Ver sitio"} variant={'success'} style={styles.btn} onPress={() => navigation.navigate("DetalleServicio", { sitio })} />
             <StyledButton
               title={"Editar"}
               variant={'primary'}
@@ -58,7 +58,7 @@ const SitioUsuario = ({ navigation, user, servicio, loading }) => {
   console.log({
     user,
     loading,
-    servicio 
+    servicio
   })
   if (loading) return <StyledText center>Cargando...</StyledText>
   if (!user) return <CardNotLoggedIn navigation={navigation} />

@@ -9,6 +9,7 @@ import GenerarReclamos from './reclamos/GenerarReclamos';
 import ServiciosScreen from './servicios/ServiciosScreen';
 import ServicioProfesional from './servicios/ServicioProfesional';
 import ServicioComercio from './servicios/ServiciosScreen';
+import Detalle from './servicios/Detalle';
 
 export const Stack = createStackNavigator();
 
@@ -64,13 +65,20 @@ export function ServiciosStack() {
                 component={ServicioProfesional}
                 options={{ headerShown: false }}
             />
+
+            <Stack.Screen
+                name="DetalleServicio"
+                component={Detalle}
+                options={{ headerShown: false }}
+            />
+
             <Stack.Screen
                 name="ServicioComercio"
                 component={ServicioComercio}
                 options={{ headerShown: false }}
             />
-         
-        </Stack.Navigator>
+
+        </Stack.Navigator >
     );
 
 }

@@ -8,7 +8,7 @@ import Foto from "./assets/foto1.png";
 import StyledText from './components/ui/StyledText';
 import theme from './styles/theme';
 import DrawerNavigation from './VecinoUsuario/InicioVecino';
-import Detalle from './Detalle';
+import Detalle from './pages/servicios/Detalle';
 import { ServiciosStack, Stack } from './pages/routes';
 import LoginScreen from './pages/login/LoginScreen';
 import InicioVecino from './VecinoUsuario/InicioVecino';

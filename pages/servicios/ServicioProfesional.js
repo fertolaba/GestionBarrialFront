@@ -173,7 +173,7 @@ const ServicioProfesional = ({ navigation }) => {
       />
 
       <View style={styles.controls}>
-        <StyledButton title={Boolean(sitio) ? "Editar sitio" : "Crear sitio"} style={styles.button} variant={"primary"} onPress={handleSubmit} disabled={disableButton} />
+        <StyledButton title={Boolean(sitio) ? "Editar" : "Crear"} style={styles.button} variant={"primary"} onPress={handleSubmit} disabled={disableButton} />
         <StyledButton title="Atras" style={styles.button} variant={"secondary"} onPress={goBack} disabled={disableButton} />
       </View>
 

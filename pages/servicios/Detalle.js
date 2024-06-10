@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
-import theme from './styles/theme';
+import theme from '../../styles/theme';
 
 export default function Detalle({ route }) {
   const { sitio } = route.params;
