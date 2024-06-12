@@ -1,6 +1,6 @@
 import { Image, Pressable, StyleSheet, View } from "react-native";
 import theme from "../styles/theme";
-import StyledText from "./ui/StyledText";
+import { StyledText } from "./ui";
 
 // type Denuncia = {
 //     iddenuncias: number;

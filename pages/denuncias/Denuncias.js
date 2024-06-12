@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import { View, FlatList, SafeAreaView, StyleSheet } from 'react-native'
-import StyledText from '../../components/ui/StyledText';
+import { StyledText } from '../../components/ui';
 import { DenunciaCard } from '../../components/DenunciasCard';
 import denunciasServices from '../../services/denuncias.services'
 import theme from '../../styles/theme';

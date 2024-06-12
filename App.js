@@ -5,7 +5,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Foto from "./assets/foto1.png";
-import StyledText from './components/ui/StyledText';
+import { StyledText } from './components/ui';
 import theme from './styles/theme';
 import DrawerNavigation from './VecinoUsuario/InicioVecino';
 import Detalle from './pages/servicios/Detalle';

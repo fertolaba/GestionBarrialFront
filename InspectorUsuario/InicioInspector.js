@@ -1,8 +1,8 @@
-import { createDrawerNavigator , DrawerItemList} from '@react-navigation/drawer';
+import { createDrawerNavigator, DrawerItemList } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import { View, Image } from 'react-native';
 import React from 'react';
-import StyledText from '../components/ui/StyledText';
+import { StyledText } from '../components/ui';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import theme from '../styles/theme';
 import Foto from "../assets/foto1.png";
@@ -24,26 +24,26 @@ function InicioInspector() {
 }
 
 function CustomDrawerContent(props) {
-    return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}> {/* Reemplaza 'white' con theme.colors.white si está definido */}
-        <View style={{ height: 200, width: '100%', alignItems: 'center', justifyContent: 'center' }}>
-          <Image source={Foto} style={{ height: 130, width: 130 }} />
-          <StyledText>Bienvenido!</StyledText>
-          <StyledText>Invitado</StyledText>
-        </View>
-        <DrawerItemList {...props} />
-      </SafeAreaView>
-    );
+  return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}> {/* Reemplaza 'white' con theme.colors.white si está definido */}
+      <View style={{ height: 200, width: '100%', alignItems: 'center', justifyContent: 'center' }}>
+        <Image source={Foto} style={{ height: 130, width: 130 }} />
+        <StyledText>Bienvenido!</StyledText>
+        <StyledText>Invitado</StyledText>
+      </View>
+      <DrawerItemList {...props} />
+    </SafeAreaView>
+  );
 }
 
 
 function DrawerNavigation() {
   return (
     <NavigationContainer independent={true}
-    drawerContent={(drawerProps) => (
+      drawerContent={(drawerProps) => (
         <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.white }}>
           <View style={{ height: 200, width: '100%', alignItems: 'center', justifyContent: 'center' }}>
-            
+
             <StyledText>Bienvenido!</StyledText>
             <StyledText>Invitado</StyledText>
           </View>

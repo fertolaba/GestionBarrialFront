@@ -1,8 +1,7 @@
 import { SafeAreaView, StyleSheet } from "react-native";
 import { DenunciaCard } from "../../components/DenunciasCard";
-import StyledText from "../../components/ui/StyledText";
 import theme from "../../styles/theme";
-import { StyledButton } from "../../components/ui/StyledButton";
+import { StyledButton, StyledText } from "../../components/ui";
 
 function getVariantColorByState(state) {
   switch (state) {
