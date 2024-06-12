@@ -1,11 +1,11 @@
-import { View, Image, TouchableOpacity, Alert, StyleSheet, Text } from 'react-native';
+import { View, Image, TouchableOpacity, Alert, StyleSheet, Text, ToastAndroid } from 'react-native';
 import React, { useState } from 'react';
 import 'react-native-gesture-handler';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Foto from "./assets/foto1.png";
-import { StyledText } from './components/ui';
+import { StyledButton, StyledText } from './components/ui';
 import theme from './styles/theme';
 import DrawerNavigation from './VecinoUsuario/InicioVecino';
 import Detalle from './pages/servicios/Detalle';
@@ -14,23 +14,26 @@ import LoginScreen from './pages/login/LoginScreen';
 import InicioVecino from './VecinoUsuario/InicioVecino';
 import InicioInspector from './InspectorUsuario/InicioInspector';
 import InicioScreen from './pages/InicioScreen';
-import { UserProvider } from './context/UserContext';
+import { UserProvider, useUser } from './context/UserContext';
 import SesionCerrada from './VecinoUsuario/SesionCerrada';
 import Notificacion from './Notificacion';
 
 const Drawer = createDrawerNavigator();
 
 function CustomDrawerContent({ navigation }) {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { user } = useUser();
 
   const handlePress = (screenName) => {
-    if (!isLoggedIn && screenName !== 'Gestion Barrial') {
-      Alert.alert(
-        'Debe iniciar sesion',
-        null,
-        [{ text: 'OK' }],
-        { cancelable: false }
-      );
+    if (!user && screenName !== 'Gestion Barrial') {
+
+      ToastAndroid.show('Debe iniciar sesión', ToastAndroid.SHORT);
+
+      // Alert.alert(
+      //   'Debe iniciar sesion',
+      //   null,
+      //   [{ text: 'OK' }],
+      //   { cancelable: false }
+      // );
     } else {
       navigation.navigate(screenName);
     }
@@ -58,19 +61,16 @@ function CustomDrawerContent({ navigation }) {
         </TouchableOpacity>
       </View>
       <View style={{ marginTop: 'auto', padding: 20, alignItems: 'center' }}>
-        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-          <StyledText style={{ color: 'blue' }}>Iniciar Sesión</StyledText>
-        </TouchableOpacity>
+        <StyledButton
+          naked
+          fontSize={'subheading'}
+          color={theme.colors.primary}
+          onPress={() => navigation.navigate('Login')}
+        >
+          Iniciar sesión
+        </StyledButton>
       </View>
     </SafeAreaView>
-  );
-}
-
-function DummyScreen() {
-  return (
-    <View>
-      <StyledText>No tiene permisos</StyledText>
-    </View>
   );
 }
 
@@ -89,34 +89,12 @@ function DrawerNavigator({ navigation }) {
         }}
       />
       <Drawer.Screen
-        name="Reclamos"
-        component={DummyScreen}
-        options={{
-          headerTitle: () => (
-            <View style={{ padding: 10, paddingLeft: 83, justifyContent: "center" }}>
-              <Text style={{ fontSize: 30, fontWeight: 'bold' }}>Reclamos</Text>
-            </View>
-          ),
-        }}
-      />
-      <Drawer.Screen
         name="Servicios"
         component={ServiciosStack}
         options={{
           headerTitle: () => (
             <View style={{ padding: 10, paddingLeft: 85, justifyContent: "center" }}>
               <Text style={{ fontSize: 30, fontWeight: 'bold' }}>Servicios</Text>
-            </View>
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="Denuncias"
-        component={DummyScreen}
-        options={{
-          headerTitle: () => (
-            <View style={{ padding: 10, paddingLeft: 83, justifyContent: "center" }}>
-              <Text style={{ fontSize: 30, fontWeight: 'bold' }}>Denuncias</Text>
             </View>
           ),
         }}

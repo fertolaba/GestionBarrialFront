@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import theme from '../../styles/theme';
-import { StyledText, StyledTextInput } from '../../components/ui';
+import { StyledButton, StyledText, StyledTextInput } from '../../components/ui';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState, useEffect } from 'react';
 
@@ -96,7 +96,7 @@ export default function LoginScreen() {
       </View>
 
       <View style={styles.formGroup}>
-        <StyledText fontSize={"title"} bold={"medium"} style={styles.label}>Contraseña</StyledText>
+        <StyledText fontSize={"subheading"} bold={"medium"} style={styles.label}>Contraseña</StyledText>
         <StyledTextInput
           onChangeText={setPassword}
           value={password}
@@ -105,9 +105,14 @@ export default function LoginScreen() {
         />
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <StyledText fontSize={"title"} color={"white"}>Iniciar sesión</StyledText>
-      </TouchableOpacity>
+
+      <StyledButton
+        variant={'primary'}
+        fontSize={'subheading'}
+        onPress={handleLogin}
+      >
+        Iniciar sesión
+      </StyledButton>
     </View>
   );
 }

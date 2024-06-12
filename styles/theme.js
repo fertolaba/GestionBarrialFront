@@ -14,6 +14,7 @@ const theme = {
         transparent: "transparent",
     },
     fontSizes: {
+        screenTitle: 30,
         brand: 26,
         heading: 25,
         subheading: 20,

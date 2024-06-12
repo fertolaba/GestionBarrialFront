@@ -6,7 +6,7 @@ export const StyledText = ({ variant, fontSize, textTransform, bold, disabled, c
   const appliedStyles = [
     styles.text,
     variant && ["primary", "secondary", "success", "alert", "warning"].includes(variant) && styles[variant],
-    fontSize && ["brand", "heading", "subheading", "title", "subtitle"].includes(fontSize) && styles[fontSize],
+    fontSize && ["screenTitle", "brand", "heading", "subheading", "title", "subtitle"].includes(fontSize) && styles[fontSize],
     bold && [true, "medium", "bold", "bolder"].includes(bold) && bold === true ? styles.bold : styles[bold],
     disabled && styles.disabled,
     textTransform && styles[textTransform],
@@ -39,6 +39,9 @@ const styles = StyleSheet.create({
   },
   warning: {
     color: theme.colors.warning
+  },
+  screenTitle: {
+    fontSize: theme.fontSizes.screenTitle
   },
   brand: {
     fontSize: theme.fontSizes.brand

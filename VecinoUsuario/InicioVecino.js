@@ -1,30 +1,30 @@
+import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
-import { View, Image, TouchableOpacity, Alert, StyleSheet, Text } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import { View, Image, TouchableOpacity, StyleSheet, ToastAndroid } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import theme from '../styles/theme';
 import Foto from "../assets/foto1.png";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NotificacionVecino from '../Notificacion';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import SesionCerrada from "./SesionCerrada";
 import InicioScreen from '../pages/InicioScreen';
 import ReclamosVecino from "./ReclamosVecino";
-import ServiciosScreen from '../pages/servicios/ServiciosScreen';
 import DenunciasVecino from "./DenunciasVecino";
 import LoginScreen from '../pages/login/LoginScreen';
 import { ServiciosStack } from '../pages/routes';
 import { StyledButton, StyledText } from '../components/ui';
 import { useUser } from '../context/UserContext';
 import Detalle from '../pages/servicios/Detalle';
-import Notificacion from '../Notificacion';
+import { isNullOrUndefined } from '../utils/misc';
 
 const Drawer = createDrawerNavigator();
 
-function NotificationButton({ navigation }) {
+function NotificationButton(props) {
+  const navigation = useNavigation();
+
   return (
-    <TouchableOpacity style={{ marginRight: 15 }} onPress={() => navigation.navigate('Notificacion')}>
+    <TouchableOpacity style={{ alignSelf: "flex-end" }} onPress={() => navigation.navigate('Notificacion')} {...props}>
       <Icon name="bell" size={30} color="black" />
     </TouchableOpacity>
   );
@@ -35,7 +35,7 @@ function CustomDrawerContent() {
   const { user, logout } = useUser();
 
   const handlePress = (screenName) => {
-    if (!Boolean(user) && screenName !== 'Gestion Barrial') {
+    if (isNullOrUndefined(user) && screenName !== 'Gestion Barrial') {
       Alert.alert(
         'Debe iniciar sesión',
         null,
@@ -57,6 +57,13 @@ function CustomDrawerContent() {
     }
   };
 
+  const secciones = [
+    { nombre: 'Inicio', screenName: 'Inicio' },
+    { nombre: 'Reclamo', screenName: 'ReclamosVecinos' },
+    { nombre: 'Denuncia', screenName: 'DenunciasVecinos' },
+    { nombre: 'Servicios', screenName: 'ServiciosScreen' },
+  ]
+
   return (
     <SafeAreaView style={styles.drawerContainer}>
       <View style={styles.headerContainer}>
@@ -64,21 +71,29 @@ function CustomDrawerContent() {
         <StyledText style={styles.welcomeText}>¡Bienvenido!</StyledText>
         <StyledText style={styles.usernameText}>{user?.nombre ? `${user?.nombre} ${user.apellido}` : "Invitado"}</StyledText>
       </View>
-      <StyledButton variant={'primary'} fontSize={'subtitle'} style={styles.drawerButton} onPress={() => handlePress('Inicio')}>
-        Inicio
-      </StyledButton>
-      <StyledButton variant={'primary'} fontSize={'subtitle'} style={styles.drawerButton} onPress={() => handlePress('ReclamosVecinos')}>
-        Reclamo
-      </StyledButton>
-      <StyledButton variant={'primary'} fontSize={'subtitle'} style={styles.drawerButton} onPress={() => handlePress('DenunciasVecinos')}>
-        Denuncia
-      </StyledButton>
-      <StyledButton variant={'primary'} fontSize={'subtitle'} style={styles.drawerButton} onPress={() => handlePress('ServiciosScreen')}>
-        Servicios
-      </StyledButton>
+
+      {
+        secciones.map((seccion) => (
+          <StyledButton
+            key={`drawer:${seccion.nombre}`}
+            variant={'primary'}
+            fontSize={'subtitle'}
+            style={styles.drawerButton}
+            onPress={() => handlePress(seccion.screenName)}
+          >
+            {seccion.nombre}
+          </StyledButton>
+        ))
+      }
+
       <View style={styles.logoutContainer}>
-        <StyledButton onPress={handleLogout}>
-          <StyledText style={styles.logoutText}>Cerrar Sesión</StyledText>
+        <StyledButton
+          naked
+          fontSize={'title'}
+          onPress={handleLogout}
+          color={theme.colors.primary}
+        >
+          Cerrar Sesión
         </StyledButton>
       </View>
     </SafeAreaView>
@@ -86,51 +101,42 @@ function CustomDrawerContent() {
 }
 
 function DrawerNavigation() {
-  const navigation = useNavigation();
+  const { user } = useUser()
+
+  const drawerScreens = [
+    { name: "Inicio", component: InicioScreen, text: "Inicio" },
+    { name: "ReclamosVecinos", component: ReclamosVecino, text: "Reclamo" },
+    { name: "DenunciasVecinos", component: DenunciasVecino, text: "Denuncia" },
+    { name: "ServiciosScreen", component: ServiciosStack, text: "Servicios" },
+    { name: "Detalle", component: Detalle, text: "Detalle" },
+    { name: "SesionCerrada", component: LoginScreen, text: "Iniciar Sesión", options: { drawerItemStyle: { display: 'none' } } },
+    { name: "Notificacion", component: NotificacionVecino, text: "Notificaciones" }
+  ]
 
   return (
     <NavigationContainer independent={true}>
       <Drawer.Navigator
         drawerContent={CustomDrawerContent}
-        screenOptions={({ route }) => ({
-          headerRight: route.name !== "SesionCerrada" ? () => <NotificationButton navigation={navigation} /> : null,
+        screenOptions={() => ({
+          headerRight: () => isNullOrUndefined(user) && <NotificationButton />,
         })}
       >
-        <Drawer.Screen
-          name="Inicio"
-          component={InicioScreen}
-          options={{
-            headerTitle: () => (
-              <View style={{ padding: 10, paddingLeft: 60, justifyContent: "center" }}>
-                <Text style={{ fontSize: 25, fontWeight: 'bold' }}>Gestión Barrial</Text>
-              </View>
-            ),
-          }}
-        />
-        <Drawer.Screen name="ReclamosVecinos" component={ReclamosVecino} options={{
-          headerTitle: () => (
-            <View style={{ padding: 10, paddingLeft: 83, justifyContent: "center" }}>
-              <Text style={{ fontSize: 30, fontWeight: 'bold' }}>Reclamos</Text>
-            </View>
-          ),
-        }} />
-        <Drawer.Screen name="DenunciasVecinos" component={DenunciasVecino} options={{
-          headerTitle: () => (
-            <View style={{ padding: 10, paddingLeft: 83, justifyContent: "center" }}>
-              <Text style={{ fontSize: 30, fontWeight: 'bold' }}>Denuncias</Text>
-            </View>
-          ),
-        }} />
-        <Drawer.Screen name="ServiciosScreen" component={ServiciosStack} options={{
-          headerTitle: () => (
-            <View style={{ padding: 10, paddingLeft: 85, justifyContent: "center" }}>
-              <Text style={{ fontSize: 30, fontWeight: 'bold' }}>Servicios</Text>
-            </View>
-          ),
-        }} />
-        <Drawer.Screen name="SesionCerrada" component={LoginScreen} options={{ drawerItemStyle: { display: 'none' } }} />
-        <Drawer.Screen name="Notificacion" component={NotificacionVecino} options={{ headerTitle: 'Notificaciones' }} />
-        <Drawer.Screen name="Detalle" component={Detalle} />
+        {
+          drawerScreens.map(({ name, component, text, options }) => (
+            <Drawer.Screen key={`drawer:${name}`} name={name} component={component} options={{
+              ...options,
+              headerTitle: () => (
+                <StyledText
+                  fontSize={'screenTitle'}
+                  center
+                  bold
+                >
+                  {text}
+                </StyledText>
+              ),
+            }} />
+          ))
+        }
       </Drawer.Navigator>
     </NavigationContainer>
   );
@@ -150,6 +156,7 @@ const styles = StyleSheet.create({
   profileImage: {
     height: 100,
     width: 100,
+    aspectRatio: 1,
     borderRadius: 50,
   },
   welcomeText: {
@@ -163,7 +170,6 @@ const styles = StyleSheet.create({
   },
   drawerButton: {
     width: '70%',
-    alignItems: 'center',
     marginTop: 15,
   },
   logoutContainer: {

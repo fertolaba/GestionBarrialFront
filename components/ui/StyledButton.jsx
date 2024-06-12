@@ -22,7 +22,7 @@ export const StyledButton = ({
     styles.medium,
     styles.title,
     variant && ["primary", "secondary", "success", "alert", "warning"].includes(variant) && styles[`text-${variant}`],
-    fontSize && ["brand", "heading", "subheading", "title", "subtitle"].includes(fontSize) && styles[fontSize],
+    fontSize && ["screenTitle", "brand", "heading", "subheading", "title", "subtitle"].includes(fontSize) && styles[fontSize],
     bold && [true, "medium", "bold", "bolder"].includes(bold) && bold === true ? styles.bold : styles[bold],
     textTransform && styles[textTransform],
     color && { color },
@@ -104,6 +104,9 @@ const styles = StyleSheet.create({
   },
   ["text-warning"]: {
     color: theme.colors.white,
+  },
+  screenTitle: {
+    fontSize: theme.fontSizes.screenTitle
   },
   brand: {
     fontSize: theme.fontSizes.brand
