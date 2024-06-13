@@ -10,7 +10,7 @@ export default function InicioScreen() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://10.0.2.2:8080/api/sitios/listar');
+        const response = await fetch('http://localhost:8080/api/sitios/listar');
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }

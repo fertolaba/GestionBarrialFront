@@ -28,7 +28,7 @@ const ServiciosVecino = () => {
 		longitud,
       };
 
-      const response = await fetch('http://10.0.2.2:8080/api/sitios/crear', {
+      const response = await fetch('http://localhost:8080/api/sitios/crear', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
