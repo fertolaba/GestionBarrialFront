@@ -10,22 +10,24 @@ import ServiciosScreen from './servicios/ServiciosScreen';
 import ServicioProfesional from './servicios/ServicioProfesional';
 import ServicioComercio from './servicios/ServiciosScreen';
 import Detalle from './servicios/Detalle';
+import ReclamosVecino from '../VecinoUsuario/ReclamosVecino';
 
 export const Stack = createStackNavigator();
 
 export function ReclamosStack() {
     return (
         <Stack.Navigator>
-            <Stack.Screen
-                name="Listado"
-                component={ReclamosScreen}
-                options={{ headerShown: false }} // Ocultar el encabezado del Stack.Navigator
+             <Stack.Screen
+                name="ReclamosVecino"
+                component={ReclamosVecino}
+                options={{ headerShown: false }} // Mostrar encabezado personalizado para GenerarReclamos
             />
             <Stack.Screen
                 name="GenerarReclamos"
                 component={GenerarReclamos}
-                options={{ headerTitle: 'Generar Reclamos', headerShown: false }} // Mostrar encabezado personalizado para GenerarReclamos
-            />
+                options={{ headerTitle: 'Generar Reclamos', headerShown: false }}// Mostrar encabezado personalizado para GenerarReclamos
+            />           
+
         </Stack.Navigator>
     );
 }

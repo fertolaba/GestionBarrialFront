@@ -9,14 +9,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import NotificacionVecino from '../Notificacion';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import InicioScreen from '../pages/InicioScreen';
-import ReclamosVecino from "./ReclamosVecino";
 import DenunciasVecino from "./DenunciasVecino";
 import LoginScreen from '../pages/login/LoginScreen';
-import { ServiciosStack } from '../pages/routes';
+import { ReclamosStack, ServiciosStack } from '../pages/routes';
 import { StyledButton, StyledText } from '../components/ui';
 import { useUser } from '../context/UserContext';
 import Detalle from '../pages/servicios/Detalle';
 import { isNullOrUndefined } from '../utils/misc';
+import ReclamosVecino from './ReclamosVecino';
 
 const Drawer = createDrawerNavigator();
 
@@ -105,12 +105,13 @@ function DrawerNavigation() {
 
   const drawerScreens = [
     { name: "Inicio", component: InicioScreen, text: "Inicio" },
-    { name: "ReclamosVecinos", component: ReclamosVecino, text: "Reclamo" },
+    { name: "ReclamosVecinos", component: ReclamosStack, text: "Reclamo" },
     { name: "DenunciasVecinos", component: DenunciasVecino, text: "Denuncia" },
     { name: "ServiciosScreen", component: ServiciosStack, text: "Servicios" },
     { name: "Detalle", component: Detalle, text: "Detalle" },
     { name: "SesionCerrada", component: LoginScreen, text: "Iniciar Sesión", options: { drawerItemStyle: { display: 'none' } } },
     { name: "Notificacion", component: NotificacionVecino, text: "Notificaciones" }
+    
   ]
 
   return (

@@ -9,7 +9,7 @@ import { StyledButton, StyledText } from './components/ui';
 import theme from './styles/theme';
 import DrawerNavigation from './VecinoUsuario/InicioVecino';
 import Detalle from './pages/servicios/Detalle';
-import { ServiciosStack, Stack } from './pages/routes';
+import { ServiciosStack, Stack, ReclamosStack } from './pages/routes';
 import LoginScreen from './pages/login/LoginScreen';
 import InicioVecino from './VecinoUsuario/InicioVecino';
 import InicioInspector from './InspectorUsuario/InicioInspector';
@@ -17,6 +17,10 @@ import InicioScreen from './pages/InicioScreen';
 import { UserProvider, useUser } from './context/UserContext';
 import SesionCerrada from './VecinoUsuario/SesionCerrada';
 import Notificacion from './Notificacion';
+import EstadoReclamo from './VecinoUsuario/EstadoReclamo';
+import GenerarReclamos from './pages/reclamos/GenerarReclamos';
+import ReclamosVecino from './VecinoUsuario/ReclamosVecino';
+
 
 const Drawer = createDrawerNavigator();
 
@@ -99,6 +103,11 @@ function DrawerNavigator({ navigation }) {
           ),
         }}
       />
+      <Drawer.Screen
+        name="Reclamos"
+        component={ReclamosStack}
+        options={{ headerShown: false }} // Oculta el encabezado de Reclamos
+      />      
     </Drawer.Navigator>
   );
 }
@@ -114,6 +123,7 @@ export function MainStack() {
       <Stack.Screen name="InicioVecino" component={InicioVecino} options={{ headerShown: false }} />
       <Stack.Screen name="InicioInspector" component={InicioInspector} options={{ headerShown: false }} />
       <Stack.Screen name="DrawerNavigation" component={DrawerNavigation} options={{ headerShown: false }} />
+      <Stack.Screen name="EstadoReclamo" component={EstadoReclamo} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, TouchableOpacity, Image, StyleSheet, CheckBox, Button } from 'react-native';
-import { StyledText, StyledTextInput } from '../components/ui';
+import { StyledText, StyledTextInput, StyledButton } from '../components/ui';
 
 const DenunciasVecino = () => {
   const [calle, setCalle] = useState('');
@@ -57,8 +57,9 @@ const DenunciasVecino = () => {
         <StyledText style={styles.checkboxText}>Al marcar esta casilla, confirmo que la información proporcionada en esta denuncia es precisa y verdadera, y entiendo las implicaciones legales de proporcionar información falsa.</StyledText>
       </View>
       
-      <TouchableOpacity style={styles.button}>
-        <StyledText style={styles.buttonText}>Generar reclamo</StyledText>
+      <TouchableOpacity >
+        <StyledButton         variant={'primary'}
+        fontSize={'subheading'}>Generar reclamo</StyledButton>
       </TouchableOpacity>
     </View>
   );
@@ -132,18 +133,8 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     flex: 1,
   },
-  button: {
-    backgroundColor: '#4F46E5',
-    padding: 15,
-    borderRadius: 5,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  
+
+
 });
 
 export default DenunciasVecino;

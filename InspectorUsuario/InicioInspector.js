@@ -55,7 +55,7 @@ function DrawerNavigation() {
         <Drawer.Screen name="Reclamos" component={ReclamosInspector} />
         <Drawer.Screen name="Denuncia" component={DenunciasInspector} />
         <Drawer.Screen name="Servicios" component={ServiciosInspector} />
-        {/* Agrega más pantallas aquí si lo necesitas */}
+       
       </Drawer.Navigator>
     </NavigationContainer>
   );
