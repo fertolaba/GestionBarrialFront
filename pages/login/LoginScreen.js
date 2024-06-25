@@ -7,27 +7,74 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState, useEffect } from 'react';
 
 import { useUser } from '../../context/UserContext';
+import { isNullOrUndefined } from '../../utils/misc';
 
 export default function LoginScreen() {
   const navigation = useNavigation();
-  const { user, login } = useUser();
+  const { user, login, logout } = useUser();
 
-  const [identificador, setIdentificador] = useState("DNI28000046");
+  const [documento, setDocumento] = useState("DNI28000046");
   const [password, setPassword] = useState("123");
 
-  const [retrievedFromStorage, setRetrievedFromStorage] = useState(false);
+  function handleRedirect() {
+    let ruta;
+
+    if (isNullOrUndefined(user)) {
+      console.warn('No se redirigirá a una ruta sin un usuario logueado');
+      return;
+    }
+
+    switch (user?.tipoUsuario) {
+      case 'inspector':
+        ruta = 'InicioInspector';
+        break;
+      case 'vecino':
+        ruta = 'InicioVecino';
+        break;
+      default:
+        console.warn('Tipo de usuario no reconocido');
+    }
+
+    if (ruta) {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: ruta }],
+      });
+      Alert.alert('Bienvenido', `Hola ${user.nombre}!`);
+    }
+  }
+
+  async function handleLoggedUser() {
+    console.warn({ user });
+    if (isNullOrUndefined(user)) {
+      Alert.alert("Error", "Usuario o contraseña incorrectos");
+    }
+    else if (isNullOrUndefined(user.tipoUsuario) || user.tipoUsuario === "N/A") {
+      Alert.alert('Error', 'Tipo de usuario no reconocido');
+      await logout();
+    }
+  }
+
+  async function handleLogin() {
+    try {
+      await login({ documento, password });
+    } catch (error) {
+      console.error('Error:', error);
+      Alert.alert('Error inesperado', 'Algo salió mal. Inténtalo de nuevo.');
+    }
+  }
 
   useEffect(() => {
     const retrieveLoginData = async () => {
       try {
-        const savedidentificador = await AsyncStorage.getItem('identificador');
+        const savedDocumento = await AsyncStorage.getItem('documento');
         const savedPassword = await AsyncStorage.getItem('password');
 
-
-        if (savedidentificador !== null && savedPassword !== null) {
-          setIdentificador(savedidentificador);
-          setPassword(savedPassword);
-          setRetrievedFromStorage(true);
+        if (savedDocumento && savedPassword) {
+          await login({
+            documento: savedDocumento,
+            password: savedPassword
+          });
         }
       } catch (error) {
         console.error('Error al recuperar los datos de inicio de sesión:', error);
@@ -38,46 +85,11 @@ export default function LoginScreen() {
   }, []);
 
   useEffect(() => {
-    if (retrievedFromStorage) {
-      login({ identificador, password });
+    if (!isNullOrUndefined(user)) {
+      handleRedirect();
+      handleLoggedUser();
     }
-  }, [retrievedFromStorage]);
-
-
-  const handleLogin = async () => {
-    try {
-      await login({ identificador, password })
-
-      if (user) {
-        Alert.alert('Bienvenido', `Hola ${user.nombre}!`);
-        await AsyncStorage.setItem('identificador', user.identificador);
-        await AsyncStorage.setItem('password', password);
-
-        switch (user.tipoUsuario) {
-          case 'inspector':
-            navigation.reset({
-              index: 0,
-              routes: [{ name: 'InicioInspector' }],
-            });
-            break;
-          case 'vecino':
-            navigation.reset({
-              index: 0,
-              routes: [{ name: 'InicioVecino' }],
-            });
-            break;
-          default:
-            Alert.alert('Error', 'Tipo de usuario no reconocido');
-        }
-
-      } else {
-        Alert.alert("Error", "Usuario o contraseña incorrectos");
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      Alert.alert('Error inesperado', 'Algo salió mal. Inténtalo de nuevo.');
-    }
-  };
+  }, [user?.documento]);
 
   return (
     <View style={styles.screenContainer}>
@@ -88,8 +100,8 @@ export default function LoginScreen() {
       <View style={styles.formGroup}>
         <StyledText fontSize={"subheading"} bold={"medium"} style={styles.label}>Identificación</StyledText>
         <StyledTextInput
-          onChangeText={setIdentificador}
-          value={identificador}
+          onChangeText={setDocumento}
+          value={documento}
           placeholder='Documento o legajo'
           keyboardType='email-address'
         />
@@ -113,6 +125,7 @@ export default function LoginScreen() {
       >
         Iniciar sesión
       </StyledButton>
+
     </View>
   );
 }

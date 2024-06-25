@@ -2,15 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import theme from '../styles/theme';
+import { API_BASE_URL } from '../constants/constants';
 
 export default function InicioScreen() {
   const [sitios, setSitios] = useState([]);
   const navigation = useNavigation();
 
   useEffect(() => {
+    const url = API_BASE_URL + '/sitios/listar';
+    
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/sitios/listar');
+        const response = await fetch(url);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }

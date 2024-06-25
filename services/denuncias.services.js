@@ -1,6 +1,3 @@
-// const BASE_URL = 'http://localhost:3000';
-// const API_URL = BASE_URL + '/api/denuncias';
-
 import { generatePlaceholderImage } from "../utils/images";
 import { generateInteger } from "../utils/numbers";
 

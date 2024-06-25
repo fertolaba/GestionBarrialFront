@@ -1,19 +1,29 @@
 import React, { createContext, useContext, useState } from 'react';
 import usuariosServices from '../services/usuarios.services';
+import { isNullOrUndefined } from '../utils/misc';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null)
 
-  const login = async ({ identificador, password }) => {
-    const user = await usuariosServices.login({ identificador, password });
-    Boolean(user) && setUser(user);
+  const login = async ({ documento, password }) => {
+    const user = await usuariosServices.login({ documento, password });
+    if (!isNullOrUndefined(user)) {
+      console.info(user)
+      setUser(_prev => user ?? null);
+      await AsyncStorage.setItem('documento', documento);
+      await AsyncStorage.setItem('password', password);
+    }
 
+    console.log("logged as:", user)
     return user;
   }
 
-  const logout = () => {
+  const logout = async () => {
+    await AsyncStorage.clear('documento');
+    await AsyncStorage.clear('password');
     setUser(null);
   }
 

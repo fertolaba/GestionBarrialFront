@@ -1,7 +1,5 @@
+import { API_BASE_URL } from "../constants/constants";
 import fetchWithTimeout from "./_fetchWithTimeout";
-
-let API_BASE_URL = 'http://10.0.2.2:8080/api';
-//  BASE_URL = 'localhost:8080/';
 
 class SitiosServices {
   _instance = null;

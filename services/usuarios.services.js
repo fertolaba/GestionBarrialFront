@@ -1,7 +1,5 @@
+import { API_BASE_URL } from "../constants/constants";
 import fetchWithTimeout from "./_fetchWithTimeout";
-
-let API_BASE_URL = 'http://localhost:8080/api';
-//  BASE_URL = 'localhost:8080/';
 
 class UsuarioService {
   _instance = null;
@@ -17,6 +15,7 @@ class UsuarioService {
 
   login = async (credentials) => {
     const url = `${this._apiUrl}/login`;
+
     try {
       const response = await fetchWithTimeout(url, {
         method: 'POST',
