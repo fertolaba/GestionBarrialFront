@@ -18,8 +18,8 @@ const ServiciosScreen = () => {
   const [servicioUsuario, setServicioUsuario] = useState(null)
 
   useEffect(() => {
-    user?.identificador && isFocused
-      ? sitiosServices.getSitioByDocumento(user.identificador)
+    user?.documento && isFocused
+      ? sitiosServices.getSitioByDocumento(user.documento)
         .then(servicio => {
           if (servicio)
             setServicioUsuario({
@@ -37,7 +37,7 @@ const ServiciosScreen = () => {
 
     !Boolean(user) && setServicioUsuario(null);
 
-  }, [isFocused, user?.identificador])
+  }, [isFocused, user?.documento])
 
   return (
     <View style={styles.screenContainer}>
