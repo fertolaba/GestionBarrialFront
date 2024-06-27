@@ -94,7 +94,7 @@ function CustomDrawerContent() {
               <StyledButton
                 naked
                 fontSize={'title'}
-                onPress={() => handlePress('SesionCerrada')}
+                onPress={() => handlePress('Logout')}
                 color={theme.colors.primary}
               >
                 Iniciar Sesión

@@ -6,7 +6,7 @@ import LoginScreen from './pages/login/LoginScreen';
 import InicioScreen from './pages/InicioScreen';
 import Detalle from './pages/servicios/Detalle';
 import Notificacion from './Notificacion';
-import SesionCerrada from './pages/logout/SesionCerrada';
+import LogoutScreen from './pages/logout/LogoutScreen';
 import { ServiciosStack, ReclamosStack } from './pages/routes';
 import { UserProvider, useUser } from './context/UserContext';
 import theme from './styles/theme';
@@ -32,7 +32,7 @@ function CustomDrawerContent({ navigation }) {
     await logout();
     navigation.reset({
       index: 0,
-      routes: [{ name: 'SesionCerrada' }],
+      routes: [{ name: 'Logout' }],
     });
   };
 
@@ -109,8 +109,8 @@ function DrawerNavigator() {
       <Drawer.Screen name="Reclamos" component={ReclamosStack} />
       <Drawer.Screen name="Detalle" component={Detalle} />
       <Drawer.Screen name="Notificacion" component={Notificacion} />
-      <Drawer.Screen name="SesionCerrada" component={SesionCerrada} options={{ headerTitle: 'Sesión Cerrada' }} />
       <Drawer.Screen name="Login" component={LoginScreen} options={{ headerTitle: 'Iniciar Sesión' }} />
+      <Drawer.Screen name="Logout" component={LogoutScreen} options={{ headerTitle: 'Sesión Cerrada' }} />
     </Drawer.Navigator>
   );
 }

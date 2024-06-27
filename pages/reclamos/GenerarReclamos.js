@@ -41,8 +41,6 @@ const GenerarReclamos = () => {
         multiline
       />
 
-
-
       <StyledButton
         title="Generar reclamo"
         variant='primary'

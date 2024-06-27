@@ -1,21 +1,22 @@
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { StyledButton } from '../../components/ui';
 
-export default function SesionCerrada() {
+export default function LogoutScreen() {
   const navigation = useNavigation();
 
-  const handleLogin = () => {
+  const handleBackToHome = () => {
     navigation.reset({
       index: 0,
-      routes: [{ name: 'Login' }],
+      routes: [{ name: 'Inicio' }],
     });
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.message}>Sesión Cerrada</Text>
-      <Button title="Volver" onPress={handleLogin} />
+      <StyledButton title="Volver a inicio" variant='primary' onPress={handleBackToHome} />
     </View>
   );
 }
