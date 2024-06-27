@@ -1,16 +1,35 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { CreateButton, StateButton } from '../../components/Buttons';
+import { useUser } from '../../context/UserContext';
+import { isNullOrUndefined } from '../../utils/misc';
+import ReclamoHomeVecino from './_reclamoHomeVecino';
+import ReclamoHomeInspector from './_reclamoHomeInspector';
 
 export default function ReclamosScreen() {
+  const { user } = useUser()
   const navigation = useNavigation();
+
+  if (isNullOrUndefined(user)) navigation.reset({ index: 0, routes: [{ name: 'Login' }] })
+
+  let screenPorTipoUsuario = null;
+
+  switch (user.tipoUsuario) {
+    case 'vecino':
+      screenPorTipoUsuario = <ReclamoHomeVecino />;
+      break;
+    case 'inspector':
+      screenPorTipoUsuario = <ReclamoHomeInspector />;
+      break;
+    default:
+      screenPorTipoUsuario = <Text>Usuario no reconocido</Text>;
+      break;
+  }
+
 
   return (
     <View>
-      
-      <CreateButton text="Generar Reclamos" onPress={() => navigation.navigate('GenerarReclamos')} />
-      <StateButton text="Estado de Reclamo" onPress={() => navigation.navigate('EstadoReclamo')} />
+      {screenPorTipoUsuario}
     </View>
   );
 }

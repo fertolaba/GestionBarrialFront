@@ -11,7 +11,7 @@ const DenunciasVecino = () => {
 
   return (
     <View style={styles.container}>
-      
+
       <View style={styles.toggleContainer}>
         <TouchableOpacity style={styles.toggleButtonActive}>
           <StyledText style={styles.toggleButtonTextActive}>Comercio</StyledText>
@@ -20,7 +20,7 @@ const DenunciasVecino = () => {
           <StyledText style={styles.toggleButtonTextInactive}>Vecino</StyledText>
         </TouchableOpacity>
       </View>
-      
+
       <StyledTextInput
         style={styles.input}
         placeholder="Calle"
@@ -46,20 +46,22 @@ const DenunciasVecino = () => {
         onChangeText={setCausa}
         multiline
       />
-      
-      
+
+
       <View style={styles.checkboxContainer}>
-        <CheckBox
+        {/* <CheckBox
           value={isSelected}
           onValueChange={setSelection}
           style={styles.checkbox}
-        />
+        /> */}
         <StyledText style={styles.checkboxText}>Al marcar esta casilla, confirmo que la información proporcionada en esta denuncia es precisa y verdadera, y entiendo las implicaciones legales de proporcionar información falsa.</StyledText>
       </View>
-      
-      <TouchableOpacity >
-        <StyledButton         variant={'primary'}
-        fontSize={'subheading'}>Generar reclamo</StyledButton>
+
+      <TouchableOpacity>
+        <StyledButton
+          variant={'primary'}
+          fontSize={'subheading'}
+        >Generar reclamo</StyledButton>
       </TouchableOpacity>
     </View>
   );

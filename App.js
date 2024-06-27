@@ -17,9 +17,7 @@ import InicioScreen from './pages/InicioScreen';
 import { UserProvider, useUser } from './context/UserContext';
 import SesionCerrada from './VecinoUsuario/SesionCerrada';
 import Notificacion from './Notificacion';
-import EstadoReclamo from './VecinoUsuario/EstadoReclamo';
-import GenerarReclamos from './pages/reclamos/GenerarReclamos';
-import ReclamosVecino from './VecinoUsuario/ReclamosVecino';
+import { isNullOrUndefined } from './utils/misc';
 
 
 const Drawer = createDrawerNavigator();
@@ -43,36 +41,59 @@ function CustomDrawerContent({ navigation }) {
     }
   };
 
+  const rutasDrawer = [
+    { title: 'Inicio', /* Aca podrian armarse otros props para usarse en todos los botones del drawer */ },
+    { title: 'Reclamos', /* Aca podrian armarse otros props para usarse en todos los botones del drawer */ },
+    { title: 'Denuncias', /* Aca podrian armarse otros props para usarse en todos los botones del drawer */ },
+    { title: 'Servicios', /* Aca podrian armarse otros props para usarse en todos los botones del drawer */ }
+  ]
+
+  const BotonSesion = () => isNullOrUndefined(user)
+    ? (
+      <StyledButton
+        naked
+        fontSize={'subheading'}
+        color={theme.colors.primary}
+        onPress={() => navigation.navigate('Login')}
+      >
+        Iniciar sesión
+      </StyledButton>
+    ) : (
+      <StyledButton
+        naked
+        fontSize={'subheading'}
+        color={theme.colors.primary}
+        onPress={() => navigation.navigate('SesionCerrada')}
+      >
+        Cerrar sesión
+      </StyledButton>
+    )
+
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.white }}>
       <View style={{ height: 200, width: '100%', alignItems: 'center', justifyContent: 'center' }}>
         <Image source={Foto} style={{ height: 130, width: 130 }} />
         <StyledText>Bienvenido!</StyledText>
-        <StyledText>Invitado</StyledText>
+        <StyledText>{user?.nombre ?? "Invitado"}</StyledText>
       </View>
+
       <View>
-        <TouchableOpacity style={styles.drawerButton} onPress={() => handlePress('Inicio')}>
-          <StyledText style={styles.drawerButtonText}>Inicio</StyledText>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.drawerButton} onPress={() => handlePress('ReclamosVecinos')}>
-          <StyledText style={styles.drawerButtonText}>Reclamo</StyledText>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.drawerButton} onPress={() => handlePress('DenunciasVecinos')}>
-          <StyledText style={styles.drawerButtonText}>Denuncia</StyledText>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.drawerButton} onPress={() => handlePress('ServiciosScreen')}>
-          <StyledText style={styles.drawerButtonText}>Servicios</StyledText>
-        </TouchableOpacity>
+        {
+          rutasDrawer.map((ruta, index) => (
+            <StyledButton
+              key={index}
+              color='white'
+              style={styles.drawerButton}
+              onPress={() => handlePress(ruta.title)}
+              title={ruta.title}
+            />
+          ))
+        }
       </View>
+
       <View style={{ marginTop: 'auto', padding: 20, alignItems: 'center' }}>
-        <StyledButton
-          naked
-          fontSize={'subheading'}
-          color={theme.colors.primary}
-          onPress={() => navigation.navigate('Login')}
-        >
-          Iniciar sesión
-        </StyledButton>
+        {<BotonSesion />}
       </View>
     </SafeAreaView>
   );
@@ -106,8 +127,14 @@ function DrawerNavigator({ navigation }) {
       <Drawer.Screen
         name="Reclamos"
         component={ReclamosStack}
-        options={{ headerShown: false }} // Oculta el encabezado de Reclamos
-      />      
+        options={{
+          headerTitle: () => (
+            <View style={{ padding: 10, paddingLeft: 85, justifyContent: "center" }}>
+              <Text style={{ fontSize: 30, fontWeight: 'bold' }}>Servicios</Text>
+            </View>
+          ),
+        }}
+      />
     </Drawer.Navigator>
   );
 }
@@ -123,7 +150,9 @@ export function MainStack() {
       <Stack.Screen name="InicioVecino" component={InicioVecino} options={{ headerShown: false }} />
       <Stack.Screen name="InicioInspector" component={InicioInspector} options={{ headerShown: false }} />
       <Stack.Screen name="DrawerNavigation" component={DrawerNavigation} options={{ headerShown: false }} />
-      <Stack.Screen name="EstadoReclamo" component={EstadoReclamo} options={{ headerShown: false }} />
+
+      {/* Este reclamos funciona con la pantalla que vale segun el tipo de usuario */}
+      <Stack.Screen name="Reclamos" component={ReclamosStack} options={{ headerTitle: "Reclamos" }} />
     </Stack.Navigator>
   );
 }

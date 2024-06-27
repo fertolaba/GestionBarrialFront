@@ -3,30 +3,35 @@ import { createStackNavigator } from '@react-navigation/stack';
 import DenunciasScreen from './denuncias/Denuncias';
 import { DenunciaDetalle } from './denuncias/DenunciaDetalle';
 
-import ReclamosScreen from './denuncias/Denuncias';
 import GenerarReclamos from './reclamos/GenerarReclamos';
 
 import ServiciosScreen from './servicios/ServiciosScreen';
 import ServicioProfesional from './servicios/ServicioProfesional';
 import ServicioComercio from './servicios/ServiciosScreen';
 import Detalle from './servicios/Detalle';
-import ReclamosVecino from '../VecinoUsuario/ReclamosVecino';
+import EstadoReclamo from './reclamos/EstadoReclamo';
+import ReclamosScreen from './reclamos/ReclamosScreen';
 
 export const Stack = createStackNavigator();
 
 export function ReclamosStack() {
     return (
         <Stack.Navigator>
-             <Stack.Screen
-                name="ReclamosVecino"
-                component={ReclamosVecino}
+            <Stack.Screen
+                name="Reclamos"
+                component={ReclamosScreen}
                 options={{ headerShown: false }} // Mostrar encabezado personalizado para GenerarReclamos
             />
             <Stack.Screen
                 name="GenerarReclamos"
                 component={GenerarReclamos}
-                options={{ headerTitle: 'Generar Reclamos', headerShown: false }}// Mostrar encabezado personalizado para GenerarReclamos
-            />           
+                options={{ headerTitle: 'Generar Reclamos', headerTitle: "Generar reclamo" }}
+            />
+            <Stack.Screen
+                name="EstadoReclamo"
+                component={EstadoReclamo}
+                options={{ headerTitle: 'Generar Reclamos', headerTitle: "Estado reclamo" }}
+            />
 
         </Stack.Navigator>
     );

@@ -1,7 +1,7 @@
 import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
-import { View, Image, TouchableOpacity, StyleSheet, ToastAndroid } from 'react-native';
+import { View, Image, TouchableOpacity, StyleSheet, ToastAndroid, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import theme from '../styles/theme';
 import Foto from "../assets/foto1.png";
@@ -43,6 +43,7 @@ function CustomDrawerContent() {
         { cancelable: false }
       );
     } else {
+      console.log("from iniciovecino", screenName)
       navigation.navigate(screenName);
     }
   };
@@ -51,7 +52,7 @@ function CustomDrawerContent() {
     try {
       await AsyncStorage.removeItem('password');
       logout();
-      navigation.navigate('SesionCerrada');
+      navigation.navigate('Inicio');
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
     }
@@ -87,14 +88,28 @@ function CustomDrawerContent() {
       }
 
       <View style={styles.logoutContainer}>
-        <StyledButton
-          naked
-          fontSize={'title'}
-          onPress={handleLogout}
-          color={theme.colors.primary}
-        >
-          Cerrar Sesión
-        </StyledButton>
+        {
+          isNullOrUndefined(user)
+            ? (
+              <StyledButton
+                naked
+                fontSize={'title'}
+                onPress={() => handlePress('SesionCerrada')}
+                color={theme.colors.primary}
+              >
+                Iniciar Sesión
+              </StyledButton>
+            ) : (
+              <StyledButton
+                naked
+                fontSize={'title'}
+                onPress={handleLogout}
+                color={theme.colors.primary}
+              >
+                Cerrar Sesión
+              </StyledButton>
+            )
+        }
       </View>
     </SafeAreaView>
   );
@@ -111,7 +126,7 @@ function DrawerNavigation() {
     { name: "Detalle", component: Detalle, text: "Detalle" },
     { name: "SesionCerrada", component: LoginScreen, text: "Iniciar Sesión", options: { drawerItemStyle: { display: 'none' } } },
     { name: "Notificacion", component: NotificacionVecino, text: "Notificaciones" }
-    
+
   ]
 
   return (

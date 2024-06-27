@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import theme from '../../styles/theme';
 import { StyledButton, StyledText, StyledTextInput } from '../../components/ui';
@@ -17,31 +17,13 @@ export default function LoginScreen() {
   const [password, setPassword] = useState("123");
 
   function handleRedirect() {
-    let ruta;
-
     if (isNullOrUndefined(user)) {
       console.warn('No se redirigirá a una ruta sin un usuario logueado');
       return;
     }
 
-    switch (user?.tipoUsuario) {
-      case 'inspector':
-        ruta = 'InicioInspector';
-        break;
-      case 'vecino':
-        ruta = 'InicioVecino';
-        break;
-      default:
-        console.warn('Tipo de usuario no reconocido');
-    }
-
-    if (ruta) {
-      navigation.reset({
-        index: 0,
-        routes: [{ name: ruta }],
-      });
-      Alert.alert('Bienvenido', `Hola ${user.nombre}!`);
-    }
+    navigation.reset({ index: 0, routes: [{ name: 'Home' }] });
+    Alert.alert('Bienvenido', `Hola ${user.nombre}!`);
   }
 
   async function handleLoggedUser() {
@@ -81,7 +63,7 @@ export default function LoginScreen() {
       }
     };
 
-    retrieveLoginData();
+    // retrieveLoginData(); //Evitar login automatico porque estamos usando documento y password inicializado con usuario de prueba
   }, []);
 
   useEffect(() => {
