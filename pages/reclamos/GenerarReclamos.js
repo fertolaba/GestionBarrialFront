@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, Image, StyleSheet, CheckBox, Button } from 'react-native';
-import { StyledText, StyledButton, StyledTextInput } from '../../components/ui';
+import { View, StyleSheet } from 'react-native';
+import { StyledButton, StyledTextInput } from '../../components/ui';
+import { useNavigation } from '@react-navigation/native';
 
 const GenerarReclamos = () => {
+  const navigation = useNavigation();
+
   const [calle, setCalle] = useState('');
   const [numero, setNumero] = useState('');
   const [desperfecto, setDesperfecto] = useState('');
@@ -11,9 +14,7 @@ const GenerarReclamos = () => {
 
   return (
     <View style={styles.container}>
-      
 
-      
       <StyledTextInput
         style={styles.input}
         placeholder="Calle"
@@ -39,13 +40,21 @@ const GenerarReclamos = () => {
         onChangeText={setCausa}
         multiline
       />
-      
-      
-      
-      <TouchableOpacity >
-        <StyledButton         variant={'primary'}
-        fontSize={'subheading'}>Generar reclamo</StyledButton>
-      </TouchableOpacity>
+
+
+
+      <StyledButton
+        title="Generar reclamo"
+        variant='primary'
+        fontSize='subheading'
+      />
+      <StyledButton
+        title="Volver"
+        variant='secondary'
+        fontSize='subheading'
+        onPress={() => navigation.goBack()}
+      />
+
     </View>
   );
 }

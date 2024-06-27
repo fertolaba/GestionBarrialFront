@@ -1,52 +1,47 @@
-import { View, Image, TouchableOpacity, Alert, StyleSheet, Text, ToastAndroid } from 'react-native';
 import React, { useState } from 'react';
-import 'react-native-gesture-handler';
-import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import Foto from "./assets/foto1.png";
-import { StyledButton, StyledText } from './components/ui';
-import theme from './styles/theme';
-import DrawerNavigation from './VecinoUsuario/InicioVecino';
-import Detalle from './pages/servicios/Detalle';
-import { ServiciosStack, Stack, ReclamosStack } from './pages/routes';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { SafeAreaView, View, Image, Text, ToastAndroid } from 'react-native';
 import LoginScreen from './pages/login/LoginScreen';
-import InicioVecino from './VecinoUsuario/InicioVecino';
-import InicioInspector from './InspectorUsuario/InicioInspector';
 import InicioScreen from './pages/InicioScreen';
-import { UserProvider, useUser } from './context/UserContext';
-import SesionCerrada from './VecinoUsuario/SesionCerrada';
+import Detalle from './pages/servicios/Detalle';
 import Notificacion from './Notificacion';
+import SesionCerrada from './pages/logout/SesionCerrada';
+import { ServiciosStack, ReclamosStack } from './pages/routes';
+import { UserProvider, useUser } from './context/UserContext';
+import theme from './styles/theme';
+import { StyledButton, StyledText } from './components/ui';
 import { isNullOrUndefined } from './utils/misc';
-
+import Foto from "./assets/foto1.png";
+import { StyleSheet } from 'react-native';
 
 const Drawer = createDrawerNavigator();
 
 function CustomDrawerContent({ navigation }) {
-  const { user } = useUser();
+  const { user, logout } = useUser();
 
   const handlePress = (screenName) => {
     if (!user && screenName !== 'Gestion Barrial') {
-
       ToastAndroid.show('Debe iniciar sesión', ToastAndroid.SHORT);
-
-      // Alert.alert(
-      //   'Debe iniciar sesion',
-      //   null,
-      //   [{ text: 'OK' }],
-      //   { cancelable: false }
-      // );
     } else {
       navigation.navigate(screenName);
     }
   };
 
+  const handleLogout = async () => {
+    await logout();
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'SesionCerrada' }],
+    });
+  };
+
   const rutasDrawer = [
-    { title: 'Inicio', /* Aca podrian armarse otros props para usarse en todos los botones del drawer */ },
-    { title: 'Reclamos', /* Aca podrian armarse otros props para usarse en todos los botones del drawer */ },
-    { title: 'Denuncias', /* Aca podrian armarse otros props para usarse en todos los botones del drawer */ },
-    { title: 'Servicios', /* Aca podrian armarse otros props para usarse en todos los botones del drawer */ }
-  ]
+    { title: 'Inicio', route: 'Inicio' },
+    { title: 'Reclamos', route: 'Reclamos' },
+    { title: 'Denuncias', route: 'Denuncias' },
+    { title: 'Servicios', route: 'Servicios' }
+  ];
 
   const BotonSesion = () => isNullOrUndefined(user)
     ? (
@@ -63,12 +58,11 @@ function CustomDrawerContent({ navigation }) {
         naked
         fontSize={'subheading'}
         color={theme.colors.primary}
-        onPress={() => navigation.navigate('SesionCerrada')}
+        onPress={handleLogout}
       >
         Cerrar sesión
       </StyledButton>
-    )
-
+    );
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.white }}>
@@ -77,83 +71,47 @@ function CustomDrawerContent({ navigation }) {
         <StyledText>Bienvenido!</StyledText>
         <StyledText>{user?.nombre ?? "Invitado"}</StyledText>
       </View>
-
       <View>
-        {
-          rutasDrawer.map((ruta, index) => (
-            <StyledButton
-              key={index}
-              color='white'
-              style={styles.drawerButton}
-              onPress={() => handlePress(ruta.title)}
-              title={ruta.title}
-            />
-          ))
-        }
+        {rutasDrawer.map((ruta, index) => (
+          <StyledButton
+            key={index}
+            color='white'
+            style={styles.drawerButton}
+            onPress={() => handlePress(ruta.route)}
+            title={ruta.title}
+          />
+        ))}
       </View>
-
       <View style={{ marginTop: 'auto', padding: 20, alignItems: 'center' }}>
-        {<BotonSesion />}
+        <BotonSesion />
       </View>
     </SafeAreaView>
   );
 }
 
-function DrawerNavigator({ navigation }) {
+function DrawerNavigator() {
   return (
-    <Drawer.Navigator drawerContent={(drawerProps) => <CustomDrawerContent {...drawerProps} navigation={navigation} />}>
-      <Drawer.Screen
-        name="Inicio"
-        component={InicioScreen}
-        options={{
-          headerTitle: () => (
-            <View style={{ padding: 10, paddingLeft: 60, justifyContent: "center" }}>
-              <Text style={{ fontSize: 25, fontWeight: 'bold' }}>Gestión Barrial</Text>
-            </View>
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="Servicios"
-        component={ServiciosStack}
-        options={{
-          headerTitle: () => (
-            <View style={{ padding: 10, paddingLeft: 85, justifyContent: "center" }}>
-              <Text style={{ fontSize: 30, fontWeight: 'bold' }}>Servicios</Text>
-            </View>
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="Reclamos"
-        component={ReclamosStack}
-        options={{
-          headerTitle: () => (
-            <View style={{ padding: 10, paddingLeft: 85, justifyContent: "center" }}>
-              <Text style={{ fontSize: 30, fontWeight: 'bold' }}>Servicios</Text>
-            </View>
-          ),
-        }}
-      />
+    <Drawer.Navigator drawerContent={(props) => <CustomDrawerContent {...props} />}>
+      <Drawer.Screen name="Inicio" component={InicioScreen} options={{
+        headerTitle: () => (
+          <View style={{ padding: 10, paddingLeft: 60, justifyContent: "center" }}>
+            <Text style={{ fontSize: 25, fontWeight: 'bold' }}>Gestión Barrial</Text>
+          </View>
+        ),
+      }} />
+      <Drawer.Screen name="Servicios" component={ServiciosStack} options={{
+        headerTitle: () => (
+          <View style={{ padding: 10, paddingLeft: 85, justifyContent: "center" }}>
+            <Text style={{ fontSize: 30, fontWeight: 'bold' }}>Servicios</Text>
+          </View>
+        ),
+      }} />
+      <Drawer.Screen name="Reclamos" component={ReclamosStack} />
+      <Drawer.Screen name="Detalle" component={Detalle} />
+      <Drawer.Screen name="Notificacion" component={Notificacion} />
+      <Drawer.Screen name="SesionCerrada" component={SesionCerrada} options={{ headerTitle: 'Sesión Cerrada' }} />
+      <Drawer.Screen name="Login" component={LoginScreen} options={{ headerTitle: 'Iniciar Sesión' }} />
     </Drawer.Navigator>
-  );
-}
-
-export function MainStack() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen name="Home" component={DrawerNavigator} options={{ headerShown: false }} />
-      <Stack.Screen name="Detalle" component={Detalle} />
-      <Stack.Screen name="Notificacion" component={Notificacion} />
-      <Stack.Screen name="SesionCerrada" component={SesionCerrada} options={{ headerTitle: 'Sesión Cerrada' }} />
-      <Stack.Screen name="Login" component={LoginScreen} options={{ headerTitle: 'Iniciar Sesión' }} />
-      <Stack.Screen name="InicioVecino" component={InicioVecino} options={{ headerShown: false }} />
-      <Stack.Screen name="InicioInspector" component={InicioInspector} options={{ headerShown: false }} />
-      <Stack.Screen name="DrawerNavigation" component={DrawerNavigation} options={{ headerShown: false }} />
-
-      {/* Este reclamos funciona con la pantalla que vale segun el tipo de usuario */}
-      <Stack.Screen name="Reclamos" component={ReclamosStack} options={{ headerTitle: "Reclamos" }} />
-    </Stack.Navigator>
   );
 }
 
@@ -161,11 +119,13 @@ export default function App() {
   return (
     <NavigationContainer>
       <UserProvider>
-        <MainStack />
+        <DrawerNavigator />
       </UserProvider>
     </NavigationContainer>
   );
 }
+
+
 
 const styles = StyleSheet.create({
   drawerContainer: {

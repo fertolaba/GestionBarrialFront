@@ -6,7 +6,10 @@ export default function SesionCerrada() {
   const navigation = useNavigation();
 
   const handleLogin = () => {
-    navigation.navigate('Login');
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'Login' }],
+    });
   };
 
   return (

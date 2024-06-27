@@ -22,7 +22,7 @@ export default function LoginScreen() {
       return;
     }
 
-    navigation.reset({ index: 0, routes: [{ name: 'Home' }] });
+    navigation.reset({ index: 0, routes: [{ name: 'Inicio' }] });
     Alert.alert('Bienvenido', `Hola ${user.nombre}!`);
   }
 

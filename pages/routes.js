@@ -16,23 +16,22 @@ export const Stack = createStackNavigator();
 
 export function ReclamosStack() {
     return (
-        <Stack.Navigator>
+        <Stack.Navigator initialRouteName='Inicio'>
             <Stack.Screen
-                name="Reclamos"
+                name="Inicio"
                 component={ReclamosScreen}
-                options={{ headerShown: false }} // Mostrar encabezado personalizado para GenerarReclamos
+                options={{ headerShown: false }}
             />
             <Stack.Screen
                 name="GenerarReclamos"
                 component={GenerarReclamos}
-                options={{ headerTitle: 'Generar Reclamos', headerTitle: "Generar reclamo" }}
+                options={{ headerShown: false }}
             />
             <Stack.Screen
                 name="EstadoReclamo"
                 component={EstadoReclamo}
-                options={{ headerTitle: 'Generar Reclamos', headerTitle: "Estado reclamo" }}
+                options={{ headerShown: false }}
             />
-
         </Stack.Navigator>
     );
 }
