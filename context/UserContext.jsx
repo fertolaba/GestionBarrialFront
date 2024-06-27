@@ -22,8 +22,8 @@ export const UserProvider = ({ children }) => {
   }
 
   const logout = async () => {
-    await AsyncStorage.clearItem('documento');
-    await AsyncStorage.clearItem('password');
+    await AsyncStorage.removeItem('documento');
+    await AsyncStorage.removeItem('password');
     setUser(null);
   }
 
