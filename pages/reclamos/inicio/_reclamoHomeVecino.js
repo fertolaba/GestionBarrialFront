@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { StyledButton, StyledText } from '../../components/ui';
 import { useNavigation } from '@react-navigation/native';
+import { StyledButton, StyledText } from '../../../components/ui';
 
 export default function ReclamoHomeVecino() {
 

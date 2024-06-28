@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { StyledButton, StyledTextInput } from '../../components/ui';
+import { StyledButton, StyledTextInput } from '../../../components/ui';
 import { useNavigation } from '@react-navigation/native';
 
 const GenerarReclamos = () => {

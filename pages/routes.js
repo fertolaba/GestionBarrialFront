@@ -3,14 +3,14 @@ import { createStackNavigator } from '@react-navigation/stack';
 import DenunciasScreen from './denuncias/Denuncias';
 import { DenunciaDetalle } from './denuncias/DenunciaDetalle';
 
-import GenerarReclamos from './reclamos/GenerarReclamos';
+import GenerarReclamos from './reclamos/generarReclamo/GenerarReclamos';
 
 import ServiciosScreen from './servicios/ServiciosScreen';
 import ServicioProfesional from './servicios/ServicioProfesional';
 import ServicioComercio from './servicios/ServiciosScreen';
 import Detalle from './servicios/Detalle';
-import EstadoReclamo from './reclamos/EstadoReclamo';
-import ReclamosScreen from './reclamos/ReclamosScreen';
+import EstadoReclamo from './reclamos/estadoReclamo/EstadoReclamo';
+import ReclamosScreen from './reclamos/inicio/ReclamosScreen';
 
 export const Stack = createStackNavigator();
 

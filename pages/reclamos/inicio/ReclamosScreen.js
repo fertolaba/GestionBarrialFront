@@ -1,21 +1,18 @@
 import React from 'react';
 import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useUser } from '../../context/UserContext';
-import { isNullOrUndefined } from '../../utils/misc';
+import { useUser } from '../../../context/UserContext';
 import ReclamoHomeVecino from './_reclamoHomeVecino';
 import ReclamoHomeInspector from './_reclamoHomeInspector';
-import { StyledText } from '../../components/ui';
+import { StyledButton, StyledText } from '../../../components/ui';
 
 export default function ReclamosScreen() {
   const navigation = useNavigation();
   const { user } = useUser()
 
-  if (isNullOrUndefined(user)) navigation.reset({ index: 0, routes: [{ name: 'Login' }] })
-
   let screenPorTipoUsuario = null;
 
-  switch (user.tipoUsuario) {
+  switch (user?.tipoUsuario) {
     case 'vecino':
       screenPorTipoUsuario = <ReclamoHomeVecino />;
       break;
@@ -23,14 +20,13 @@ export default function ReclamosScreen() {
       screenPorTipoUsuario = <ReclamoHomeInspector />;
       break;
     default:
-      screenPorTipoUsuario = <StyledText color='red'>Usuario no reconocido</StyledText>;
-      break;
+      screenPorTipoUsuario = (
+        <View>
+          <StyledText color='red'>Usuario no reconocido</StyledText>
+          <StyledButton title='Volver' variant='secondary' onPress={() => navigation.goBack()} />
+        </View>
+      );
   }
 
-
-  return (
-    <View>
-      {screenPorTipoUsuario}
-    </View>
-  );
+  return screenPorTipoUsuario
 }
