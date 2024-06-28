@@ -3,12 +3,17 @@ import { View, StyleSheet, Image } from 'react-native';
 import { StyledButton, StyledText } from '../../../components/ui';
 import theme from '../../../styles/theme';
 
+import { generatePlaceholderImage } from '../../../utils/images';
+
+
 export const DetalleSitio = ({ navigation, route }) => {
   const { sitio } = route.params;
 
+  let imagenPrincipal = sitio.images?.length > 0 ? sitio.images[0] : generatePlaceholderImage();
+
   return (
     <View style={styles.container}>
-      <Image style={styles.image} source={{ uri: 'https://via.placeholder.com/150' }} />
+      <Image style={styles.image} source={{ uri: imagenPrincipal }} />
       <StyledText style={styles.detailTitle}>{sitio.nombre}</StyledText>
       <StyledText style={styles.label}>Calle:</StyledText>
       <StyledText style={styles.text}>{sitio.calle}</StyledText>

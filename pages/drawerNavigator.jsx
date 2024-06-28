@@ -5,10 +5,9 @@ import { useUser } from "../context/UserContext";
 import { StyledButton, StyledText } from "../components/ui";
 import { NotificationButton } from "../components/NotificationButton";
 
-import { ReclamosStack, SitioStack, DenunciasStack } from "./routes";
 import { InicioScreen } from "./InicioScreen";
-import { LoginScreen } from "./login/LoginScreen";
-import { LogoutScreen } from "./logout/LogoutScreen";
+import { LoginScreen, LogoutScreen } from "./auth";
+import { ReclamosStack, SitioStack, DenunciasStack } from "./routes";
 import { NotificationsScreen } from './notifications/NotificationsScreen';
 
 import Foto from "../assets/foto1.png";

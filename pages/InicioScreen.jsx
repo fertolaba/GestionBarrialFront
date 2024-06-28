@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { API_BASE_URL } from '../constants/constants';
 
 import theme from '../styles/theme';
+import { generatePlaceholderImage } from '../utils/images';
 
 export const InicioScreen = () => {
   const [sitios, setSitios] = useState([]);
@@ -42,7 +43,7 @@ export const InicioScreen = () => {
                 params: { sitio },
               })}
             >
-              <Image style={styles.image} source={{ uri: 'https://via.placeholder.com/150' }} />
+              <Image style={styles.image} source={{ uri: generatePlaceholderImage(150, 150) }} />
               <View style={styles.textContainer}>
                 <Text style={styles.title}>{sitio.cargoDelSitio}</Text>
                 <Text style={styles.description}>{sitio.descripcion}</Text>
