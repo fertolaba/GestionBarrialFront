@@ -1,10 +1,16 @@
-import { Alert, Image, StyleSheet, View } from "react-native"
+import { Image, StyleSheet, View } from "react-native"
 import { StyledButton, StyledText } from "../ui"
 import { generatePlaceholderImage } from "../../utils/images"
 
 import theme from "../../styles/theme"
+import { useUser } from "../../context"
+import { isNullish } from "../../utils/misc"
+import { useNavigation } from "@react-navigation/native";
 
-export const CardNotLoggedIn = ({ navigation }) => {
+
+export const CardNotLoggedIn = () => {
+  const navigation = useNavigation()
+
   return (
     <View style={styles.sinServicioCard}>
       <View>
@@ -17,7 +23,9 @@ export const CardNotLoggedIn = ({ navigation }) => {
 }
 
 
-export const CardSinSitio = ({ navigation }) => {
+export const CardSinSitio = () => {
+  const navigation = useNavigation()
+
   return (
     <View style={styles.sinServicioCard}>
       <View>
@@ -29,7 +37,9 @@ export const CardSinSitio = ({ navigation }) => {
   )
 }
 
-export const CardSitioPropio = ({ sitio, navigation }) => {
+export const CardSitioPropio = ({ sitio }) => {
+  const navigation = useNavigation()
+
   return (
     <View style={styles.cardContainer}>
       <Image source={{ uri: generatePlaceholderImage() }} style={{ position: "absolute", flex: 1, width: "100%", height: "100%", objectFit: "cover" }} />
@@ -69,13 +79,15 @@ export const CardSitioPropio = ({ sitio, navigation }) => {
   )
 }
 
-const SitioUsuario = ({ navigation, user, servicio, loading }) => {
-  if (loading) return <StyledText center>Cargando...</StyledText>
-  if (!user) return <CardNotLoggedIn navigation={navigation} />
-  if (user.tipoUsuario === "inspector") return null;
-  if (!servicio) return <CardSinSitio navigation={navigation} />
+const SitioUsuario = ({ sitio, loading }) => {
+  const { user } = useUser()
 
-  return <CardSitioPropio sitio={servicio} navigation={navigation} />
+  if (loading) return <StyledText center>Cargando...</StyledText>
+  if (isNullish(user)) return <CardNotLoggedIn />
+  if (user.tipoUsuario === "inspector") return null;
+  if (!sitio) return <CardSinSitio />
+
+  return <CardSitioPropio sitio={sitio} />
 }
 
 const styles = StyleSheet.create({

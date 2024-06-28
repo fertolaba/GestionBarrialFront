@@ -31,7 +31,7 @@ export const DeviceProvider = ({ children }) => {
   }, []);
 
   return (
-    <DeviceContext.Provider value={{ location, coords, updateLocation }}>
+    <DeviceContext.Provider value={{ location, coords, getLocation, updateLocation }}>
       {children}
     </DeviceContext.Provider>
   )

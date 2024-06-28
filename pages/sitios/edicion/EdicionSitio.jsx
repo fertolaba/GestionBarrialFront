@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, SafeAreaView, StyleSheet, Alert } from 'react-native';
+import { View, SafeAreaView, StyleSheet, Alert, ScrollView } from 'react-native';
 
 import { StyledButton, StyledTextInput } from '../../../components/ui';
 import { numberRegex } from '../../../utils/regex';
@@ -9,7 +9,8 @@ import { useRoute } from '@react-navigation/native';
 import theme from '../../../styles/theme';
 import sitiosServices from '../../../services/sitios.services';
 import { useUser } from '../../../context/UserContext';
-import { isNullish } from '../../../utils/misc';
+import { exists, isNullish } from '../../../utils/misc';
+import { useDevice } from '../../../context/DeviceContext';
 
 const defaultSitio = {
   cargoDelSitio: `Sitio de Juan Perez`,
@@ -31,7 +32,31 @@ export const EdicionSitio = ({ navigation }) => {
   const { user } = useUser();
   const [servicio, setServicio] = useState(sitio ?? defaultSitio)
 
+  const [disableLocationButton, setDisableLocationButton] = useState(false);
   const [disableButton, setDisableButton] = useState(false);
+
+  const { getLocation } = useDevice();
+
+  const updateLocation = async () => {
+    const location = await getLocation();
+    if (exists(location)) {
+      setServicio({ ...servicio, latitud: String(location.coords.latitude), longitud: String(location.coords.longitude) });
+    } else {
+      Alert.alert('No se pudo obtener la ubicación');
+    }
+  }
+
+  const handleLocationUpdateRequest = async () => {
+    setDisableLocationButton(true);
+
+    Alert.alert("Actualizar ubicacion?", "Se utilizará la ubicacion del dispositivo", [
+      { text: "Actualizar", onPress: updateLocation },
+      { text: 'Cancelar', style: 'cancel', },
+    ])
+
+    setDisableLocationButton(false);
+  }
+
 
   const handleChange = (servicioKey, value) => {
     setServicio({ ...servicio, [servicioKey]: value });
@@ -92,93 +117,110 @@ export const EdicionSitio = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <ScrollView style={styles.content}>
 
-      <StyledTextInput
-        style={styles.input}
-        placeholder="A cargo de quien esta el sitio?"
-        value={servicio.cargoDelSitio}
-        onChangeText={t => handleChange('cargoDelSitio', t)}
-      />
+        <StyledTextInput
+          style={styles.input}
+          placeholder="A cargo de quien esta el sitio?"
+          value={servicio.cargoDelSitio}
+          onChangeText={t => handleChange('cargoDelSitio', t)}
+        />
 
-      <StyledTextInput
-        style={styles.input}
-        placeholder="Descripción (Max. 1000)"
-        value={servicio.descripcion}
-        onChangeText={t => handleChange('descripcion', t)}
-      />
+        <StyledTextInput
+          style={styles.input}
+          placeholder="Descripción (Max. 1000)"
+          value={servicio.descripcion}
+          onChangeText={t => handleChange('descripcion', t)}
+        />
 
-      <StyledTextInput
-        style={styles.input}
-        placeholder="Calle"
-        value={servicio.calle}
-        onChangeText={t => handleChange('calle', t)}
-      />
+        <StyledTextInput
+          style={styles.input}
+          placeholder="Calle"
+          value={servicio.calle}
+          onChangeText={t => handleChange('calle', t)}
+        />
 
-      <StyledTextInput
-        style={styles.input}
-        placeholder="Horario apertura"
-        value={servicio.apertura}
-        onChangeText={t => handleChange('apertura', t)}
-      />
+        <StyledTextInput
+          style={styles.input}
+          placeholder="Horario apertura"
+          value={servicio.apertura}
+          onChangeText={t => handleChange('apertura', t)}
+        />
 
 
-      <StyledTextInput
-        style={styles.input}
-        placeholder="Horario cierre"
-        value={servicio.cierre}
-        onChangeText={t => handleChange('cierre', t)}
-      />
+        <StyledTextInput
+          style={styles.input}
+          placeholder="Horario cierre"
+          value={servicio.cierre}
+          onChangeText={t => handleChange('cierre', t)}
+        />
 
-      <StyledTextInput
-        style={styles.input}
-        placeholder="Comentarios"
-        value={servicio.comentarios}
-        onChangeText={t => handleChange('comentarios', t)}
-      />
+        <StyledTextInput
+          style={styles.input}
+          placeholder="Comentarios"
+          value={servicio.comentarios}
+          onChangeText={t => handleChange('comentarios', t)}
+        />
 
-      <StyledTextInput
-        style={styles.input}
-        placeholder="Entre calle A"
-        value={servicio.entreCalleA}
-        onChangeText={t => handleChange('entreCalleA', t)}
-      />
+        <StyledTextInput
+          style={styles.input}
+          placeholder="Entre calle A"
+          value={servicio.entreCalleA}
+          onChangeText={t => handleChange('entreCalleA', t)}
+        />
 
-      <StyledTextInput
-        style={styles.input}
-        placeholder="Entre calle B"
-        value={servicio.entreCalleB}
-        onChangeText={t => handleChange('entreCalleB', t)}
-      />
+        <StyledTextInput
+          style={styles.input}
+          placeholder="Entre calle B"
+          value={servicio.entreCalleB}
+          onChangeText={t => handleChange('entreCalleB', t)}
+        />
 
-      <StyledTextInput
-        style={styles.input}
-        placeholder="Número"
-        value={servicio.numero}
-        onChangeText={t => handleChange('numero', t)}
-        keyboardType="numeric"
-      />
+        <StyledTextInput
+          style={styles.input}
+          placeholder="Número"
+          value={servicio.numero}
+          onChangeText={t => handleChange('numero', t)}
+          keyboardType="numeric"
+        />
 
-      <StyledTextInput
-        style={styles.input}
-        placeholder="Latitud"
-        value={servicio.latitud}
-        onChangeText={t => handleChange('latitud', t)}
-        keyboardType="numeric"
-      />
 
-      <StyledTextInput
-        style={styles.input}
-        placeholder="Longitud"
-        value={servicio.longitud}
-        onChangeText={t => handleChange('longitud', t)}
-        keyboardType="numeric"
-      />
+        <View>
+          <View style={{ flex: 4 }}>
+            <StyledTextInput
+              disabled
+              style={styles.input}
+              placeholder="Latitud"
+              value={servicio.latitud}
+              onChangeText={t => handleChange('latitud', t)}
+              keyboardType="numeric"
+            />
 
-      <View style={styles.controls}>
-        <StyledButton title={Boolean(sitio) ? "Editar" : "Crear"} style={styles.button} variant={"primary"} onPress={handleSubmit} disabled={disableButton} />
-        <StyledButton title="Atras" style={styles.button} variant={"secondary"} onPress={goBack} disabled={disableButton} />
-      </View>
+            <StyledTextInput
+              disabled
+              style={styles.input}
+              placeholder="Longitud"
+              value={servicio.longitud}
+              onChangeText={t => handleChange('longitud', t)}
+              keyboardType="numeric"
+            />
+          </View>
+          <StyledButton
+            disabled={disableLocationButton}
+            title="Actualizar ubicación"
+            style={styles.button}
+            variant={"warning"}
+            onPress={handleLocationUpdateRequest}
+          />
+        </View>
 
+
+        <View style={styles.controls}>
+          <StyledButton title={exists(sitio) ? "Editar" : "Crear"} style={styles.button} variant={"primary"} onPress={handleSubmit} disabled={disableButton} />
+          <StyledButton title="Cancelar" style={styles.button} variant={"secondary"} onPress={goBack} disabled={disableButton} />
+        </View>
+
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -191,6 +233,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.global.screenInnerPadding,
     gap: 10,
   },
+
+  content: {
+    width: '100%',
+    flex: 1,
+  },
+
   input: {
     width: '100%',
   },

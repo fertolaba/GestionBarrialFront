@@ -25,6 +25,8 @@ class SitiosServices {
     } catch (error) {
       console.error('Error fetching data:', error);
     }
+
+    return []
   };
 
 
@@ -42,11 +44,10 @@ class SitiosServices {
   };
 
   saveSitio = async (sitio, user) => {
-    const url = `${this._apiUrl}/${sitioConDueno ? "editar" : "crear"}`;
     const sitioConDueno = exists(sitio?.documento);
 
     try {
-      const response = await fetchWithTimeout(url, {
+      const response = await fetchWithTimeout(_apiUrl, {
         method: sitioConDueno ? "PUT" : 'POST',
         headers: {
           'Content-Type': 'application/json',

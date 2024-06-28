@@ -1,1 +1,1 @@
-export const numberRegex = /^[0-9\b]+$/
+export const numberRegex = /^-?[0-9]+(\.[0-9]+)?$/

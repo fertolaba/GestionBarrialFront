@@ -1,39 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, Pressable } from 'react-native';
+import { View, StyleSheet, ScrollView, Image, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
-import { API_BASE_URL } from '../constants/constants';
 
 import theme from '../styles/theme';
 import { generatePlaceholderImage } from '../utils/images';
+import sitiosServices from '../services/sitios.services';
+import { StyledText } from '../components/ui';
 
 export const InicioScreen = () => {
+  const [loading, setLoading] = useState(true);
   const [sitios, setSitios] = useState([]);
   const navigation = useNavigation();
 
   useEffect(() => {
-    const url = API_BASE_URL + '/sitios/listar';
-
-    const fetchData = async () => {
-      try {
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        setSitios(data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData();
+    Promise.resolve()
+      .then(() => setLoading(true))
+      .then(() => sitiosServices.getSitios())
+      .then(setSitios)
+      .catch(console.error)
+      .finally(() => setLoading(false));
   }, []);
 
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scrollView}>
         <View>
+          {loading && <StyledText>Cargando...</StyledText>}
           {sitios.map((sitio, index) => (
             <Pressable
               key={index}
@@ -45,8 +37,8 @@ export const InicioScreen = () => {
             >
               <Image style={styles.image} source={{ uri: generatePlaceholderImage(150, 150) }} />
               <View style={styles.textContainer}>
-                <Text style={styles.title}>{sitio.cargoDelSitio}</Text>
-                <Text style={styles.description}>{sitio.descripcion}</Text>
+                <StyledText style={styles.title}>{sitio.cargoDelSitio}</StyledText>
+                <StyledText style={styles.description}>{sitio.descripcion}</StyledText>
               </View>
             </Pressable>
           ))}

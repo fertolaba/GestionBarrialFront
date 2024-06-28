@@ -4,15 +4,26 @@ import { StyledButton, StyledText } from '../../../components/ui';
 import theme from '../../../styles/theme';
 
 import { generatePlaceholderImage } from '../../../utils/images';
+import { useUser } from '../../../context';
 
 
 export const DetalleSitio = ({ navigation, route }) => {
+  const { user } = useUser();
   const { sitio } = route.params;
 
   let imagenPrincipal = sitio.images?.length > 0 ? sitio.images[0] : generatePlaceholderImage();
 
   return (
     <View style={styles.container}>
+      {
+        user?.documento === sitio.documento && (
+          <View style={styles.ownSiteLabel}>
+            <StyledText bold center>Este es tu sitio</StyledText>
+            <StyledText center>Así lo verán otros usuarios de la aplicación</StyledText>
+          </View>
+        )
+      }
+
       <Image style={styles.image} source={{ uri: imagenPrincipal }} />
       <StyledText style={styles.detailTitle}>{sitio.nombre}</StyledText>
       <StyledText style={styles.label}>Calle:</StyledText>
@@ -37,6 +48,14 @@ const styles = StyleSheet.create({
   container: {
     padding: theme.global.screenInnerPadding,
   },
+
+  ownSiteLabel: {
+    backgroundColor: theme.colors.success,
+    padding: 10,
+    marginBottom: 20,
+    borderRadius: 5,
+  },
+
   image: {
     width: '100%',
     height: 200,

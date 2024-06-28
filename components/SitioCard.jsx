@@ -3,7 +3,7 @@ import theme from "../styles/theme";
 import { StyledText } from "./ui";
 import { generatePlaceholderImage } from "../utils/images";
 
-export const ServiciosCard = ({ servicio, isDetail, ...props }) => {
+export const SitioCard = ({ sitio, isDetail, ...props }) => {
 
   const appliedCardStyle = [styles.card, isDetail && styles.cardOnDetail]
   const appliedImageStyle = [styles.cardImage, isDetail && styles.imageOnDetail]

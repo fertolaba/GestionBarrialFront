@@ -9,24 +9,24 @@ import { useUser } from '../../context/UserContext';
 
 
 const SitiosScreen = () => {
-  const navigation = useNavigation();
   const isFocused = useIsFocused()
 
   const { user } = useUser()
 
   const [isLoading, setIsloading] = useState(true);
-  const [servicioUsuario, setServicioUsuario] = useState(null)
+  const [sitioUsuario, setSitioUsuario] = useState(null)
 
   useEffect(() => {
     user?.documento && isFocused
       ? sitiosServices.getSitioByDocumento(user.documento)
-        .then(servicio => {
-          if (servicio)
-            setServicioUsuario({
-              ...servicio,
-              latitud: String(servicio.latitud),
-              longitud: String(servicio.longitud),
-              numero: String(servicio.numero),
+        .then(sitio => {
+          console.log(sitio)
+          if (sitio)
+            setSitioUsuario({
+              ...sitio,
+              latitud: String(sitio.latitud),
+              longitud: String(sitio.longitud),
+              numero: String(sitio.numero),
             })
 
         })
@@ -35,7 +35,7 @@ const SitiosScreen = () => {
         .finally(() => setIsloading(false))
       : setIsloading(false)
 
-    !Boolean(user) && setServicioUsuario(null);
+    !Boolean(user) && setSitioUsuario(null);
 
   }, [isFocused, user?.documento])
 
@@ -44,7 +44,7 @@ const SitiosScreen = () => {
 
       <View style={styles.container}>
 
-        <SitioUsuario loading={isLoading} servicio={servicioUsuario} user={user} navigation={navigation} />
+        <SitioUsuario loading={isLoading} sitio={sitioUsuario} />
 
         <View>
 

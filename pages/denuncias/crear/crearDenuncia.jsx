@@ -9,19 +9,9 @@ const CrearDenuncia = () => {
   const [numero, setNumero] = useState('');
   const [dueno, setDueno] = useState('');
   const [causa, setCausa] = useState('');
-  const [isSelected, setSelection] = useState(false);
 
   return (
     <View style={styles.container}>
-
-      <View style={styles.toggleContainer}>
-        <StyledButton style={styles.toggleButtonActive}>
-          <StyledText style={styles.toggleButtonTextActive}>Comercio</StyledText>
-        </StyledButton>
-        <StyledButton style={styles.toggleButtonInactive}>
-          <StyledText style={styles.toggleButtonTextInactive}>Vecino</StyledText>
-        </StyledButton>
-      </View>
 
       <StyledTextInput
         style={styles.input}
