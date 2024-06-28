@@ -66,15 +66,16 @@ export const EdicionSitio = ({ navigation }) => {
 
     try {
       Promise.resolve(() => setDisableButton(true))
-        .then(() => sitiosServices.saveSitio({ ...servicio, documento: user.documento }, !isNullish(sitio)))
+        .then(() => sitiosServices.saveSitio(servicio, user))
         .then((ok) => { // Llega vacio desde el back, no es ni json
           if (!ok) {
             throw new Error('Error al enviar los datos');
           }
 
+          // Si no llega una respuesta ok == false, sera un ok (certero?)
           console.info('Salvado por el backend', ok)
           Alert.alert('Datos enviados correctamente')
-          navigation.navigate('SeleccionTipo')
+          navigation.navigate('Sitios', { screen: 'Inicio' })
         })
         .catch(err => {
           console.error('Error desde el backend:')

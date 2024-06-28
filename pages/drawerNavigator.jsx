@@ -20,11 +20,13 @@ const Drawer = createDrawerNavigator();
 function CustomDrawerContent({ navigation }) {
     const { user, logout } = useUser();
 
-    const handlePress = (screenName) => {
-        if (!user && screenName !== 'Gestion Barrial') {
+    const handlePress = (path) => {
+        if (isNullish(user)) {
             ToastAndroid.show('Debe iniciar sesión', ToastAndroid.SHORT);
         } else {
-            navigation.navigate(screenName);
+            if (path === 'Inicio') return navigation.navigate(path);
+
+            navigation.navigate(path, { screen: 'Inicio' });
         }
     };
 
@@ -37,10 +39,10 @@ function CustomDrawerContent({ navigation }) {
     };
 
     const rutasDrawer = [
-        { title: 'Inicio', route: 'Inicio' },
-        { title: 'Reclamos', route: 'Reclamos' },
-        { title: 'Denuncias', route: 'Denuncias' },
-        { title: 'Sitios', route: 'Sitios' }
+        { title: 'Inicio', path: 'Inicio' },
+        { title: 'Reclamos', path: 'Reclamos', },
+        { title: 'Denuncias', path: 'Denuncias', },
+        { title: 'Sitios', path: 'Sitios' },
     ];
 
     const BotonSesion = () => isNullish(user)
@@ -77,7 +79,7 @@ function CustomDrawerContent({ navigation }) {
                         key={index}
                         color='white'
                         style={styles.drawerButton}
-                        onPress={() => handlePress(ruta.route)}
+                        onPress={() => handlePress(ruta.path)}
                         title={ruta.title}
                     />
                 ))}

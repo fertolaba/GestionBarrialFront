@@ -1,4 +1,5 @@
 import { API_BASE_URL } from "../constants/constants";
+import { exists } from "../utils/misc";
 import fetchWithTimeout from "./_fetchWithTimeout";
 
 class SitiosServices {
@@ -40,16 +41,20 @@ class SitiosServices {
     }
   };
 
-  saveSitio = async (sitio, isUpdate) => {
-    const url = `${this._apiUrl}/${isUpdate ? "editar" : "crear"}`;
-    console.info({ sitio })
+  saveSitio = async (sitio, user) => {
+    const url = `${this._apiUrl}/${sitioConDueno ? "editar" : "crear"}`;
+    const sitioConDueno = exists(sitio?.documento);
+
     try {
       const response = await fetchWithTimeout(url, {
-        method: isUpdate ? "PUT" : 'POST',
+        method: sitioConDueno ? "PUT" : 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(sitio),
+        body: JSON.stringify({
+          ...sitio,
+          documento: user.documento
+        }),
       })
 
       if (!response.ok) {
@@ -58,7 +63,7 @@ class SitiosServices {
       return response;
     } catch (error) {
       console.error('Error fetching data:', error);
-      
+
       return false;
     }
   };
