@@ -1,19 +1,16 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { StyledButton } from '../components/ui';
+import { View, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { StyledButton, StyledText } from '../../components/ui';
 
-export default function ReclamosVecino() {
+export default function ReclamoHomeVecino() {
 
   const navigation = useNavigation();
 
-  const goToGenerarReclamos = () => {
-    navigation.navigate('GenerarReclamos');
-  };
-
   return (
     <View style={styles.container}>
-      <StyledButton variant="primary" onPress={goToGenerarReclamos}>
+      <StyledText>SOY PANTALLA DE RECLAMO -&gt; VECINO </StyledText>
+      <StyledButton variant="primary" onPress={() => navigation.navigate('GenerarReclamos')}>
         Generar reclamo
       </StyledButton>
       <StyledButton variant="primary" onPress={() => navigation.navigate('EstadoReclamo')}>
@@ -22,7 +19,7 @@ export default function ReclamosVecino() {
       <StyledButton variant="primary" onPress={() => navigation.navigate('ReclamosPendientes')}>
         Reclamos pendientes
       </StyledButton>
-    </View>
+    </View >
   );
 
 }

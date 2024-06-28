@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { View, TouchableOpacity, Image, StyleSheet, CheckBox, Button } from 'react-native';
-import { StyledText, StyledTextInput, StyledButton } from '../components/ui';
+import { StyledText, StyledTextInput, StyledButton } from '../../../components/ui';
 
-const DenunciasVecino = () => {
+const CrearDenuncia = () => {
   const [calle, setCalle] = useState('');
   const [numero, setNumero] = useState('');
   const [dueno, setDueno] = useState('');
@@ -139,4 +139,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default DenunciasVecino;
+export default CrearDenuncia;

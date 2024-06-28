@@ -49,6 +49,7 @@ export const StyledButton = ({
 const styles = StyleSheet.create({
   naked: {
     elevation: 0,
+    shadowColor: 'transparent',
   },
   button: {
     borderRadius: 4,

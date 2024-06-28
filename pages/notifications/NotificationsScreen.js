@@ -1,8 +1,8 @@
 import { View, Text, StyleSheet } from 'react-native';
 import React from 'react';
 
-export default function Notificacion({ route }) {
-  const { message = 'No hay mensaje disponible' } = route.params ?? {};
+export default function NotificationsScreen({ route }) {
+  const { message = 'No hay mensajes disponibles' } = route.params ?? {};
 
   return (
     <View style={styles.container}>

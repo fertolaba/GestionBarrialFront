@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { StyledText } from '../../../components/ui';
+import { StyledText } from '../../components/ui';
 //import { StyledButton } from '../components/ui';
 //import { useNavigation } from '@react-navigation/native';
 

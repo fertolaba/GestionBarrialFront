@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { SafeAreaView, View, Image, Text, ToastAndroid } from 'react-native';
 import LoginScreen from './pages/login/LoginScreen';
 import InicioScreen from './pages/InicioScreen';
 import Detalle from './pages/servicios/Detalle';
-import Notificacion from './Notificacion';
 import LogoutScreen from './pages/logout/LogoutScreen';
 import { ServiciosStack, ReclamosStack } from './pages/routes';
 import { UserProvider, useUser } from './context/UserContext';
@@ -14,6 +13,8 @@ import { StyledButton, StyledText } from './components/ui';
 import { isNullOrUndefined } from './utils/misc';
 import Foto from "./assets/foto1.png";
 import { StyleSheet } from 'react-native';
+import NotificationsScreen from './pages/notifications/NotificationsScreen';
+import { NotificationButton } from './components/NotificationButton';
 
 const Drawer = createDrawerNavigator();
 
@@ -90,8 +91,15 @@ function CustomDrawerContent({ navigation }) {
 }
 
 function DrawerNavigator() {
+  const { user } = useUser();
+
   return (
-    <Drawer.Navigator drawerContent={(props) => <CustomDrawerContent {...props} />}>
+    <Drawer.Navigator
+      drawerContent={(props) => <CustomDrawerContent {...props} />}
+      screenOptions={() => ({
+        headerRight: () => !isNullOrUndefined(user) && <NotificationButton />
+      })}
+    >
       <Drawer.Screen name="Inicio" component={InicioScreen} options={{
         headerTitle: () => (
           <View style={{ padding: 10, paddingLeft: 60, justifyContent: "center" }}>
@@ -108,7 +116,7 @@ function DrawerNavigator() {
       }} />
       <Drawer.Screen name="Reclamos" component={ReclamosStack} />
       <Drawer.Screen name="Detalle" component={Detalle} />
-      <Drawer.Screen name="Notificacion" component={Notificacion} />
+      <Drawer.Screen name="Notificacion" component={NotificationsScreen} />
       <Drawer.Screen name="Login" component={LoginScreen} options={{ headerTitle: 'Iniciar Sesión' }} />
       <Drawer.Screen name="Logout" component={LogoutScreen} options={{ headerTitle: 'Sesión Cerrada' }} />
     </Drawer.Navigator>

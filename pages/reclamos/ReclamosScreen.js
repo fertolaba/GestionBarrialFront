@@ -1,10 +1,10 @@
 import React from 'react';
 import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useUser } from '../../../context/UserContext';
+import { useUser } from '../../context/UserContext';
 import ReclamoHomeVecino from './_reclamoHomeVecino';
 import ReclamoHomeInspector from './_reclamoHomeInspector';
-import { StyledButton, StyledText } from '../../../components/ui';
+import { StyledButton, StyledText } from '../../components/ui';
 
 export default function ReclamosScreen() {
   const navigation = useNavigation();
