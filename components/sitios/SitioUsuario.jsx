@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   cardContainer: {
     borderRadius: theme.global.borderRadius,
     overflow: "hidden",
-    minHeight: "40%",
+    height: "40%",
   },
 
   cardInnerWrapper: {
@@ -92,6 +92,8 @@ const styles = StyleSheet.create({
   },
 
   cardInner: {
+    width: "100%",
+    height: "100%",
     padding: theme.global.screenInnerPadding / 3,
     borderRadius: theme.global.borderRadius,
     backgroundColor: "rgba(255,255,255,0.85)",
