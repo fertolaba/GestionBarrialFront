@@ -3,7 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import GenerarReclamos from './reclamos/generarReclamo/GenerarReclamos';
 
 import SitiosScreen from './sitios/SitiosScreen';
-import ServicioProfesional from './sitios/ServicioProfesional';
+import { EdicionSitio } from './sitios/edicion/EdicionSitio';
 import ServicioComercio from './sitios/SitiosScreen';
 import { DetalleSitio } from './sitios/detalle/DetalleSitio';
 import EstadoReclamo from './reclamos/estadoReclamo/EstadoReclamo';
@@ -54,23 +54,17 @@ export const DenunciasStack = () => {
 
 export const SitioStack = () => {
     return (
-        <Stack.Navigator initialRouteName='SeleccionTipo'>
+        <Stack.Navigator initialRouteName='Inicio'>
             <Stack.Screen
-                name="SeleccionTipo"
+                name="Inicio"
                 component={SitiosScreen}
                 options={{ headerShown: false }}
             />
             <Stack.Screen
-                name="CrearServicioProfesional"
-                component={ServicioProfesional}
+                name="Edicion"
+                component={EdicionSitio}
                 options={{ headerShown: false }}
             />
-            <Stack.Screen
-                name="EditarServicioProfesional"
-                component={ServicioProfesional}
-                options={{ headerShown: false }}
-            />
-
             <Stack.Screen
                 name="Detalle"
                 component={DetalleSitio}

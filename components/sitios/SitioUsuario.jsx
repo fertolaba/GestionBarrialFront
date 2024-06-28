@@ -24,7 +24,7 @@ export const CardSinSitio = ({ navigation }) => {
         <StyledText bold center fontSize={'subheading'}>Todavía no creaste tu sitio</StyledText>
         <StyledText center fontSize={'subtitle'}>Crea tu sitio para que los vecinos puedan ver tu comercio o los servicios que brindas</StyledText>
       </View>
-      <StyledButton title={"Crea tu sitio"} variant={'success'} style={styles.btn} onPress={() => navigation.navigate("CrearServicioProfesional")} />
+      <StyledButton title={"Crea tu sitio"} variant={'success'} style={styles.btn} onPress={() => navigation.navigate("Sitios", { screen: "EdicionSitio" })} />
     </View>
   )
 }
@@ -33,20 +33,35 @@ export const CardSitioPropio = ({ sitio, navigation }) => {
   return (
     <View style={styles.cardContainer}>
       <Image source={{ uri: generatePlaceholderImage() }} style={{ position: "absolute", flex: 1, width: "100%", height: "100%", objectFit: "cover" }} />
-      <View style={styles.cardInner}>
-        <View style={styles.textContainer}>
-          <StyledText variant={'success'} style={{ marginBottom: 5 }} bold>Tu sitio</StyledText>
-          <StyledText bold center fontSize={'heading'}>{sitio.cargoDelSitio}</StyledText>
-          <StyledText center fontSize={'subtitle'}>{sitio.descripcion}</StyledText>
+      <View style={styles.cardInnerWrapper}>
+        <View style={styles.cardInner}>
+          <View style={styles.textContainer}>
+            <StyledText variant={'success'} style={{ marginBottom: 5 }} bold>Tu sitio</StyledText>
+            <StyledText bold center fontSize={'heading'}>{sitio.cargoDelSitio}</StyledText>
+            <StyledText center fontSize={'subtitle'}>{sitio.descripcion}</StyledText>
 
-          <View style={styles.controlsContainer}>
-            <StyledButton title={"Ver sitio"} variant={'success'} style={styles.btn} onPress={() => navigation.navigate("DetalleServicio", { sitio })} />
-            <StyledButton
-              title={"Editar"}
-              variant={'primary'}
-              style={styles.btn}
-              onPress={() => navigation.navigate("EditarServicioProfesional", { sitio })}
-            />
+            <View style={styles.controlsContainer}>
+
+              <StyledButton
+                title={"Ver sitio"}
+                variant={'success'}
+                style={styles.btn}
+                onPress={() => navigation.navigate("Sitios", {
+                  screen: "Detalle",
+                  params: { sitio }
+                })} />
+
+              <StyledButton
+                title={"Editar"}
+                variant={'primary'}
+                style={styles.btn}
+                onPress={() => navigation.navigate("Sitios", {
+                  screen: "Edicion",
+                  params: { sitio }
+                })}
+              />
+
+            </View>
           </View>
         </View>
       </View>
@@ -68,15 +83,16 @@ const styles = StyleSheet.create({
     borderRadius: theme.global.borderRadius,
     overflow: "hidden",
     minHeight: "40%",
-    height: "40%",
+  },
+
+  cardInnerWrapper: {
+    width: "100%",
+    height: "100%",
+    padding: theme.global.screenInnerPadding / 2,
   },
 
   cardInner: {
-    width: "80%",
-    height: "80%",
-    margin: "auto",
-    padding: 15,
-
+    padding: theme.global.screenInnerPadding / 3,
     borderRadius: theme.global.borderRadius,
     backgroundColor: "rgba(255,255,255,0.85)",
   },

@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { View, SafeAreaView, StyleSheet, Alert } from 'react-native';
 
-import { StyledButton, StyledTextInput } from '../../components/ui';
-import { numberRegex } from '../../utils/regex';
+import { StyledButton, StyledTextInput } from '../../../components/ui';
+import { numberRegex } from '../../../utils/regex';
 
 import { useRoute } from '@react-navigation/native';
 
-import theme from '../../styles/theme';
-import sitiosServices from '../../services/sitios.services';
-import { useUser } from '../../context/UserContext';
-import { isNullOrUndefined } from '../../utils/misc';
+import theme from '../../../styles/theme';
+import sitiosServices from '../../../services/sitios.services';
+import { useUser } from '../../../context/UserContext';
+import { isNullOrUndefined } from '../../../utils/misc';
 
 const defaultSitio = {
   cargoDelSitio: `Sitio de Juan Perez`,
@@ -25,7 +25,7 @@ const defaultSitio = {
   latitud: "",
 }
 
-const ServicioProfesional = ({ navigation }) => {
+export const EdicionSitio = ({ navigation }) => {
   const route = useRoute();
   const sitio = route.params?.sitio ?? null;
   const { user } = useUser();
@@ -70,8 +70,8 @@ const ServicioProfesional = ({ navigation }) => {
         .then((ok) => { // Llega vacio desde el back, no es ni json
           if (!ok) {
             throw new Error('Error al enviar los datos');
-          } 
-          
+          }
+
           console.info('Salvado por el backend', ok)
           Alert.alert('Datos enviados correctamente')
           navigation.navigate('SeleccionTipo')
@@ -206,4 +206,3 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ServicioProfesional;
