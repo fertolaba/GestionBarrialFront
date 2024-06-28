@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, Image, StyleSheet, CheckBox, Button } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { StyledText, StyledTextInput, StyledButton } from '../../../components/ui';
+
+import { StyledButton } from '../../../components/ui';
 
 const CrearDenuncia = () => {
   const [calle, setCalle] = useState('');
@@ -13,12 +15,12 @@ const CrearDenuncia = () => {
     <View style={styles.container}>
 
       <View style={styles.toggleContainer}>
-        <TouchableOpacity style={styles.toggleButtonActive}>
+        <StyledButton style={styles.toggleButtonActive}>
           <StyledText style={styles.toggleButtonTextActive}>Comercio</StyledText>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.toggleButtonInactive}>
+        </StyledButton>
+        <StyledButton style={styles.toggleButtonInactive}>
           <StyledText style={styles.toggleButtonTextInactive}>Vecino</StyledText>
-        </TouchableOpacity>
+        </StyledButton>
       </View>
 
       <StyledTextInput
@@ -57,12 +59,12 @@ const CrearDenuncia = () => {
         <StyledText style={styles.checkboxText}>Al marcar esta casilla, confirmo que la información proporcionada en esta denuncia es precisa y verdadera, y entiendo las implicaciones legales de proporcionar información falsa.</StyledText>
       </View>
 
-      <TouchableOpacity>
-        <StyledButton
-          variant={'primary'}
-          fontSize={'subheading'}
-        >Generar reclamo</StyledButton>
-      </TouchableOpacity>
+      <StyledButton
+        variant={'primary'}
+        fontSize={'subheading'}
+      >
+        Generar reclamo
+      </StyledButton>
     </View>
   );
 }

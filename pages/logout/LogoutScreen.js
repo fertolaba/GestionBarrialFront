@@ -3,7 +3,7 @@ import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StyledButton } from '../../components/ui';
 
-export default function LogoutScreen() {
+export const LogoutScreen = () => {
   const navigation = useNavigation();
 
   const handleBackToHome = () => {

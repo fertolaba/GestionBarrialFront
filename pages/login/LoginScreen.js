@@ -9,7 +9,7 @@ import { useState, useEffect } from 'react';
 import { useUser } from '../../context/UserContext';
 import { isNullOrUndefined } from '../../utils/misc';
 
-export default function LoginScreen() {
+export const LoginScreen = () => {
   const navigation = useNavigation();
   const { user, login, logout } = useUser();
 

@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, StyleSheet, Pressable } from 'react-native';
 
 export function CreateButton(props) {
   const { onPress, text } = props;
 
   return (
-    <TouchableOpacity
+    <Pressable
       style={{
         ...styles.button,
         backgroundColor: "#0a0a0a"
@@ -20,7 +20,7 @@ export function CreateButton(props) {
       >
         {text}
       </Text>
-    </TouchableOpacity>
+    </Pressable>
   );
 }
 
@@ -28,7 +28,7 @@ export function StateButton(props) {
   const { onPress, text } = props;
 
   return (
-    <TouchableOpacity
+    <Pressable
       style={{
         ...styles.button,
         backgroundColor: "#000080"
@@ -43,7 +43,7 @@ export function StateButton(props) {
       >
         {text}
       </Text>
-    </TouchableOpacity>
+    </Pressable>
   );
 }
 

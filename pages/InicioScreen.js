@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import theme from '../styles/theme';
+
 import { API_BASE_URL } from '../constants/constants';
 
-export default function InicioScreen() {
+import theme from '../styles/theme';
+
+export const InicioScreen = () => {
   const [sitios, setSitios] = useState([]);
   const navigation = useNavigation();
 
   useEffect(() => {
     const url = API_BASE_URL + '/sitios/listar';
-    
+
     const fetchData = async () => {
       try {
         const response = await fetch(url);
@@ -32,17 +34,20 @@ export default function InicioScreen() {
       <ScrollView style={styles.scrollView}>
         <View>
           {sitios.map((sitio, index) => (
-            <TouchableOpacity
+            <Pressable
               key={index}
               style={styles.sitioContainer}
-              onPress={() => navigation.navigate('Detalle', { sitio })}
+              onPress={() => navigation.navigate('Sitios', {
+                screen: "Detalle",
+                params: { sitio },
+              })}
             >
               <Image style={styles.image} source={{ uri: 'https://via.placeholder.com/150' }} />
               <View style={styles.textContainer}>
                 <Text style={styles.title}>{sitio.cargoDelSitio}</Text>
                 <Text style={styles.description}>{sitio.descripcion}</Text>
               </View>
-            </TouchableOpacity>
+            </Pressable>
           ))}
         </View>
       </ScrollView>

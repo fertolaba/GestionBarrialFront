@@ -2,10 +2,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import GenerarReclamos from './reclamos/generarReclamo/GenerarReclamos';
 
-import ServiciosScreen from './servicios/ServiciosScreen';
-import ServicioProfesional from './servicios/ServicioProfesional';
-import ServicioComercio from './servicios/ServiciosScreen';
-import Detalle from './servicios/Detalle';
+import SitiosScreen from './sitios/SitiosScreen';
+import ServicioProfesional from './sitios/ServicioProfesional';
+import ServicioComercio from './sitios/SitiosScreen';
+import { DetalleSitio } from './sitios/detalle/DetalleSitio';
 import EstadoReclamo from './reclamos/estadoReclamo/EstadoReclamo';
 import DenunciasScreen from './denuncias/DenunciasScreen';
 import { DenunciaDetalle } from './denuncias/detalle/DenunciaDetalle';
@@ -13,7 +13,7 @@ import ReclamosScreen from './reclamos/ReclamosScreen';
 
 export const Stack = createStackNavigator();
 
-export function ReclamosStack() {
+export const ReclamosStack = () => {
     return (
         <Stack.Navigator initialRouteName='Inicio'>
             <Stack.Screen
@@ -35,7 +35,7 @@ export function ReclamosStack() {
     );
 }
 
-export function DenunciasStack() {
+export const DenunciasStack = () => {
     return (
         <Stack.Navigator>
             <Stack.Screen
@@ -52,12 +52,12 @@ export function DenunciasStack() {
     );
 }
 
-export function ServiciosStack() {
+export const SitioStack = () => {
     return (
-        <Stack.Navigator>
+        <Stack.Navigator initialRouteName='SeleccionTipo'>
             <Stack.Screen
                 name="SeleccionTipo"
-                component={ServiciosScreen}
+                component={SitiosScreen}
                 options={{ headerShown: false }}
             />
             <Stack.Screen
@@ -72,8 +72,8 @@ export function ServiciosStack() {
             />
 
             <Stack.Screen
-                name="DetalleServicio"
-                component={Detalle}
+                name="Detalle"
+                component={DetalleSitio}
                 options={{ headerShown: false }}
             />
 

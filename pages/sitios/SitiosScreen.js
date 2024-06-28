@@ -8,7 +8,7 @@ import sitiosServices from '../../services/sitios.services';
 import { useUser } from '../../context/UserContext';
 
 
-const ServiciosScreen = () => {
+const SitiosScreen = () => {
   const navigation = useNavigation();
   const isFocused = useIsFocused()
 
@@ -84,4 +84,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ServiciosScreen;
+export default SitiosScreen;
