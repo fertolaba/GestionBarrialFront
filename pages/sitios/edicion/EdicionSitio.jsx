@@ -9,7 +9,7 @@ import { useRoute } from '@react-navigation/native';
 import theme from '../../../styles/theme';
 import sitiosServices from '../../../services/sitios.services';
 import { useUser } from '../../../context/UserContext';
-import { isNullOrUndefined } from '../../../utils/misc';
+import { isNullish } from '../../../utils/misc';
 
 const defaultSitio = {
   cargoDelSitio: `Sitio de Juan Perez`,
@@ -66,7 +66,7 @@ export const EdicionSitio = ({ navigation }) => {
 
     try {
       Promise.resolve(() => setDisableButton(true))
-        .then(() => sitiosServices.saveSitio({ ...servicio, documento: user.documento }, !isNullOrUndefined(sitio)))
+        .then(() => sitiosServices.saveSitio({ ...servicio, documento: user.documento }, !isNullish(sitio)))
         .then((ok) => { // Llega vacio desde el back, no es ni json
           if (!ok) {
             throw new Error('Error al enviar los datos');

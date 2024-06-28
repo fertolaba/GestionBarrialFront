@@ -51,7 +51,7 @@ class SitiosServices {
         },
         body: JSON.stringify(sitio),
       })
-      console.warn({ response })
+
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }

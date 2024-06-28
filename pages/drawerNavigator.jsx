@@ -13,7 +13,7 @@ import { NotificationsScreen } from './notifications/NotificationsScreen';
 import Foto from "../assets/foto1.png";
 
 import theme from "../styles/theme";
-import { isNullOrUndefined } from "../utils/misc";
+import { exists, isNullish } from "../utils/misc";
 
 const Drawer = createDrawerNavigator();
 
@@ -43,7 +43,7 @@ function CustomDrawerContent({ navigation }) {
         { title: 'Sitios', route: 'Sitios' }
     ];
 
-    const BotonSesion = () => isNullOrUndefined(user)
+    const BotonSesion = () => isNullish(user)
         ? (
             <StyledButton
                 naked
@@ -106,7 +106,7 @@ export function DrawerNavigator() {
         <Drawer.Navigator
             drawerContent={(props) => <CustomDrawerContent {...props} />}
             screenOptions={() => ({
-                headerRight: () => !isNullOrUndefined(user) && <NotificationButton />
+                headerRight: () => exists(user) && <NotificationButton />
             })}
         >
             {

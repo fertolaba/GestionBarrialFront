@@ -7,7 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState, useEffect } from 'react';
 
 import { useUser } from '../../context/UserContext';
-import { isNullOrUndefined } from '../../utils/misc';
+import { isNullish, exists } from '../../utils/misc';
 
 export const LoginScreen = () => {
   const navigation = useNavigation();
@@ -17,7 +17,7 @@ export const LoginScreen = () => {
   const [password, setPassword] = useState("123");
 
   function handleRedirect() {
-    if (isNullOrUndefined(user)) {
+    if (isNullish(user)) {
       console.warn('No se redirigirá a una ruta sin un usuario logueado');
       return;
     }
@@ -27,11 +27,11 @@ export const LoginScreen = () => {
   }
 
   async function handleLoggedUser() {
-    console.warn({ user });
-    if (isNullOrUndefined(user)) {
+
+    if (isNullish(user)) {
       Alert.alert("Error", "Usuario o contraseña incorrectos");
     }
-    else if (isNullOrUndefined(user.tipoUsuario) || user.tipoUsuario === "N/A") {
+    else if (isNullish(user.tipoUsuario) || user.tipoUsuario === "N/A") {
       Alert.alert('Error', 'Tipo de usuario no reconocido');
       await logout();
     }
@@ -52,7 +52,7 @@ export const LoginScreen = () => {
         const savedDocumento = await AsyncStorage.getItem('documento');
         const savedPassword = await AsyncStorage.getItem('password');
 
-        if (savedDocumento && savedPassword) {
+        if (exists(savedDocumento) && exists(savedPassword)) {
           await login({
             documento: savedDocumento,
             password: savedPassword
@@ -63,11 +63,11 @@ export const LoginScreen = () => {
       }
     };
 
-    // retrieveLoginData(); //Evitar login automatico porque estamos usando documento y password inicializado con usuario de prueba
+    retrieveLoginData(); //Evitar login automatico porque estamos usando documento y password inicializado con usuario de prueba
   }, []);
 
   useEffect(() => {
-    if (!isNullOrUndefined(user)) {
+    if (exists(user)) {
       handleRedirect();
       handleLoggedUser();
     }
