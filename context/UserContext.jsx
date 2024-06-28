@@ -11,19 +11,21 @@ export const UserProvider = ({ children }) => {
   const login = async ({ documento, password }) => {
     const user = await usuariosServices.login({ documento, password });
     if (exists(user)) {
-      setUser(_prev => user ?? null);
-      await AsyncStorage.setItem('documento', documento);
-      await AsyncStorage.setItem('password', password);
+      Promise.all([AsyncStorage.setItem('documento', documento), await AsyncStorage.setItem('password', password)])
+        .then(() => console.log('AsyncStorage set'))
+        .catch((err) => console.error('Error setting AsyncStorage:', err))
+        .finally(() => setUser(_prev => user))
     }
 
-    console.log("logged as:", user)
+    console.log("logged in as:", user)
     return user;
   }
 
   const logout = async () => {
-    await AsyncStorage.removeItem('documento');
-    await AsyncStorage.removeItem('password');
-    setUser(null);
+    Promise.all([AsyncStorage.removeItem('documento'), await AsyncStorage.removeItem('password')])
+      .then(() => console.log('AsyncStorage cleared'))
+      .catch((err) => console.error('Error clearing AsyncStorage:', err))
+      .finally(() => setUser(null))
   }
 
   return (

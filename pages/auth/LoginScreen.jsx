@@ -32,7 +32,7 @@ export const LoginScreen = () => {
       Alert.alert("Error", "Usuario o contraseña incorrectos");
     }
     else if (isNullish(user.tipoUsuario) || user.tipoUsuario === "N/A") {
-      Alert.alert('Error', 'Tipo de usuario no reconocido');
+      Alert.alert('Error', 'Tipo de usuario no reconocido, contactese con el administrador');
       await logout();
     }
   }
@@ -63,7 +63,7 @@ export const LoginScreen = () => {
       }
     };
 
-    retrieveLoginData(); //Evitar login automatico porque estamos usando documento y password inicializado con usuario de prueba
+    // retrieveLoginData(); //Eivto por ahora el login automatico porque estamos usando documento y password inicializado con usuario de prueba
   }, []);
 
   useEffect(() => {
