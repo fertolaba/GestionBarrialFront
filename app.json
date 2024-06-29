@@ -29,6 +29,12 @@
         {
           "locationAlwaysAndWhenInUsePermission": "Permitir que $(PRODUCT_NAME) use tu localizacion."
         }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "$(PRODUCT_NAME) usa tu camara y galería para compartir fotos de tu sitio, denuncias y reclamos."
+        }
       ]
     ]
   }
