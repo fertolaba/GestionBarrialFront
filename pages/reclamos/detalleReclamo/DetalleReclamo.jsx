@@ -16,9 +16,25 @@ export default function DetalleReclamo({ route, navigation }) {
     console.log('anular denuncia');
   }
 
+  console.log(JSON.stringify({
+    //tipoUsuario: user?.tipoUsuario,
+    //reclamo: reclamo.personal.legajo,
+    //user: user.legajo,
+    reclamo
+  }, null, 2))
+
   return (
     <View>
       <StyledText>Detalle de reclamo</StyledText>
+      <StyledText bold>
+        {
+          (
+            user.tipoUsuario === 'inspector'
+              ? reclamo.personal?.legajo === user.legajo && "Reclamo de otro usuario"
+              : reclamo.vecino?.documento === user.documento
+          ) && "Este es un reclamo de tu autoría"
+        }
+      </StyledText>
       <StyledText>
         {
           JSON.stringify(reclamo, null, 2)
@@ -26,7 +42,7 @@ export default function DetalleReclamo({ route, navigation }) {
       </StyledText>
 
       {
-        user?.tipoUsuario === 'inspector' && reclamo.documento != user.documento &&
+        user?.tipoUsuario === 'inspector' && reclamo.personal?.legajo != user.legajo &&
         (
           <View>
             <StyledButton variant='success' title="Marcar reclamo resuelto" />
