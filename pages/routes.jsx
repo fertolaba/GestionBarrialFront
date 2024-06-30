@@ -1,15 +1,17 @@
 import { createStackNavigator } from '@react-navigation/stack';
 
-import GenerarReclamos from './reclamos/generarReclamo/GenerarReclamos';
 
 import SitiosScreen from './sitios/SitiosScreen';
 import { EdicionSitio } from './sitios/edicion/EdicionSitio';
-import ServicioComercio from './sitios/SitiosScreen';
 import { DetalleSitio } from './sitios/detalle/DetalleSitio';
-import EstadoReclamo from './reclamos/estadoReclamo/EstadoReclamo';
+
 import DenunciasScreen from './denuncias/DenunciasScreen';
 import { DenunciaDetalle } from './denuncias/detalle/DenunciaDetalle';
+
 import ReclamosScreen from './reclamos/ReclamosScreen';
+import GenerarReclamos from './reclamos/generarReclamo/GenerarReclamos';
+import ListadoReclamos from './reclamos/listadoReclamos/ListadoReclamos';
+import DetalleReclamo from './reclamos/detalleReclamo/DetalleReclamo';
 
 export const Stack = createStackNavigator();
 
@@ -22,13 +24,18 @@ export const ReclamosStack = () => {
                 options={{ headerShown: false }}
             />
             <Stack.Screen
+                name="ListadoReclamos"
+                component={ListadoReclamos}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
                 name="GenerarReclamos"
                 component={GenerarReclamos}
                 options={{ headerShown: false }}
             />
             <Stack.Screen
-                name="EstadoReclamo"
-                component={EstadoReclamo}
+                name="DetalleReclamo"
+                component={DetalleReclamo}
                 options={{ headerShown: false }}
             />
         </Stack.Navigator>
@@ -73,7 +80,7 @@ export const SitioStack = () => {
 
             <Stack.Screen
                 name="ServicioComercio"
-                component={ServicioComercio}
+                component={SitiosScreen}
                 options={{ headerShown: false }}
             />
 

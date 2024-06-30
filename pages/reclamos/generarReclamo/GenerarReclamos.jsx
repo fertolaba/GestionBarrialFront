@@ -5,8 +5,11 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { useNavigation } from '@react-navigation/native';
 import { useUser } from '../../../context/UserContext';
+import { useDevice } from '../../../context/DeviceContext';
 
 import { RECLAMOS } from '../../../constants/constants';
+import reclamosServices from '../../../services/reclamos.services'
+
 
 //import { firebaseApp } from '../../../firebase.config';
 import * as ImagePicker from 'expo-image-picker';
@@ -14,7 +17,8 @@ import * as DocumentPicker from 'expo-document-picker';
 import * as VideoThumbnails from 'expo-video-thumbnails';
 
 import theme from '../../../styles/theme';
-import { useDevice } from '../../../context/DeviceContext';
+import { isNullish } from '../../../utils/misc';
+import sitiosServices from '../../../services/sitios.services';
 
 
 const FilePreview = ({ item, index, onPress, ...props }) => {
@@ -35,24 +39,42 @@ const FilePreview = ({ item, index, onPress, ...props }) => {
 const GenerarReclamos = () => {
   const navigation = useNavigation();
   const { user } = useUser();
-  const { isUsingWifi, getNetworkState } = useDevice();
+  const { isUsingWifi, updateNetworkState } = useDevice();
 
-  const [calle, setCalle] = useState('');
-  const [numero, setNumero] = useState('');
   const [desperfecto, setDesperfecto] = useState('');
-  const [causa, setCausa] = useState('');
+  const [descripcionDesperfecto, setDescripcionDesperfecto] = useState('');
 
   const [files, setFiles] = useState([]);
 
   const MAX_FILES = RECLAMOS.MAXFILES[user?.tipoUsuario] ?? RECLAMOS.MAXFILES.default;
 
   async function handleGenerarReclamo() {
-    console.log(await getNetworkState())
-    
-    if (isUsingWifi) {
-      console.log('Generando reclamo usando wifi');
-    } else {
-      console.log('Generando reclamo usando datos móviles');
+    if (isNullish(user?.documento)) navigation.navigate('Login'); // random guard
+
+    let continueGenerate = isUsingWifi;
+
+    if (!isUsingWifi) {
+      Alert.alert('Atención', 'Estás usando datos móviles, ¿quieres continuar?', [
+        { text: 'Continuar', onPress: () => { continueGenerate = true } },
+        { text: 'Cancelar', style: 'cancel' },
+      ]);
+    }
+
+    if (continueGenerate) {
+      const nuevoReclamo = {
+        descripcion: descripcionDesperfecto,
+        iddesperfecto: {
+          descripcion: desperfecto
+        },
+        files,
+        documento: user.documento,
+        idsitio: 16,
+      }
+
+
+      console.log(JSON.stringify(nuevoReclamo, null, 2));
+
+      reclamosServices.saveReclamo(nuevoReclamo)
     }
   }
 
@@ -123,8 +145,6 @@ const GenerarReclamos = () => {
     ])
   }
 
-  console.log(JSON.stringify(files, null, 2));
-
   // falta logica para subir y bajar archivos/multimedia
 
   return (
@@ -133,30 +153,16 @@ const GenerarReclamos = () => {
 
         <StyledTextInput
           style={styles.input}
-          placeholder="Calle"
-          value={calle}
-          onChangeText={setCalle}
-        />
-        <StyledTextInput
-          style={styles.input}
-          placeholder="Numero"
-          value={numero}
-          onChangeText={setNumero}
-        />
-        <StyledTextInput
-          style={styles.input}
-          placeholder="Desperfecto"
+          placeholder="Tipo de desperfecto"
           value={desperfecto}
           onChangeText={setDesperfecto}
         />
         <StyledTextInput
-          style={styles.textArea}
-          placeholder="Causa del reclamo"
-          value={causa}
-          onChangeText={setCausa}
-          multiline
+          style={styles.input}
+          placeholder="Desperfecto"
+          value={descripcionDesperfecto}
+          onChangeText={setDescripcionDesperfecto}
         />
-
 
         <View style={{ flexDirection: "row" }}>
           <StyledButton variant={'secondary'} style={{ flex: 1 }} title="Abrir camara" onPress={pickImage} />

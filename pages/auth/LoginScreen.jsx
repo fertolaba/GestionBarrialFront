@@ -17,8 +17,8 @@ export const LoginScreen = () => {
 
   // DNI30012288 - password // inspector
   // DNI28000046 - 123 // vecino
-  const [documento, setDocumento] = useState("DNI30012288");
-  const [password, setPassword] = useState("password");
+  const [documento, setDocumento] = useState("DNI28000046");
+  const [password, setPassword] = useState("123");
 
   function handleRedirect() {
     if (isNullish(user)) {
@@ -45,8 +45,7 @@ export const LoginScreen = () => {
     Promise.resolve()
       .then(() => setLoading(true))
       .then(() => login({ documento, password }))
-      .then((u) => console.log(u) || u)
-      .then(user => isNullish(user) && Alert.alert("Error", "Usuario o contraseña incorrectos") && console.log(user))
+      .then(user => isNullish(user) && Alert.alert("Error", "Usuario o contraseña incorrectos") || console.log(user))
       .catch(_error => Alert.alert('Error inesperado', 'Algo salió mal. Inténtalo de nuevo.'))
       .finally(() => setLoading(false));
   }

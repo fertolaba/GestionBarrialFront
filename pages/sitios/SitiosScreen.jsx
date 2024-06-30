@@ -20,7 +20,6 @@ const SitiosScreen = () => {
     user?.documento && isFocused
       ? sitiosServices.getSitioByDocumento(user.documento)
         .then(sitio => {
-          console.log(sitio)
           if (sitio)
             setSitioUsuario({
               ...sitio,
