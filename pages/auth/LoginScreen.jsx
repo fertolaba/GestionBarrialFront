@@ -72,7 +72,7 @@ export const LoginScreen = () => {
     };
     Promise.resolve()
       .then(() => setLoading(true))
-      //.then(() => retrieveLoginData()) //Eivto por ahora el login automatico porque estamos usando documento y password inicializado con usuario de prueba
+      .then(() => retrieveLoginData()) //Eivto por ahora el login automatico porque estamos usando documento y password inicializado con usuario de prueba
       .finally(() => setLoading(false));
   }, []);
 

@@ -14,6 +14,7 @@ import * as DocumentPicker from 'expo-document-picker';
 import * as VideoThumbnails from 'expo-video-thumbnails';
 
 import theme from '../../../styles/theme';
+import { useDevice } from '../../../context/DeviceContext';
 
 
 const FilePreview = ({ item, index, onPress, ...props }) => {
@@ -34,6 +35,7 @@ const FilePreview = ({ item, index, onPress, ...props }) => {
 const GenerarReclamos = () => {
   const navigation = useNavigation();
   const { user } = useUser();
+  const { isUsingWifi, getNetworkState } = useDevice();
 
   const [calle, setCalle] = useState('');
   const [numero, setNumero] = useState('');
@@ -43,6 +45,16 @@ const GenerarReclamos = () => {
   const [files, setFiles] = useState([]);
 
   const MAX_FILES = RECLAMOS.MAXFILES[user?.tipoUsuario] ?? RECLAMOS.MAXFILES.default;
+
+  async function handleGenerarReclamo() {
+    console.log(await getNetworkState())
+    
+    if (isUsingWifi) {
+      console.log('Generando reclamo usando wifi');
+    } else {
+      console.log('Generando reclamo usando datos móviles');
+    }
+  }
 
   const pickImage = async () => {
     if (files.length >= MAX_FILES) {
@@ -184,6 +196,7 @@ const GenerarReclamos = () => {
           title="Generar reclamo"
           variant='primary'
           fontSize='subheading'
+          onPress={handleGenerarReclamo}
         />
         <StyledButton
           title="Volver"
