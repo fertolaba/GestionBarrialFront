@@ -17,8 +17,8 @@ export const LoginScreen = () => {
 
   // DNI30012288 - password // inspector
   // DNI28000046 - 123 // vecino
-  const [documento, setDocumento] = useState("DNI28000046");
-  const [password, setPassword] = useState("123");
+  const [documento, setDocumento] = useState("DNI30012288");
+  const [password, setPassword] = useState("password");
 
   function handleRedirect() {
     if (isNullish(user)) {
@@ -27,7 +27,7 @@ export const LoginScreen = () => {
     }
 
     navigation.reset({ index: 0, routes: [{ name: 'Inicio' }] });
-    Alert.alert('Bienvenido', `Hola ${user.nombre}!`);
+    Alert.alert('Bienvenido', `Hola ${user.nombre.trim()}!`);
   }
 
   async function handleLoggedUser() {

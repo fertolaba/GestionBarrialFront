@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { View, StyleSheet, Image, ScrollView, Alert, Pressable } from 'react-native';
 import { StyledButton, StyledText, StyledTextInput } from '../../../components/ui';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -9,7 +9,7 @@ import { useDevice } from '../../../context/DeviceContext';
 
 import { RECLAMOS } from '../../../constants/constants';
 import reclamosServices from '../../../services/reclamos.services'
-
+import sitiosServices from '../../../services/sitios.services';
 
 //import { firebaseApp } from '../../../firebase.config';
 import * as ImagePicker from 'expo-image-picker';
@@ -41,6 +41,38 @@ const GenerarReclamos = () => {
 
   const [desperfecto, setDesperfecto] = useState('');
   const [descripcionDesperfecto, setDescripcionDesperfecto] = useState('');
+  const [rubro, setRubro] = useState(user?.rubro);
+
+  const [mostrarLugares, setMostrarLugares] = useState(false);
+  const [sitios, setSitios] = useState([])
+  const [sitioSeleccionado, setSitioSeleccionado] = useState({
+    idSitio: null,
+    descripcion: '',
+  });
+
+  const [criterioBusqueda, setCriterioBusqueda] = useState('');
+  const sitiosFiltrados = useMemo(() => {
+    if (isNullish(criterioBusqueda)) return sitios;
+
+    return sitios.filter(({ idSitio, descripcion }) => {
+      const lowerCriterio = criterioBusqueda.toLowerCase();
+      return String(idSitio).includes(lowerCriterio) || descripcion?.toLowerCase().includes(lowerCriterio);
+    })
+  }, [sitios, criterioBusqueda]);
+
+  const handleRubroChange = (text) => {
+    if (user?.tipoUsuario === 'inspector') return;
+    setRubro(text);
+  }
+
+  const handleSelectSitio = (idSitio, descripcion) => {
+    setSitioSeleccionado({
+      idSitio,
+      descripcion: "SITIO SELECCIONADO: " + descripcion
+    })
+
+    setMostrarLugares(false);
+  }
 
   const [files, setFiles] = useState([]);
 
@@ -66,7 +98,8 @@ const GenerarReclamos = () => {
         },
         files,
         documento: user.documento,
-        idsitio: 16,
+        idsitio: sitioSeleccionado.idSitio,
+        legajo: user?.legajo || null,
       }
 
       const { message, reclamo } = await reclamosServices.saveReclamo(nuevoReclamo);
@@ -170,6 +203,13 @@ const GenerarReclamos = () => {
 
   // falta logica para subir y bajar archivos/multimedia
 
+  useEffect(() => {
+    sitiosServices.getSitios()
+      .then(setSitios)
+      .catch(console.error)
+  }, [])
+
+    
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -187,11 +227,64 @@ const GenerarReclamos = () => {
           onChangeText={setDescripcionDesperfecto}
         />
 
-        <View style={{ flexDirection: "row" }}>
+        <StyledTextInput
+          disabled={user?.tipoUsuario === 'inspector'}
+          style={styles.input}
+          placeholder="Rubro"
+          value={rubro}
+          onChangeText={handleRubroChange}
+        />
+
+        <StyledText
+          style={styles.textSitioSeleccionado}
+          placeholder="Sitio seleccionado"
+          bold={isNullish(sitioSeleccionado.descripcion)}
+        >
+          {sitioSeleccionado.descripcion || 'Seleccione un lugar'}
+        </StyledText>
+
+        <View style={styles.row}>
           <StyledButton variant={'secondary'} style={{ flex: 1 }} title="Abrir camara" onPress={pickImage} />
           <StyledButton variant={'secondary'} style={{ flex: 1 }} title="Adjuntar archivo" onPress={pickDocument} />
         </View>
 
+        <View>
+          {
+            sitios.length > 0 && (
+              <View style={styles.toggleContainer}>
+                <StyledButton
+                  title={mostrarLugares ? 'Ocultar lugares' : 'Mostrar lugares'}
+                  variant='warning'
+                  onPress={() => setMostrarLugares(!mostrarLugares)}
+                />
+              </View>
+            )
+          }
+        </View>
+
+        {
+          mostrarLugares && (
+            <View>
+              <StyledText center>Escribe un nombre o id</StyledText>
+              <StyledTextInput style={styles.input} placeholder="Nombre o ID sitio" onChangeText={setCriterioBusqueda} />
+
+              <StyledText center style={styles.label}>Lista de sitios</StyledText>
+              <View style={styles.seleccionSitioContainer}>
+                {
+                  sitiosFiltrados.map(({ idSitio, descripcion }) => (
+                    <StyledButton
+                      key={`sitio:${idSitio}`}
+                      title={`${idSitio}: ${descripcion}`}
+                      variant='secondary'
+                      onPress={() => handleSelectSitio(idSitio, descripcion)}
+                      style={styles.selectSitio}
+                    />
+                  ))
+                }
+              </View>
+            </View>
+          )
+        }
 
         {files.length > 0 &&
           <View>
@@ -210,30 +303,32 @@ const GenerarReclamos = () => {
           </View>
         }
 
-        {
-          files.length > 0 && (
-            <StyledButton
-              title="Quitar todos los adjuntos"
-              variant='warning'
-              fontSize='subheading'
-              onPress={removeAllFiles}
-            />
-          )
-        }
 
-        <StyledButton
-          title="Generar reclamo"
-          variant='primary'
-          fontSize='subheading'
-          onPress={handleGenerarReclamo}
-        />
-        <StyledButton
-          title="Volver"
-          variant='secondary'
-          fontSize='subheading'
-          onPress={() => navigation.goBack()}
-        />
+        <View style={styles.accionesContainer}>
+          {
+            files.length > 0 && (
+              <StyledButton
+                title="Quitar todos los adjuntos"
+                variant='warning'
+                fontSize='subheading'
+                onPress={removeAllFiles}
+              />
+            )
+          }
 
+          <StyledButton
+            title="Generar reclamo"
+            variant='primary'
+            fontSize='subheading'
+            onPress={handleGenerarReclamo}
+          />
+          <StyledButton
+            title="Volver"
+            variant='secondary'
+            fontSize='subheading'
+            onPress={() => navigation.goBack()}
+          />
+        </View>
       </View >
     </ScrollView >
   );
@@ -245,6 +340,7 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: '#fff',
   },
+  row: { flexDirection: "row" },
   header: {
     fontSize: 24,
     fontWeight: 'bold',
@@ -322,6 +418,29 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 
+  seleccionSitioContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+  },
+  selectSitio: {
+    width: "100%"
+  },
+
+  textSitioSeleccionado: {
+    marginTop: 5,
+    marginBottom: 15,
+    padding: 10,
+  },
+
+  label: {
+    marginTop: 10,
+    marginBottom: 0,
+  },
+
+  accionesContainer: {
+    marginTop: 20,
+  },
 
 });
 

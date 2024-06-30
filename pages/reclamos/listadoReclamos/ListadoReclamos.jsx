@@ -33,7 +33,6 @@ export default function ListadoReclamos({ route }) {
           ? reclamosServices.getReclamosByDocumento(user.documento)
           : reclamosServices.getReclamos()
       })
-      .then(r => { console.log(JSON.stringify(r, null, 2)); return r })
       .then(reclamos => reclamos && reclamos.length > 0 && setReclamos(reclamos))
       .finally(() => setLoading(false))
   }, [user?.documento, listadoDeUsuario])

@@ -29,8 +29,6 @@ class ReclamosServices {
 
 
 	getReclamos = async () => {
-		console.warn(this._apiUrl)
-
 		try {
 			const response = await fetchWithTimeout(this._apiUrl);
 			if (!response.ok) {
@@ -77,8 +75,6 @@ class ReclamosServices {
 				},
 				body: JSON.stringify(reclamo),
 			})
-
-			console.log(respuesta)
 
 			if (respuesta.status === 400) {
 				response.status = 400;
