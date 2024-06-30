@@ -70,8 +70,9 @@ function CustomDrawerContent({ navigation }) {
         <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.white }}>
             <View style={{ height: 200, width: '100%', alignItems: 'center', justifyContent: 'center' }}>
                 <Image source={Foto} style={{ height: 130, width: 130 }} />
-                <StyledText>Bienvenido!</StyledText>
-                <StyledText>{user?.nombre ?? "Invitado"}</StyledText>
+                <StyledText center>Bienvenido!</StyledText>
+                <StyledText center style={styles.infoUsuario} >{user?.nombre.trim() ?? "Invitado"}</StyledText>
+                <StyledText center style={styles.infoUsuario} >{user?.tipoUsuario || ""}</StyledText>
             </View>
             <View>
                 {rutasDrawer.map((ruta, index) => (
@@ -155,6 +156,9 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: 'gray',
         fontWeight: 'bold', // Letra en negrita
+    },
+    infoUsuario: {
+        textTransform: 'capitalize',
     },
     drawerButton: {
         backgroundColor: theme.colors.primary,
