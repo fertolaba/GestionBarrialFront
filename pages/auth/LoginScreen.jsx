@@ -13,8 +13,8 @@ export const LoginScreen = () => {
   const navigation = useNavigation();
   const { user, login, logout } = useUser();
 
-  const [documento, setDocumento] = useState("DNI28000046");
-  const [password, setPassword] = useState("123");
+  const [documento, setDocumento] = useState();
+  const [password, setPassword] = useState();
 
   function handleRedirect() {
     if (isNullish(user)) {
