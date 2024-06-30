@@ -16,13 +16,6 @@ export default function DetalleReclamo({ route, navigation }) {
     console.log('anular denuncia');
   }
 
-  console.log(JSON.stringify({
-    //tipoUsuario: user?.tipoUsuario,
-    //reclamo: reclamo.personal.legajo,
-    //user: user.legajo,
-    reclamo
-  }, null, 2))
-
   return (
     <View>
       <StyledText>Detalle de reclamo</StyledText>
@@ -30,8 +23,8 @@ export default function DetalleReclamo({ route, navigation }) {
         {
           (
             user.tipoUsuario === 'inspector'
-              ? reclamo.personal?.legajo === user.legajo && "Reclamo de otro usuario"
-              : reclamo.vecino?.documento === user.documento
+              ? reclamo.personal?.legajo === user?.legajo && "Reclamo de otro usuario"
+              : reclamo.vecino?.documento === user?.documento
           ) && "Este es un reclamo de tu autoría"
         }
       </StyledText>

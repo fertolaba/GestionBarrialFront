@@ -50,7 +50,28 @@ class ReclamosServices {
 			if (!response.ok) {
 				throw new Error('Network response was not ok');
 			}
-			return await response.json();
+
+			const json = await response.json();
+
+			console.log(json)
+			return json;
+		} catch (error) {
+			console.error('Error fetching data:', error);
+		}
+	};
+
+	getReclamosByLegajo = async (legajo) => {
+		const url = `${this._apiUrl}/legajo/${legajo}`;
+		try {
+			const response = await fetchWithTimeout(url);
+			if (!response.ok) {
+				throw new Error('Network response was not ok');
+			}
+
+			const json = await response.json();
+
+			console.log(json)
+			return json;
 		} catch (error) {
 			console.error('Error fetching data:', error);
 		}

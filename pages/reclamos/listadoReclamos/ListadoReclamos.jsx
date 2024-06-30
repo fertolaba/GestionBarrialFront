@@ -26,11 +26,15 @@ export default function ListadoReclamos({ route }) {
     // de paso unexpected guard por si no esta logeado 
     if (isNullish(user) || isNullish(user.documento)) return;
 
+    const esInspector = user.tipoUsuario === 'inspector';
+
     Promise.resolve()
       .then(() => setLoading(true))
       .then(() => {
         return listadoDeUsuario
-          ? reclamosServices.getReclamosByDocumento(user.documento)
+          ? esInspector
+            ? reclamosServices.getReclamosByLegajo(user.legajo)
+            : reclamosServices.getReclamosByDocumento(user.documento)
           : reclamosServices.getReclamos()
       })
       .then(reclamos => reclamos && reclamos.length > 0 && setReclamos(reclamos))
