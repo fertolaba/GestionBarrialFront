@@ -58,6 +58,10 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: theme.fontSizes.subtitle
   },
+  small: {
+    fontWeight: theme.fontSizes.small
+  },
+
   medium: {
     fontWeight: theme.fontWeights.medium
   },

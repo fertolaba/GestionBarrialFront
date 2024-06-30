@@ -21,6 +21,7 @@ const theme = {
         title: 18,
         subtitle: 16,
         body: 14,
+        small: 12,
     },
     fontWeights: {
         normal: "400",

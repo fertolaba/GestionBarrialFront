@@ -24,9 +24,10 @@ export const ReclamosList = ({ titulo, reclamos }) => {
                 reclamos.length === 0
                     ? <StyledText center bold textTransform="capitalize">no hay reclamos {titulo.toLowerCase()}</StyledText>
                     : reclamos.map(reclamo => (
-                        <Pressable key={reclamo.idReclamo} onPress={() => handlePressItem(reclamo)} style={[styles.item, reclamo.estado === "finalizado" ? styles.finished : styles.pending]}>
+                        <Pressable key={reclamo.idreclamo} onPress={() => handlePressItem(reclamo)} style={[styles.item, reclamo.estado === "finalizado" ? styles.finished : styles.pending]}>
                             <View>
-                                <StyledText center>{reclamo.idReclamo} - {reclamo.descripcion} - {reclamo.estado}</StyledText>
+                                <StyledText bold>id{reclamo.idreclamo} </StyledText>
+                                <StyledText center>{reclamo.descripcion} - {reclamo.estado}</StyledText>
                             </View>
                         </Pressable>
                     ))
@@ -37,7 +38,8 @@ export const ReclamosList = ({ titulo, reclamos }) => {
 
 const styles = StyleSheet.create({
     item: {
-        padding: 10,
+        borderRadius: theme.global.borderRadius,
+        padding: theme.global.screenInnerPadding / 2,
         marginVertical: 8,
         marginHorizontal: 16,
     },
