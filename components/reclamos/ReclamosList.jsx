@@ -26,7 +26,7 @@ export const ReclamosList = ({ titulo, reclamos }) => {
                     : reclamos.map(reclamo => (
                         <Pressable key={reclamo.idReclamo} onPress={() => handlePressItem(reclamo)} style={[styles.item, reclamo.estado === "finalizado" ? styles.finished : styles.pending]}>
                             <View>
-                                <StyledText color={'black'} center>{reclamo.idReclamo} - {reclamo.descripcion} - {reclamo.estado}</StyledText>
+                                <StyledText center>{reclamo.idReclamo} - {reclamo.descripcion} - {reclamo.estado}</StyledText>
                             </View>
                         </Pressable>
                     ))

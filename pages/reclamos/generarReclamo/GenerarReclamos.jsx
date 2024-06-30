@@ -17,9 +17,7 @@ import * as DocumentPicker from 'expo-document-picker';
 import * as VideoThumbnails from 'expo-video-thumbnails';
 
 import theme from '../../../styles/theme';
-import { isNullish } from '../../../utils/misc';
-import sitiosServices from '../../../services/sitios.services';
-
+import { exists, isNullish } from '../../../utils/misc';
 
 const FilePreview = ({ item, index, onPress, ...props }) => {
   return (
@@ -71,12 +69,37 @@ const GenerarReclamos = () => {
         idsitio: 16,
       }
 
+      const { message, reclamo } = await reclamosServices.saveReclamo(nuevoReclamo);
 
-      console.log(JSON.stringify(nuevoReclamo, null, 2));
+      if (exists(reclamo)) {
+        Alert.alert(message.title, message.description, [
+          // Aca intente que cuando se le da ok se vaya a la pantalla de detalle del reclamo
+          // PERO que al hacer goBack() desde esa ventana no redirija al formulario de creacion de reclamo
+          {
+            text: 'OK', onPress: () => {
+              navigation.reset({
+                index: 1,
+                routes: [{ name: 'Reclamos' }],
+              })
 
-      reclamosServices.saveReclamo(nuevoReclamo)
+              setTimeout(() => { // wtf, no me salio con el reset, wtf asi solucione
+                navigation.navigate('Reclamos', {
+                  screen: 'DetalleReclamo',
+                  params: { reclamo }
+                });
+              }, 0);
+            }
+          },
+          { text: 'Volver a reclamos', onPress: () => navigation.navigate('Reclamos') },
+        ]);
+
+        return;
+      }
+
+      Alert.alert(message.title, message.description);
     }
   }
+
 
   const pickImage = async () => {
     if (files.length >= MAX_FILES) {

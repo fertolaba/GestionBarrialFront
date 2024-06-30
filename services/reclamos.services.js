@@ -59,8 +59,18 @@ class ReclamosServices {
 	};
 
 	saveReclamo = async (reclamo) => {
+		const response = {
+			status: 500,
+			message: {
+				title: 'Error',
+				description: 'Hubo un error al generar el reclamo, por favor intenta nuevamente',
+			},
+			reclamo: null,
+		}
+
 		try {
-			const response = await fetchWithTimeout(this._apiUrl, {
+			const respuesta = await fetchWithTimeout(this._apiUrl, {
+				timeout: 60 * 1000, // 60 segundos
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -68,10 +78,24 @@ class ReclamosServices {
 				body: JSON.stringify(reclamo),
 			})
 
-			console.warn(response)
-			if (!response.ok) {
-				throw new Error('Network response was not ok');
+			console.log(respuesta)
+
+			if (respuesta.status === 400) {
+				response.status = 400;
+				response.message = {
+					description: 'No se pudo generar el reclamo, por favor verifica los datos ingresados',
+				}
 			}
+
+			if (respuesta.status === 201) {
+				response.status = 201;
+				response.message = {
+					title: 'Reclamo generado',
+					description: 'Tu reclamo ha sido generado con éxito',
+				}
+				response.reclamo = await respuesta.json();
+			}
+
 			return response;
 		} catch (error) {
 			console.error('Error fetching data:', error);
