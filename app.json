@@ -33,7 +33,13 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "$(PRODUCT_NAME) usa tu camara y galería para compartir fotos de tu sitio, denuncias y reclamos."
+          "photosPermission": "$(PRODUCT_NAME) usa tu camara y galería para compartir fotos y videos de tu sitio, denuncias y reclamos."
+        }
+      ],
+      [
+        "expo-av",
+        {
+          "microphonePermission": "$(PRODUCT_NAME) usa tu camara y galería para compartir fotos y videos de tu sitio, denuncias y reclamos."
         }
       ]
     ]
