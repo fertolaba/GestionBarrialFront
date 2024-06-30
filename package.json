@@ -34,7 +34,8 @@
     "react-native-web": "~0.19.10",
     "yup": "^1.4.0",
     "expo-av": "~14.0.6",
-    "expo-video-thumbnails": "~8.0.0"
+    "expo-video-thumbnails": "~8.0.0",
+    "expo-network": "~6.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
