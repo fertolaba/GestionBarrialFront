@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Image, ScrollView, Alert, Pressable } from 'react-native';
 import { StyledButton, StyledText, StyledTextInput } from '../../../components/ui';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { useNavigation } from '@react-navigation/native';
 import { useUser } from '../../../context/UserContext';
@@ -11,6 +12,7 @@ import { RECLAMOS } from '../../../constants/constants';
 import * as ImagePicker from 'expo-image-picker';
 import * as DocumentPicker from 'expo-document-picker';
 import * as VideoThumbnails from 'expo-video-thumbnails';
+
 import theme from '../../../styles/theme';
 
 
@@ -22,7 +24,7 @@ const FilePreview = ({ item, index, onPress, ...props }) => {
           ? <Image source={{ uri: item.uri }} style={styles.previewImage} />
           : item.type.startsWith('video')
             ? <Image source={{ uri: item.thumbnailUri }} style={styles.previewImage} />
-            : <StyledText>{item.uri}</StyledText>
+            : <View style={styles.previewImage} ><Icon name="file" size={60} /></View>
       }
     </Pressable >
   )
@@ -252,8 +254,12 @@ const styles = StyleSheet.create({
   },
 
   previewImage: {
+    alignItems: 'center',
+    justifyContent: 'center',
     width: 75,
     height: 75,
+    borderWidth: 1,
+    borderColor: theme.colors.primary,
     borderRadius: theme.global.borderRadius * 2,
     margin: 5,
   },
