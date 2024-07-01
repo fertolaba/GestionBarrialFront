@@ -13,8 +13,8 @@ export default function DetalleReclamo({ route, navigation }) {
     const legajo = user?.legajo;
 
     const reclamoActualizado = await reclamosServices.actualizarEstadoReclamo(reclamo, estado, legajo)
-
-    console.log(reclamoActualizado)
+    
+    Alert.alert(reclamoActualizado.message.title, reclamoActualizado.message.description)
   }
 
   const handleFinalizarReclamo = () => {

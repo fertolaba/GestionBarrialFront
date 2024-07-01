@@ -55,8 +55,8 @@ export default function ListadoReclamos({ route }) {
         <StyledText center fontSize={'subheading'} style={styles.capitalize}>{listadoDeUsuario ? "Tus " : "Todos los "}reclamos</StyledText>
         {loading && <StyledText bold='bolder'>Cargando...</StyledText>}
 
-        <ReclamosList titulo='pendientes' reclamos={reclamosPendientes} />
-        <ReclamosList finalizados titulo='finalizados' reclamos={reclamosFinalizados} />
+        <ReclamosList esListadoUsuario={listadoDeUsuario} titulo='pendientes' reclamos={reclamosPendientes} />
+        <ReclamosList finalizados esListadoUsuario={listadoDeUsuario} titulo='finalizados' reclamos={reclamosFinalizados} />
 
         <StyledButton title='Volver' variant='secondary' onPress={() => navigation.goBack()} />
       </View>
