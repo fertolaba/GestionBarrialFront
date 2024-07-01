@@ -13,8 +13,15 @@ export const LoginScreen = () => {
   const navigation = useNavigation();
   const { user, login, logout } = useUser();
 
-  const [documento, setDocumento] = useState();
-  const [password, setPassword] = useState();
+  const [loading, setLoading] = useState(false);
+
+  // VECINO
+  const [documento, setDocumento] = useState("DNI28000046");
+  const [password, setPassword] = useState("123");
+
+  // INSPECTOR
+  // const [documento, setDocumento] = useState("DNI30012288");
+  // const [password, setPassword] = useState("password");
 
   function handleRedirect() {
     if (isNullish(user)) {
@@ -23,7 +30,7 @@ export const LoginScreen = () => {
     }
 
     navigation.reset({ index: 0, routes: [{ name: 'Inicio' }] });
-    Alert.alert('Bienvenido', `Hola ${user.nombre}!`);
+    Alert.alert('Bienvenido', `Hola ${user.nombre.trim()}!`);
   }
 
   async function handleLoggedUser() {
@@ -38,12 +45,12 @@ export const LoginScreen = () => {
   }
 
   async function handleLogin() {
-    try {
-      await login({ documento, password });
-    } catch (error) {
-      console.error('Error:', error);
-      Alert.alert('Error inesperado', 'Algo salió mal. Inténtalo de nuevo.');
-    }
+    Promise.resolve()
+      .then(() => setLoading(true))
+      .then(() => login({ documento, password }))
+      .then(user => isNullish(user) && Alert.alert("Error", "Usuario o contraseña incorrectos") || console.log(user))
+      .catch(_error => Alert.alert('Error inesperado', 'Algo salió mal. Inténtalo de nuevo.'))
+      .finally(() => setLoading(false));
   }
 
   useEffect(() => {
@@ -53,17 +60,25 @@ export const LoginScreen = () => {
         const savedPassword = await AsyncStorage.getItem('password');
 
         if (exists(savedDocumento) && exists(savedPassword)) {
-          await login({
+          login({
             documento: savedDocumento,
             password: savedPassword
-          });
+          })
+            .then(user => {
+              if (isNullish(user)) {
+                AsyncStorage.removeItem('password')
+                AsyncStorage.removeItem('documento')
+              }
+            })
         }
       } catch (error) {
         console.error('Error al recuperar los datos de inicio de sesión:', error);
       }
     };
-
-    // retrieveLoginData(); //Eivto por ahora el login automatico porque estamos usando documento y password inicializado con usuario de prueba
+    Promise.resolve()
+      .then(() => setLoading(true))
+      .then(() => retrieveLoginData()) //Eivto por ahora el login automatico porque estamos usando documento y password inicializado con usuario de prueba
+      .finally(() => setLoading(false));
   }, []);
 
   useEffect(() => {
@@ -104,6 +119,7 @@ export const LoginScreen = () => {
         variant={'primary'}
         fontSize={'subheading'}
         onPress={handleLogin}
+        disabled={loading}
       >
         Iniciar sesión
       </StyledButton>

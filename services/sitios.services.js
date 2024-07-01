@@ -29,6 +29,18 @@ class SitiosServices {
     return []
   };
 
+  getSitioById = async (id) => {
+    const url = `${this._apiUrl}/id/${id}`;
+    try {
+      const response = await fetchWithTimeout(url);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
 
   getSitioByDocumento = async (documento) => {
     const url = `${this._apiUrl}/documento/${documento}`;

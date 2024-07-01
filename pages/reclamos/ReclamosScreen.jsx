@@ -2,8 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useUser } from '../../context/UserContext';
-import ReclamoHomeVecino from './_reclamoHomeVecino';
-import ReclamoHomeInspector from './_reclamoHomeInspector';
+import ReclamoHome from './_reclamoHome';
 import { StyledButton, StyledText } from '../../components/ui';
 
 export default function ReclamosScreen() {
@@ -12,12 +11,13 @@ export default function ReclamosScreen() {
 
   let screenPorTipoUsuario = null;
 
+  // Esta solo como ejemplo, en este caso son el mismo componente con diferentes comportamientos adentro
   switch (user?.tipoUsuario) {
     case 'vecino':
-      screenPorTipoUsuario = <ReclamoHomeVecino />;
+      screenPorTipoUsuario = <ReclamoHome />;
       break;
     case 'inspector':
-      screenPorTipoUsuario = <ReclamoHomeInspector />;
+      screenPorTipoUsuario = <ReclamoHome />;
       break;
     default:
       screenPorTipoUsuario = (
