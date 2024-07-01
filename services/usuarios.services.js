@@ -13,6 +13,41 @@ class UsuarioService {
     return this._instance;
   }
 
+  altaUsuario = async (documento, mail, aceptado = true) => {
+    const url = `${this._apiUrl}/nuevo`;
+    const response = {
+      status: 500,
+      message: {
+        title: 'Error',
+        description: 'Hubo un error al cambiar la contraseña, por favor intenta nuevamente',
+      },
+    }
+
+    try {
+      const fetchResponse = await fetchWithTimeout(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ documento, mail, aceptado }),
+      })
+
+      response.status = fetchResponse.status;
+
+      if (response.status === 200) {
+        response.message.title = 'Éxito';
+        response.message.description = 'Se cambio la contraseña correctamente, inicia sesion de nuevo para continuar';
+      }
+    } catch (error) {
+      response.message.title = 'Error inesperado';
+      response.message.description = 'Hubo un error al cambiar la contraseña, por favor intenta nuevamente';
+
+      console.error('Error fetching data:', error);
+    }
+
+    return response
+  }
+
   login = async (credentials) => {
     const url = `${this._apiUrl}/login`;
 
