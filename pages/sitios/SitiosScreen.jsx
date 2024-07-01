@@ -44,7 +44,7 @@ const SitiosScreen = () => {
       <View style={styles.container}>
 
         <SitioUsuario loading={isLoading} sitio={sitioUsuario} />
-
+{/* 
         <View>
 
           <StyledText fontSize={'subtitle'}>Tus promociones</StyledText>
@@ -61,8 +61,8 @@ const SitiosScreen = () => {
             keyExtractor={(_item, index) => String(index)}
           />
 
-        </SafeAreaView>
-      </View>
+        </SafeAreaView>*/}
+      </View> 
     </View>
   );
 };

@@ -13,9 +13,6 @@ export default function DenunciaHome() {
         <StyledButton variant="primary" onPress={() => navigation.navigate('GenerarDenuncia')}>
           Generar Denuncia
         </StyledButton>
-        <StyledButton variant="primary" onPress={() => navigation.navigate('Listado')}>
-          Todos los reclamos
-        </StyledButton>
         <StyledButton variant="primary" onPress={() => navigation.navigate('Detalle')}>
           Detalle
         </StyledButton>
