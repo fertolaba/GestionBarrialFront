@@ -15,6 +15,7 @@ import Foto from "../assets/foto1.png";
 
 import theme from "../styles/theme";
 import { exists, isNullish } from "../utils/misc";
+import { ChangePasswordScreen } from "./auth/ChangePassword";
 
 const Drawer = createDrawerNavigator();
 
@@ -116,8 +117,8 @@ export function DrawerNavigator() {
         { name: 'Login', component: LoginScreen, header: 'Iniciar Sesión' },
         { name: 'Logout', component: LogoutScreen, header: 'Sesión Cerrada' },
         { name: 'Recuperar', component: CambiarContraScreen, header: 'Recuperar' },
-        { name: 'Registrarse', component: RegistrarseScreen, header: 'Registrarse' }
-        
+        { name: 'Registrarse', component: RegistrarseScreen, header: 'Registrarse' },
+        { name: 'ChangePassword', component: ChangePasswordScreen, header: 'Cambiar Contraseña' },
     ]
 
     return (

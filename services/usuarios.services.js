@@ -34,6 +34,40 @@ class UsuarioService {
       console.error('Error fetching data:', error);
     }
   };
+
+  updatePassword = async ({ documento, ...otrosDatos }) => {
+    const url = `${this._apiUrl}/cambiarcontrasena/${documento}`;
+    const response = {
+      status: 500,
+      message: {
+        title: 'Error',
+        description: 'Hubo un error al cambiar la contraseña, por favor intenta nuevamente',
+      },
+    }
+
+    try {
+      const fetchResponse = await fetchWithTimeout(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(otrosDatos),
+      })
+
+      response.status = fetchResponse.status;
+      response.fetchResponse = fetchResponse;
+
+      if (response.status === 200) {
+        response.message.title = 'Éxito';
+        response.message.description = 'Se cambio la contraseña correctamente, inicia sesion de nuevo para continuar';
+      }
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+
+    return response
+  };
 }
 
 const usuarioService = new UsuarioService();

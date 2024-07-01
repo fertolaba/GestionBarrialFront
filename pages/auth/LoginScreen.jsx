@@ -10,8 +10,9 @@ import { useState, useEffect } from 'react';
 import { useUser } from '../../context/UserContext';
 import { isNullish, exists } from '../../utils/misc';
 
-export const LoginScreen = () => {
+export const LoginScreen = ({ route }) => {
   const navigation = useNavigation();
+  const documentoParam = route.params?.documento;
   const { user, login, logout } = useUser();
 
   const [loading, setLoading] = useState(false);
@@ -21,13 +22,34 @@ export const LoginScreen = () => {
   // const [password, setPassword] = useState("123");
 
   // INSPECTOR
-  const [documento, setDocumento] = useState("DNI30012288");
-  const [password, setPassword] = useState("password");
+  const [documento, setDocumento] = useState(documentoParam);
+  const [password, setPassword] = useState("");
 
-  function handleRedirect() {
+  async function handleRedirect() {
     if (isNullish(user)) {
       console.warn('No se redirigirá a una ruta sin un usuario logueado');
       return;
+    }
+
+    if (new Date() > new Date(user.expiraContrasena)) {
+      await logout();
+
+      Alert.alert(
+        'Contraseña expirada',
+        'Su contraseña ha expirado, por favor cambie su contraseña',
+        [
+          {
+            text: 'OK',
+            onPress: () => navigation.navigate('ChangePassword', { documento: user.documento, passwordAntiguo: password }),
+          },
+          {
+            text: 'Cancelar',
+            onPress: () => console.log('no decide cambiar password presionado'),
+            style: 'cancel',
+          },
+        ],
+      );
+      return // no se envia a pantalla principal
     }
 
     navigation.reset({ index: 0, routes: [{ name: 'Inicio' }] });
@@ -124,15 +146,15 @@ export const LoginScreen = () => {
       >
         Iniciar sesión
       </StyledButton>
-      
+
       <StyledButton
-            naked
-            fontSize={'subheading'}
-            color={theme.colors.primary}
-            onPress={() => navigation.navigate('Recuperar')}
-        >
-            Recuperar Contraseña
-        </StyledButton>
+        naked
+        fontSize={'subheading'}
+        color={theme.colors.primary}
+        onPress={() => navigation.navigate('Recuperar')}
+      >
+        Recuperar Contraseña
+      </StyledButton>
 
 
     </View>
