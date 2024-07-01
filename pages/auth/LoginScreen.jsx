@@ -6,6 +6,7 @@ import { StyledButton, StyledText, StyledTextInput } from '../../components/ui';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState, useEffect } from 'react';
 
+
 import { useUser } from '../../context/UserContext';
 import { isNullish, exists } from '../../utils/misc';
 
@@ -123,6 +124,9 @@ export const LoginScreen = () => {
       >
         Iniciar sesión
       </StyledButton>
+      
+
+
 
     </View>
   );

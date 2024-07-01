@@ -9,6 +9,7 @@ import { InicioScreen } from "./InicioScreen";
 import { LoginScreen, LogoutScreen } from "./auth";
 import { ReclamosStack, SitioStack, DenunciasStack } from "./routes";
 import { NotificationsScreen } from './notifications/NotificationsScreen';
+import { RegistrarseScreen } from "./registrarse/registrarUsuario"
 
 import Foto from "../assets/foto1.png";
 
@@ -40,38 +41,49 @@ function CustomDrawerContent({ navigation }) {
 
     const rutasDrawer = [
         { title: 'Inicio', path: 'Inicio' },
-        { title: 'Reclamos', path: 'Reclamos', },
-        { title: 'Denuncias', path: 'Denuncias', },
+        { title: 'Reclamos', path: 'Reclamos' },
+        { title: 'Denuncias', path: 'Denuncias' },
         { title: 'Sitios', path: 'Sitios' },
+        
     ];
 
-    const BotonSesion = () => isNullish(user)
-        ? (
-            <StyledButton
-                naked
-                fontSize={'subheading'}
-                color={theme.colors.primary}
-                onPress={() => navigation.navigate('Login')}
-            >
-                Iniciar sesión
-            </StyledButton>
-        ) : (
-            <StyledButton
-                naked
-                fontSize={'subheading'}
-                color={theme.colors.primary}
-                onPress={handleLogout}
-            >
-                Cerrar sesión
-            </StyledButton>
-        );
+    const BotonSesion = () => isNullish(user) ? (
+        <StyledButton
+            naked
+            fontSize={'subheading'}
+            color={theme.colors.primary}
+            onPress={() => navigation.navigate('Login')}
+        >
+            Iniciar sesión
+        </StyledButton>
+    ) : (
+        <StyledButton
+            naked
+            fontSize={'subheading'}
+            color={theme.colors.primary}
+            onPress={handleLogout}
+        >
+            Cerrar sesión
+        </StyledButton>
+    );
+
+    const BotonRegistrarse = () => isNullish(user) && (
+        <StyledButton
+            naked
+            fontSize={'subheading'}
+            color={theme.colors.primary}
+            onPress={() => navigation.navigate('Registrarse')}
+        >
+            Registrarse
+        </StyledButton>
+    );
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.white }}>
             <View style={{ height: 200, width: '100%', alignItems: 'center', justifyContent: 'center' }}>
                 <Image source={Foto} style={{ height: 130, width: 130 }} />
                 <StyledText center style={styles.infoUsuario}>Bienvenido {user?.nombre.trim().substring(0, 15) ?? "Invitado"}!</StyledText>
-                <StyledText center bold style={styles.infoUsuario} >{user?.tipoUsuario || ""}</StyledText>
+                <StyledText center bold style={styles.infoUsuario}>{user?.tipoUsuario || ""}</StyledText>
             </View>
             <View>
                 {rutasDrawer.map((ruta, index) => (
@@ -86,6 +98,7 @@ function CustomDrawerContent({ navigation }) {
             </View>
             <View style={{ marginTop: 'auto', padding: 20, alignItems: 'center' }}>
                 <BotonSesion />
+                <BotonRegistrarse />
             </View>
         </SafeAreaView>
     );
@@ -101,7 +114,8 @@ export function DrawerNavigator() {
         { name: 'Denuncias', component: DenunciasStack, header: "Denuncias" },
         { name: 'Notificacion', component: NotificationsScreen, header: "Notificaciones" },
         { name: 'Login', component: LoginScreen, header: 'Iniciar Sesión' },
-        { name: 'Logout', component: LogoutScreen, header: 'Sesión Cerrada' }
+        { name: 'Logout', component: LogoutScreen, header: 'Sesión Cerrada' },
+        { name: 'Registrarse', component: RegistrarseScreen, header: 'Registrarse' }
     ]
 
     return (
@@ -184,5 +198,3 @@ const styles = StyleSheet.create({
         fontWeight: 'bold', // Letra en negrita
     },
 });
-
-
