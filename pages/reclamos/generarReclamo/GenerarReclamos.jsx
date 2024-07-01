@@ -19,6 +19,7 @@ import * as VideoThumbnails from 'expo-video-thumbnails';
 import theme from '../../../styles/theme';
 import { exists, isNullish } from '../../../utils/misc';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { SitioPressable } from '../../../components/sitios/SitioPressable';
 
 const FilePreview = ({ item, index, onPress, ...props }) => {
   return (
@@ -302,12 +303,11 @@ const GenerarReclamos = () => {
               <StyledText center style={styles.label}>Lista de sitios</StyledText>
               <View style={styles.seleccionSitioContainer}>
                 {
-                  sitiosFiltrados.map(({ idSitio, descripcion }) => (
-                    <StyledButton
-                      key={`sitio:${idSitio}`}
-                      title={`${idSitio}: ${descripcion}`}
-                      variant='secondary'
-                      onPress={() => handleSelectSitio(idSitio, descripcion)}
+                  sitiosFiltrados.map((sitio) => (
+                    <SitioPressable
+                      key={`sitio:${sitio.idSitio}`}
+                      sitio={sitio}
+                      onPress={() => handleSelectSitio(sitio.idSitio, sitio.descripcion)}
                       style={styles.selectSitio}
                     />
                   ))
@@ -371,7 +371,9 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: '#fff',
   },
-  row: { flexDirection: "row" },
+  row: {
+    flexDirection: "row"
+  },
   header: {
     fontSize: 24,
     fontWeight: 'bold',
@@ -450,9 +452,8 @@ const styles = StyleSheet.create({
   },
 
   seleccionSitioContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
+    width: "80%",
+    margin: "auto",
   },
   selectSitio: {
     width: "100%"
