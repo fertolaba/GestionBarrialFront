@@ -6,32 +6,41 @@ import { StyledButton, StyledText, StyledTextInput } from '../../components/ui';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useUser } from '../../context/UserContext';
 import { isNullish, exists } from '../../utils/misc';
+import usuariosServices from '../../services/usuarios.services';
 
 export const RegistrarseScreen = () => {
+  const {navigation} = useNavigation()
   const [mail, setMail] = useState("");
   const [nuevoDocumento, setNuevoDocumento] = useState("");
-  const [nuevoPassword, setNuevoPassword] = useState("");
-  const [loading, setLoading] = useState(false);
 
+  const [simularRechazo, setSimularRechazo] = useState(false)
+  const [loading, setLoading] = useState(false);
+console.log({simularRechazo})
   async function handleRegistro() {
-    if (!mail || !nuevoDocumento || !nuevoPassword) {
+    if (!mail || !nuevoDocumento) {
       Alert.alert("Error", "Por favor complete todos los campos");
       return;
     }
 
     try {
       setLoading(true);
-      const newUser = await register({ mail, documento: nuevoDocumento, password: nuevoPassword });
-      if (newUser) {
-        Alert.alert("Éxito", "Usuario registrado exitosamente");
+      const {status, message} = await usuariosServices.altaUsuario(nuevoDocumento, mail, simularRechazo)
+      
+            console.log({
+              status,
+              simularRechazo,
+              message
+            })
+      
+      Alert.alert(message.title, message.description)
+
+      if (status === 200) {
         setMail("");
         setNuevoDocumento("");
-        setNuevoPassword("");
-      } else {
-        Alert.alert("Error", "Error al registrar el usuario");
-      }
+        navigation.navigate('Login', { documento: nuevoDocumento })
+      } 
+
     } catch (error) {
-      Alert.alert("Error inesperado", "Algo salió mal. Inténtalo de nuevo.");
     } finally {
       setLoading(false);
     }
@@ -63,15 +72,18 @@ export const RegistrarseScreen = () => {
         />
       </View>
 
-      <View style={styles.formGroup}>
-        <StyledText fontSize={"subheading"} bold={"medium"} style={styles.label}>Contraseña</StyledText>
-        <StyledTextInput
-          onChangeText={setNuevoPassword}
-          value={nuevoPassword}
-          placeholder='Contraseña'
-          secureTextEntry={true}
-        />
-      </View>
+      <StyledButton
+        variant={!simularRechazo ? 'warning' : "success"}
+        onPress={() => setSimularRechazo(!simularRechazo)}
+      >
+        (debug) Marcar como alta
+        {
+          simularRechazo
+            ? " Exitosa"
+            : " con error"
+        }
+      </StyledButton>
+
 
       <StyledButton
         variant={'primary'}

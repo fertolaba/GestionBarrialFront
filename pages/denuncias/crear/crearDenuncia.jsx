@@ -54,7 +54,7 @@ const CrearDenuncia = () => {
         variant={'primary'}
         fontSize={'subheading'}
       >
-        Generar reclamo
+        Generar Denuncia
       </StyledButton>
 
       <StyledButton

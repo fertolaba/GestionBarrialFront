@@ -19,7 +19,7 @@ class UsuarioService {
       status: 500,
       message: {
         title: 'Error',
-        description: 'Hubo un error al cambiar la contraseña, por favor intenta nuevamente',
+        description: 'Hubo un error al dar de alta el usuario',
       },
     }
 
@@ -36,7 +36,7 @@ class UsuarioService {
 
       if (response.status === 200) {
         response.message.title = 'Éxito';
-        response.message.description = 'Se cambio la contraseña correctamente, inicia sesion de nuevo para continuar';
+        response.message.description = 'Se de dio de alta el usuario correctamente, inicia sesion de nuevo para continuar';
       }
     } catch (error) {
       response.message.title = 'Error inesperado';
