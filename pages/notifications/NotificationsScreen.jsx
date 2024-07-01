@@ -24,21 +24,21 @@ export const NotificationsScreen = ({ route, navigation }) => {
 
   return (
     <ScrollView>
-      <View style={styles.container}>
-        {
-          notificaciones.length > 0
-            ? notificaciones.map((notificacion, index) => (
-              <View key={index} style={styles.notificaciones}>
-                <StyledText bold fontSize={'body'}>
-                  {formatDateToStringWithTime(notificacion.fecha)}
-                </StyledText>
-                <StyledText>{notificacion.mensaje}</StyledText>
-              </View>
-            ))
-            : <StyledText style={styles.notificaciones}>{message}</StyledText>
-        }
-      </View>
-    </ScrollView>
+    <View style={styles.container}>
+      {
+        notificaciones.length > 0
+          ? notificaciones.map((notificacion, index) => (
+            <View key={index} style={styles.notificacionContainer}>
+              <StyledText bold style={styles.text}>
+                {formatDateToStringWithTime(notificacion.fecha)}
+              </StyledText>
+              <StyledText style={styles.text}>{notificacion.mensaje}</StyledText>
+            </View>
+          ))
+          : <StyledText style={[styles.notificacionContainer, styles.text]}>{message}</StyledText>
+      }
+    </View>
+  </ScrollView>
   );
 }
 
@@ -51,9 +51,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#d4edda',
     gap: 5,
   },
-  notificaciones: {
+  notificacionContainer: {
     padding: theme.global.screenInnerPadding,
     backgroundColor: theme.colors.secondary,
     borderRadius: theme.global.borderRadius,
+    minHeight: 1,  // Altura mínima para todas las notificaciones
+    width: '90%',  // Ancho de las notificaciones
+    marginBottom: 1,
+    justifyContent: 'center',
+  },
+  text: {
+    fontSize: 14,  // Ajusta este valor según el tamaño de fuente deseado
   },
 });
