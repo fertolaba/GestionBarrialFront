@@ -1,5 +1,5 @@
 import { View, ScrollView, StyleSheet } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import { StyledButton, StyledText } from '../../../components/ui';
 import reclamosServices from '../../../services/reclamos.services';
@@ -8,6 +8,7 @@ import { isNullish } from '../../../utils/misc';
 
 import { ReclamosList } from "../../../components/reclamos/ReclamosList";
 import theme from '../../../styles/theme';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function ListadoReclamos({ route }) {
   const navigation = useNavigation();
@@ -21,14 +22,8 @@ export default function ListadoReclamos({ route }) {
   const [reclamosPendientes, setReclamosPendientes] = useState([])
   const [reclamosFinalizados, setReclamosFinalizados] = useState([])
 
-  useEffect(() => {
-    // si no hay usuario o no tiene documento, no le buscamos nada...
-    // de paso unexpected guard por si no esta logeado 
-    if (isNullish(user) || isNullish(user.documento)) return;
-
-    const esInspector = user.tipoUsuario === 'inspector';
-
-    Promise.resolve()
+  const fetchData = async (esInspector) => {
+    return Promise.resolve()
       .then(() => setLoading(true))
       .then(() => {
         return listadoDeUsuario
@@ -39,6 +34,17 @@ export default function ListadoReclamos({ route }) {
       })
       .then(reclamos => reclamos && reclamos.length > 0 && setReclamos(reclamos))
       .finally(() => setLoading(false))
+  }
+
+  useEffect(() => {
+    // si no hay usuario o no tiene documento, no le buscamos nada...
+    // de paso unexpected guard por si no esta logeado 
+    if (isNullish(user) || isNullish(user.documento)) return;
+
+    const esInspector = user.tipoUsuario === 'inspector';
+
+    fetchData(esInspector)
+
   }, [user?.documento, listadoDeUsuario])
 
   useEffect(() => {
@@ -49,14 +55,27 @@ export default function ListadoReclamos({ route }) {
   }, [reclamos])
 
 
+  useFocusEffect(
+    useCallback(() => {
+      fetchData();
+    }, [])
+  );
+
+
   return (
     <ScrollView style={styles.screenContainer}>
       <View style={styles.container}>
         <StyledText center fontSize={'subheading'} style={styles.capitalize}>{listadoDeUsuario ? "Tus " : "Todos los "}reclamos</StyledText>
         {loading && <StyledText bold='bolder'>Cargando...</StyledText>}
 
-        <ReclamosList esListadoUsuario={listadoDeUsuario} titulo='pendientes' reclamos={reclamosPendientes} />
-        <ReclamosList finalizados esListadoUsuario={listadoDeUsuario} titulo='finalizados' reclamos={reclamosFinalizados} />
+        {
+          !loading && (
+            <View>
+              <ReclamosList esListadoUsuario={listadoDeUsuario} titulo='pendientes' reclamos={reclamosPendientes} />
+              <ReclamosList finalizados esListadoUsuario={listadoDeUsuario} titulo='finalizados' reclamos={reclamosFinalizados} />
+            </View>
+          )
+        }
 
         <StyledButton title='Volver' variant='secondary' onPress={() => navigation.goBack()} />
       </View>
