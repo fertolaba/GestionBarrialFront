@@ -25,7 +25,7 @@ export const DetalleSitio = ({ navigation, route }) => {
       }
 
       <Image style={styles.image} source={{ uri: imagenPrincipal }} />
-      <StyledText style={styles.detailTitle}>{sitio.nombre}</StyledText>
+      <StyledText style={styles.detailTitle}>{sitio.descripcion}</StyledText>
       <StyledText style={styles.label}>Calle:</StyledText>
       <StyledText style={styles.text}>{sitio.calle}</StyledText>
       <StyledText style={styles.label}>Número:</StyledText>
