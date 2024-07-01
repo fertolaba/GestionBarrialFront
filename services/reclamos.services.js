@@ -120,6 +120,53 @@ class ReclamosServices {
 			return false;
 		}
 	};
+
+	actualizarEstadoReclamo = async (reclamo, estado, legajo) => {
+		const url = `${this._apiUrl}/actualizarEstado`;
+		const response = {
+			status: 500,
+			message: {
+				title: 'Error',
+				description: 'Hubo un error al actualizar el estado del reclamo, por favor intenta nuevamente',
+			},
+			reclamo: null,
+		}
+
+		try {
+			const respuesta = await fetchWithTimeout(url, {
+				timeout: 30 * 1000, // 30 segundos
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ estado, reclamo, legajo }),
+			})
+
+			if (respuesta.status === 400) {
+				response.status = 400;
+				response.message = {
+					description: 'No se pudo actualizar el estado del reclamo, por favor verifica los datos ingresados',
+				}
+			}
+
+			if (respuesta.status === 200) {
+				response.status = 200;
+				response.message = {
+					title: 'Reclamo actualizado',
+					description: 'El estado del reclamo ha sido actualizado con éxito',
+				}
+				response.reclamo = await respuesta.json();
+			}
+
+			console.log(response)
+
+			return response;
+		} catch (error) {
+			console.error('Error fetching data:', error);
+
+			return false;
+		}
+	}
 }
 
 const reclamosServices = new ReclamosServices();

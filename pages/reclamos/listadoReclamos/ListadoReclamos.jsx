@@ -56,7 +56,7 @@ export default function ListadoReclamos({ route }) {
         {loading && <StyledText bold='bolder'>Cargando...</StyledText>}
 
         <ReclamosList titulo='pendientes' reclamos={reclamosPendientes} />
-        <ReclamosList titulo='finalizados' reclamos={reclamosFinalizados} />
+        <ReclamosList finalizados titulo='finalizados' reclamos={reclamosFinalizados} />
 
         <StyledButton title='Volver' variant='secondary' onPress={() => navigation.goBack()} />
       </View>
