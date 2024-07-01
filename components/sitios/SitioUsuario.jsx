@@ -32,7 +32,7 @@ export const CardSinSitio = () => {
         <StyledText bold center fontSize={'subheading'}>Todavía no creaste tu sitio</StyledText>
         <StyledText center fontSize={'subtitle'}>Crea tu sitio para que los vecinos puedan ver tu comercio o los servicios que brindas</StyledText>
       </View>
-      <StyledButton title={"Crea tu sitio"} variant={'success'} style={styles.btn} onPress={() => navigation.navigate("Sitios", { screen: "EdicionSitio" })} />
+      <StyledButton title={"Crea tu sitio"} variant={'success'} style={styles.btn} onPress={() => navigation.navigate("Sitios", { screen: "Edicion" })} />
     </View>
   )
 }
