@@ -45,7 +45,6 @@ function CustomDrawerContent({ navigation }) {
         { title: 'Reclamos', path: 'Reclamos' },
         { title: 'Denuncias', path: 'Denuncias' },
         { title: 'Sitios', path: 'Sitios' },
-        
     ];
 
     const BotonSesion = () => isNullish(user) ? (
@@ -87,15 +86,20 @@ function CustomDrawerContent({ navigation }) {
                 <StyledText center bold style={styles.infoUsuario}>{user?.tipoUsuario || ""}</StyledText>
             </View>
             <View>
-                {rutasDrawer.map((ruta, index) => (
-                    <StyledButton
-                        key={index}
-                        color='white'
-                        style={styles.drawerButton}
-                        onPress={() => handlePress(ruta.path)}
-                        title={ruta.title}
-                    />
-                ))}
+                {rutasDrawer.map((ruta, index) => {
+                    const isDenunciasOrSitios = ["Denuncias", "Sitios"].includes(ruta.title);
+                    const showButton = !isDenunciasOrSitios || (isNullish(user) || user?.tipoUsuario?.toLowerCase() === 'vecino');
+
+                    return showButton && (
+                        <StyledButton
+                            key={index}
+                            color='white'
+                            style={styles.drawerButton}
+                            onPress={() => handlePress(ruta.path)}
+                            title={ruta.title}
+                        />
+                    );
+                })}
             </View>
             <View style={{ marginTop: 'auto', padding: 20, alignItems: 'center' }}>
                 <BotonSesion />
