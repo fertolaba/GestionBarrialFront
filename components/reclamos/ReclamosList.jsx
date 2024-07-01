@@ -5,14 +5,14 @@ import { StyledText } from '../ui';
 import theme from '../../styles/theme';
 import { truncateString } from '../../utils/strings';
 
-export const ReclamosList = ({ titulo, reclamos, finalizados }) => {
+export const ReclamosList = ({ titulo, reclamos, finalizados, esListadoUsuario }) => {
     const navigation = useNavigation()
 
     const handlePressItem = (reclamo) => {
         navigation.navigate('DetalleReclamo', { reclamo });
     }
 
-    console.log(JSON.stringify(reclamos, null, 2))
+    // console.log(JSON.stringify(reclamos, null, 2))
 
     return (
         <View>
@@ -21,11 +21,11 @@ export const ReclamosList = ({ titulo, reclamos, finalizados }) => {
                 textTransform='capitalize'
                 fontSize={'subtitle'}
             >
-                Reclamos {titulo}
+                {esListadoUsuario && "Tus "}Reclamos {titulo}
             </StyledText>
             {
                 reclamos.length === 0
-                    ? <StyledText center bold textTransform="capitalize">no hay reclamos {titulo.toLowerCase()}</StyledText>
+                    ? <StyledText center bold textTransform="uppercase">{esListadoUsuario ? "no tenes" : "no hay"} reclamos {titulo.toLowerCase()}</StyledText>
                     : reclamos.map(reclamo => (
                         <Pressable key={reclamo.idreclamo} onPress={() => handlePressItem(reclamo)} style={[styles.item, finalizados ? styles.finished : styles.pending]}>
                             <View>

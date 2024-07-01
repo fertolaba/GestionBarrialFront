@@ -59,7 +59,7 @@ class SitiosServices {
     const sitioConDueno = exists(sitio?.documento);
 
     try {
-      const response = await fetchWithTimeout(_apiUrl, {
+      const response = await fetchWithTimeout(this._apiUrl, {
         method: sitioConDueno ? "PUT" : 'POST',
         headers: {
           'Content-Type': 'application/json',

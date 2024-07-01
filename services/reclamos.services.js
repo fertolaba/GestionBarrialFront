@@ -53,7 +53,6 @@ class ReclamosServices {
 
 			const json = await response.json();
 
-			console.log(json)
 			return json;
 		} catch (error) {
 			console.error('Error fetching data:', error);
@@ -150,22 +149,22 @@ class ReclamosServices {
 			}
 
 			if (respuesta.status === 200) {
+				response.reclamo = await respuesta.json();
+
+				const description = Array.isArray(response.reclamo) && response.reclamo.length > 1 ? 'Adicionalmente se han actualizado otros ' + (response.reclamo.length - 1) + ' reclamos' : ''
+
 				response.status = 200;
 				response.message = {
 					title: 'Reclamo actualizado',
-					description: 'El estado del reclamo ha sido actualizado con éxito',
+					description: `Se actualizo el estado del reclamo. ${description}`,
 				}
-				response.reclamo = await respuesta.json();
 			}
 
-			console.log(response)
-
-			return response;
 		} catch (error) {
 			console.error('Error fetching data:', error);
-
-			return false;
 		}
+		
+		return response;
 	}
 }
 

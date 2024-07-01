@@ -18,6 +18,7 @@ import * as VideoThumbnails from 'expo-video-thumbnails';
 
 import theme from '../../../styles/theme';
 import { exists, isNullish } from '../../../utils/misc';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const FilePreview = ({ item, index, onPress, ...props }) => {
   return (
@@ -90,7 +91,21 @@ const GenerarReclamos = () => {
       ]);
     }
 
-    if (continueGenerate) {
+    if (!continueGenerate) {
+      // si no acepta continuar, guardo las cosas en asyncStorage
+      // y muestro un mensaje de que se guardaron los datos, para luego redireccionarlo al menu Reclamos
+      // de esta manera, al volver al formulario en otra ocasion, se cargan los datos
+
+      await AsyncStorage.setItem('reclamoGuardado', true)
+      await AsyncStorage.setItem('reclamo', JSON.stringify({
+        desperfecto,
+        descripcionDesperfecto,
+        rubro,
+        sitioSeleccionado,
+        files,
+      }));
+
+    } else {
       const nuevoReclamo = {
         descripcion: descripcionDesperfecto,
         iddesperfecto: {
@@ -207,9 +222,25 @@ const GenerarReclamos = () => {
     sitiosServices.getSitios()
       .then(setSitios)
       .catch(console.error)
+      .then(() => AsyncStorage.getItem('reclamoGuardado'))
+      .then(async (reclamoGuardado) => {
+        if (reclamoGuardado) {
+          const reclamo = JSON.parse(await AsyncStorage.getItem('reclamo'));
+
+          setDesperfecto(reclamo.desperfecto);
+          setDescripcionDesperfecto(reclamo.descripcionDesperfecto);
+          setRubro(reclamo.rubro);
+          setSitioSeleccionado(reclamo.sitioSeleccionado);
+          setFiles(reclamo.files);
+
+          await AsyncStorage.removeItem('reclamoGuardado');
+          await AsyncStorage.removeItem('reclamo');
+        }
+      })
   }, [])
 
-    
+
+
   return (
     <ScrollView>
       <View style={styles.container}>

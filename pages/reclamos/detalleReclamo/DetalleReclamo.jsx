@@ -3,6 +3,7 @@ import React from 'react';
 import { StyledButton, StyledText } from '../../../components/ui';
 import { useUser } from '../../../context/UserContext';
 import reclamosServices from '../../../services/reclamos.services';
+import { exists } from '../../../utils/misc';
 
 export default function DetalleReclamo({ route, navigation }) {
   const { user } = useUser();
@@ -10,8 +11,10 @@ export default function DetalleReclamo({ route, navigation }) {
 
   const actualizarEstadoReclamo = async (estado) => {
     const legajo = user?.legajo;
-    const reclamoActualizado = await reclamosServices.actualizarEstadoReclamo(reclamo, estado, legajo);
-    console.log(reclamoActualizado);
+
+    const reclamoActualizado = await reclamosServices.actualizarEstadoReclamo(reclamo, estado, legajo)
+
+    Alert.alert(reclamoActualizado.message.title, reclamoActualizado.message.description)
   }
 
   const handleFinalizarReclamo = () => {
@@ -38,20 +41,28 @@ export default function DetalleReclamo({ route, navigation }) {
     )
   }
 
+  console.log(JSON.stringify(reclamo, null, 2))
+
   return (
     <View style={{ padding: 10 }}>
-      <StyledText style={{ fontSize: 20, marginBottom: 10 }}>Detalle de reclamo</StyledText>
+      <StyledText style={{ fontSize: 20, marginVertical: 10 }}>Detalle de reclamo</StyledText>
 
-      <StyledText bold style={{ marginBottom: 5 }}>
-        {user.tipoUsuario === 'inspector'
-          ? (reclamo.personal?.legajo === user?.legajo && "Reclamo de otro usuario")
-          : (reclamo.vecino?.documento === user?.documento && "Este es un reclamo de tu autoría")}
+      <StyledText bold italic style={{ marginBottom: 5 }}>
+        {
+          (reclamo.personal?.legajo === user?.legajo || reclamo.vecino?.documento === user?.documento)
+            ? "Este reclamo es de tu autoría"
+            : user.tipoUsuario === 'inspector'
+              ? exists(reclamo.vecino)
+                ? `Reclamado por ${reclamo.vecino.nombre.trim()} ${reclamo.vecino.apellido.trim()} (${reclamo.vecino.documento})`
+                : "Reclamo de otro inspector"
+              : "Reclamo de otro usuario del barrio"
+        }
       </StyledText>
 
       <View style={{ marginBottom: 10, padding: 10, backgroundColor: '#f0f0f0', borderRadius: 5 }}>
-        <StyledText>{`ID Reclamo: ${reclamo.idreclamo}`}</StyledText>
+        <StyledText bold>{`ID Reclamo: ${reclamo.idreclamo}`}</StyledText>
         <StyledText>{`Descripción: ${reclamo.descripcion}`}</StyledText>
-        <StyledText>{`Estado: ${reclamo.estado}`}</StyledText>
+        <StyledText>{`Estado: `} <StyledText bold>{reclamo.estado}</StyledText></StyledText>
 
         <StyledText bold style={{ marginTop: 5 }}>Sitio:</StyledText>
         <StyledText>{`Latitud: ${reclamo.sitio.latitud}`}</StyledText>
@@ -63,12 +74,18 @@ export default function DetalleReclamo({ route, navigation }) {
         <StyledText bold style={{ marginTop: 5 }}>Desperfecto:</StyledText>
         <StyledText>{`Descripción: ${reclamo.desperfecto.descripcion}`}</StyledText>
 
-        <StyledText bold style={{ marginTop: 5 }}>Personal:</StyledText>
-        <StyledText>{`Legajo: ${reclamo.personal.legajo}`}</StyledText>
-        <StyledText>{`Nombre: ${reclamo.personal.nombre.trim()} ${reclamo.personal.apellido.trim()}`}</StyledText>
-        <StyledText>{`Documento: ${reclamo.personal.documento}`}</StyledText>
-        <StyledText>{`Sector: ${reclamo.personal.sector}`}</StyledText>
-        <StyledText>{`Fecha de Ingreso: ${new Date(reclamo.personal.fechaIngreso).toLocaleDateString()}`}</StyledText>
+        {
+          exists(reclamo.personal?.legajo) && (
+            <View>
+              <StyledText bold style={{ marginTop: 5 }}>Personal:</StyledText>
+              <StyledText>{`Legajo: ${reclamo.personal.legajo}`}</StyledText>
+              <StyledText>{`Nombre: ${reclamo.personal.nombre.trim()} ${reclamo.personal.apellido.trim()}`}</StyledText>
+              <StyledText>{`Documento: ${reclamo.personal.documento}`}</StyledText>
+              <StyledText>{`Sector: ${reclamo.personal.sector}`}</StyledText>
+              <StyledText>{`Fecha de Ingreso: ${new Date(reclamo.personal.fechaIngreso).toLocaleDateString()}`}</StyledText>
+            </View>
+          )
+        }
       </View>
 
       {user?.tipoUsuario === 'inspector' &&
