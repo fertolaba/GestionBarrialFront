@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { StyledText, StyledTextInput, StyledButton } from '../../../components/ui';
+import { useNavigation } from '@react-navigation/native';
 
-import { StyledButton } from '../../../components/ui';
 
 const CrearDenuncia = () => {
+  const navigation = useNavigation();
   const [calle, setCalle] = useState('');
   const [numero, setNumero] = useState('');
   const [dueno, setDueno] = useState('');
@@ -55,6 +56,13 @@ const CrearDenuncia = () => {
       >
         Generar reclamo
       </StyledButton>
+
+      <StyledButton
+            title="Volver"
+            variant='secondary'
+            fontSize='subheading'
+            onPress={() => navigation.goBack()}
+          />
     </View>
   );
 }

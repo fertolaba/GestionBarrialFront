@@ -4,7 +4,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { useUser } from "../context/UserContext";
 import { StyledButton, StyledText } from "../components/ui";
 import { NotificationButton } from "../components/NotificationButton";
-
+import { CambiarContraScreen } from "./registrarse/cambiarContra"
 import { InicioScreen } from "./InicioScreen";
 import { LoginScreen, LogoutScreen } from "./auth";
 import { ReclamosStack, SitioStack, DenunciasStack } from "./routes";
@@ -115,7 +115,9 @@ export function DrawerNavigator() {
         { name: 'Notificacion', component: NotificationsScreen, header: "Notificaciones" },
         { name: 'Login', component: LoginScreen, header: 'Iniciar Sesión' },
         { name: 'Logout', component: LogoutScreen, header: 'Sesión Cerrada' },
+        { name: 'Recuperar', component: CambiarContraScreen, header: 'Recuperar' },
         { name: 'Registrarse', component: RegistrarseScreen, header: 'Registrarse' }
+        
     ]
 
     return (

@@ -125,7 +125,14 @@ export const LoginScreen = () => {
         Iniciar sesión
       </StyledButton>
       
-
+      <StyledButton
+            naked
+            fontSize={'subheading'}
+            color={theme.colors.primary}
+            onPress={() => navigation.navigate('Recuperar')}
+        >
+            Recuperar Contraseña
+        </StyledButton>
 
 
     </View>
