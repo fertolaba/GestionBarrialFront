@@ -12,6 +12,8 @@ import ReclamosScreen from './reclamos/ReclamosScreen';
 import GenerarReclamos from './reclamos/generarReclamo/GenerarReclamos';
 import ListadoReclamos from './reclamos/listadoReclamos/ListadoReclamos';
 import DetalleReclamo from './reclamos/detalleReclamo/DetalleReclamo';
+import CrearDenuncia from './denuncias/crear/crearDenuncia';
+import DenunciaHome from './denuncias/DenunciaHome';
 
 export const Stack = createStackNavigator();
 
@@ -47,12 +49,17 @@ export const DenunciasStack = () => {
         <Stack.Navigator>
             <Stack.Screen
                 name="Listado"
-                component={DenunciasScreen}
+                component={DenunciaHome}
                 options={{ headerShown: false }}
             />
             <Stack.Screen
                 name="Detalle"
                 component={DenunciaDetalle}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="GenerarDenuncia"
+                component={CrearDenuncia}
                 options={{ headerShown: false }}
             />
         </Stack.Navigator>
